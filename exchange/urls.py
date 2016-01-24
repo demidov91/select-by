@@ -16,6 +16,9 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from exchange.views import *
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', get_rates, name='rates'),
 ]

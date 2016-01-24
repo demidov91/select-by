@@ -4,3 +4,5 @@ env/*
 *.pyc
 .idea
 logs/*
+exchange/local_settings.py
+.svn

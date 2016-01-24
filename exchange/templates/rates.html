@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load i18n staticfiles %}
+
+{% block style %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'js/lib/tablesorter/themes/blue/style.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<table class="tablesorter">
+    <thead>
+        <tr>
+            <th>{% trans 'Exchange office' %}</th>
+            <th>USD {% trans 'buy' %}</th>
+            <th>USD {% trans 'sell' %}</th>
+            <th>EUR {% trans 'buy' %}</th>
+            <th>EUR {% trans 'sell' %}</th>
+            <th>RUB {% trans 'buy' %}</th>
+            <th>RUB {% trans 'sell' %}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for office in offices %}
+        <tr>
+            <td>{{ office.bank.name }}. {{ office.address }}</td>
+            {% for rate in office.rates %}
+            {% if forloop.counter == 5 or  forloop.counter == 6 %}
+            <td>{{ rate.rate|floatformat:2 }} </td>
+            {% else %}
+            <td>{{ rate.rate|floatformat }} </td>
+            {% endif %}
+            {% endfor %}
+
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+
+{% block script %}
+    {{ block.super}}
+    <script type="text/javascript" src="{% static 'js/lib/tablesorter/jquery.tablesorter.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/rates.js' %}"></script>
+{% endblock %}

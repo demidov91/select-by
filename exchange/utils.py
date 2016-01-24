@@ -1,10 +1,11 @@
-from urllib.request import urlopen
+from uuid import uuid4
 import re
 from decimal import Decimal
 
 from lxml import html
 
 from django.conf import settings
+from django.contrib.auth.models import User
 
 from exchange.models import DynamicSettings, Bank, Rate, ExchangeOffice
 
@@ -29,6 +30,17 @@ def get_dynamic_setting(key: str) -> str:
 
 def set_dynamic_setting(key: str, value: str):
     set_or_create(DynamicSettings, {'key': key}, {'value': value})
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        return x_forwarded_for.split(',')[0]
+    return request.META.get('REMOTE_ADDR')
+
+
+def create_new_user():
+    return User.objects.create(username=uuid4().hex)
 
 
 class RatesLoader:
