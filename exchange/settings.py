@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'exchange',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -106,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Minsk'
 
 USE_I18N = True
 
@@ -121,3 +122,52 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 RATES_SOURCE = 'http://select.by/kurs/'
+
+LOGS_DIR = os.path.join(BASE_DIR, 'logs')
+
+LOGGING = {
+    'version': 1,
+    'formatters': {
+        'verbose': {
+            'format': '[%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d] %(message)s'
+        },
+    },
+
+    'handlers': {
+        'common_debug': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOGS_DIR, 'debug.log'),
+            'when': 'W0',
+            'formatter': 'verbose',
+        },
+        'common_warning': {
+            'level': 'WARNING',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOGS_DIR, 'warn.log'),
+            'when': 'W0',
+            'formatter': 'verbose',
+        },
+        'common_info': {
+            'level': 'INFO',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOGS_DIR, 'info.log'),
+            'when': 'W0',
+            'formatter': 'verbose',
+        },
+        'common_error': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(LOGS_DIR, 'error.log'),
+            'when': 'W0',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['common_error', 'common_warning', 'common_info', 'common_debug'],
+            'level': 'DEBUG',
+        },
+    },
+}
+

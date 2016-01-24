@@ -4,13 +4,20 @@ from django.conf import settings
 
 
 class Bank(models.Model):
+    identifier = models.CharField(null=False, max_length=63, unique=True, verbose_name=_('identifier'))
     name = models.CharField(null=False, max_length=63, verbose_name=_('name'))
+
+    def __str__(self):
+        return self.name
 
 
 class ExchangeOffice(models.Model):
     identifier = models.CharField(null=False, max_length=63, unique=True, verbose_name=_('identifier'))
     address = models.CharField(null=False, max_length=127, verbose_name=_('address'))
     bank = models.ForeignKey(Bank, null=False)
+
+    def __str__(self):
+        return '{}: {}'.format(self.bank.name, self.address)
 
 
 class Rate(models.Model):
@@ -27,6 +34,10 @@ class Rate(models.Model):
     exchange_office = models.ForeignKey(ExchangeOffice, null=False)
     currency = models.PositiveSmallIntegerField(null=False, choices=CURRENCIES, verbose_name=_('currency'))
     buy = models.BooleanField(verbose_name=_('buy'))
+    rate = models.DecimalField(max_digits=11, decimal_places=4, null=False, verbose_name=_('rate'))
+
+    def __str__(self):
+        return '{} {} for {}'.format(_('buy') if self.buy else _('sell'), self.CURRENCIES[self.currency][1], self.exchange_office.bank)
 
 
 class DynamicSettings(models.Model):
@@ -38,5 +49,5 @@ class DynamicSettings(models.Model):
 
 class UserInfo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, verbose_name=_('user'))
-    ip = models.IPAddressField(null=False, verbose_name=_('registration IP address'))
+    ip = models.GenericIPAddressField(null=False, verbose_name=_('registration IP address'))
     exchange_offices = models.ManyToManyField(ExchangeOffice)
