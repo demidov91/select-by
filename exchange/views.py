@@ -52,7 +52,13 @@ def overview(request):
 
 
 def get_rates(request):
-    user = get_object_or_404(UserInfo.objects, user__username=request.GET.get('name', request.COOKIES.get('name')))
+    username = request.GET.get('name', request.COOKIES.get('name'))
+    if not username:
+        return redirect('config')
+    try:
+        user = UserInfo.objects.get(user__username=username)
+    except UserInfo.DoesNotExist:
+        return HttpResponseRedirect(reverse('config') + '?name=' + username)
     offices = user.exchange_offices.all()
     for office in offices:
         office.rates = office.rate_set.order_by('currency', '-buy')
