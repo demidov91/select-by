@@ -21,4 +21,5 @@ from exchange.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', get_rates, name='rates'),
+    url(r'^config/$', overview, name='config'),
 ]

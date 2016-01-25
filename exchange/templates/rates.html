@@ -8,6 +8,16 @@
 
 
 {% block content %}
+<div id="rates-header">
+    <div class="toLeft">
+        {% blocktrans %}This page exists thanks to <a href="http://select.by/">select.by</a> data!{% endblocktrans %}
+    </div>
+    <div class="toRight">
+        <a href="{% url 'config' %}?name={{ name }}" class="btn btn-default">{% trans 'settings' %}</a>
+    </div>
+    <div class="clear"></div>
+</div>
+
 <table class="tablesorter">
     <thead>
         <tr>

@@ -1,10 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% load i18n staticfiles %}
+
+{% block content %}
+<div>
+    <div>
+        <h1 class="toLeft">{% trans 'Hi Anon!' %}</h1>
+        <form class="toRight" id="other-name-form">
+            {% trans "It's not me!" %}: <input name="name">
+            <input type="submit" value="{% trans 'tell us your name' %}" class="btn btn-primary btn-sm" />
+        </form>
+        <div class="clear"></div>
+    </div>
+    <div>
+        <h3>
+            {% blocktrans %}Very likely you will prefer to use awesome
+            <a href="http://mobile.tut.by/app-finance.html">tut.by application</a>
+            or use original <a href="http://select.by/kurs/">select.by</a> site.
+            {% endblocktrans%}
+        </h3>
+        <h3>
+            <p>{% trans 'If you still want to try this filter, select exchange offices you would like to follow and type any unique name.' %}</p>
+            <p>{% trans 'Your choice will be stored in cookies and can be restored by username' %}</p>
+        </h3>
+    </div>
+</div>
+<form id="config-form" method="post" action=".">{% csrf_token %}
+    <div>
+        {{ form.non_field_errors }}
+    </div>
+    <div id="name-wrapper">
+        <p>{{ form.name.errors}}</p>
+        <p>{% trans 'Name'%}: {{ form.name }} <input type="submit" value="OK" class="btn btn-success"></p>
+    </div>
+    <hr>
+
+    <div>{% trans 'Oooh! How much offices there is here! Filter them!' %} <input id="filter-list" /></div>
+    <div id="exchange_offices-wrapper">
+        <div>
+            {{ form.exchange_offices.errors }}
+        </div>
+        <div>
+            {{ form.exchange_offices }}
+        </div>
+    </div>
+    <input type="hidden" name="id" value="{{ form.instance.id }}" />
+</form>
+{% endblock %}
+
+
+{% block script %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/config.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,25 @@
+.toLeft {float: left;}
+.toRight {float: right;}
+.clear {clear: both;}
+
+
+#config-form{margin: 2em auto; width: 40em;}
+#name-wrapper{text-align: center;}
+#other-name-form, #rates-header{padding: 1em;}
+
+.errorlist{
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+    list-style:none;
+}
+
+body table.tablesorter{
+    max-width: 40em;
+    margin: 0 auto;
+    font-size: 24px;
+}
+
+table.tablesorter td:first-child{
+    font-size: 0.65em;
+}

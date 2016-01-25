@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
 
 from exchange.models import Bank, ExchangeOffice, Rate, UserInfo, DynamicSettings
 
@@ -17,8 +18,13 @@ class RateAdmin(admin.ModelAdmin):
 
 
 class UserInfoAdmin(admin.ModelAdmin):
-    list_display = 'ip',
+    list_display = 'get_name', 'ip',
     filter_horizontal = 'exchange_offices',
+
+    def get_name(self, obj: UserInfo) -> str:
+        return obj.user.username
+
+    get_name.short_description = _('name')
 
 
 class DynamicSettingsAdmin(admin.ModelAdmin):
