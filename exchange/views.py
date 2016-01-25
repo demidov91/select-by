@@ -40,6 +40,7 @@ def overview(request):
         instance = UserInfo.objects.get(id=request.POST['id'])
         form = UserInfoForm(instance=instance, data=request.POST)
         if form.is_valid():
+            form.instance.ip = get_client_ip(request)
             instance = form.save()
             if instance:
                 response = HttpResponseRedirect(reverse('rates') + '?name=' + instance.user.username)
@@ -51,11 +52,14 @@ def overview(request):
 
 
 def get_rates(request):
-    user = get_object_or_404(UserInfo.objects, user__username=request.GET.get('name'))
+    user = get_object_or_404(UserInfo.objects, user__username=request.GET.get('name', request.COOKIES.get('name')))
     offices = user.exchange_offices.all()
     for office in offices:
         office.rates = office.rate_set.order_by('currency', '-buy')
-    return render(request, 'rates.html', {'offices': offices})
+    response = render(request, 'rates.html', {'offices': offices})
+    if request.COOKIES.get('name') != user.user.username:
+        response.set_cookie('name', user.user.username)
+    return response
 
 
 
