@@ -169,6 +169,10 @@ LOGGING = {
             'handlers': ['common_error', 'common_warning', 'common_info', 'common_debug'],
             'level': 'DEBUG',
         },
+        'django.request': {
+            'handlers': ['common_error', 'common_warning', 'common_info', 'common_debug'],
+            'level': 'DEBUG',
+        },
     },
 }
 

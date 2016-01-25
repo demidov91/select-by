@@ -40,7 +40,7 @@ def get_client_ip(request):
 
 
 def create_new_user():
-    return User.objects.create(username=uuid4().hex)
+    return User.objects.create(username=uuid4().hex[:30])
 
 
 class RatesLoader:
