@@ -6,23 +6,23 @@
 <div>
     <div>
         <h1 class="toLeft">{% trans 'Hi Anon!' %}</h1>
-        <form class="toRight" id="other-name-form">
-            {% trans "It's not me!" %}: <input name="name">
-            <input type="submit" value="{% trans 'tell us your name' %}" class="btn btn-primary btn-sm" />
+        <form class="toRight" id="other-name-form" action="{% url 'rates' %}" method="get">
+            {% trans "It's not me!" %} <input name="name">
+            <input type="submit" value="{% trans 'show me my rates!' %}" class="btn btn-primary btn-sm" />
         </form>
         <div class="clear"></div>
     </div>
     <div>
-        <h3>
+        <h4>
             {% blocktrans %}Very likely you will prefer to use awesome
-            <a href="http://mobile.tut.by/app-finance.html">tut.by application</a>
-            or use original <a href="http://select.by/kurs/">select.by</a> site.
+            <a href="http://mobile.tut.by/app-finance.html" target="_blank">tut.by application</a>
+            or use original <a href="http://select.by/kurs/" target="_blank">select.by</a> site.
             {% endblocktrans%}
-        </h3>
-        <h3>
+        </h4>
+        <h4>
             <p>{% trans 'If you still want to try this filter, select exchange offices you would like to follow and type any unique name.' %}</p>
             <p>{% trans 'Your choice will be stored in cookies and can be restored by username' %}</p>
-        </h3>
+        </h4>
     </div>
 </div>
 <form id="config-form" method="post" action=".">{% csrf_token %}

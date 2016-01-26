@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 from exchange.models import UserInfo, Rate
-from exchange.utils import create_new_user, get_client_ip
+from exchange.utils import create_new_user, get_client_ip, set_name_cookie, get_best_rates
 from .forms import UserInfoForm
 
 
@@ -31,11 +31,9 @@ def overview(request):
         form = UserInfoForm(instance=userinfo)
         if not username:
             form.fields['name'].initial = None
-        response = render(request, 'index.html', {
+        return set_name_cookie(render(request, 'index.html', {
             'form': form,
-        })
-        response.set_cookie('name', userinfo.user.username)
-        return response
+        }), userinfo.user.username)
     elif request.method == 'POST':
         instance = UserInfo.objects.get(id=request.POST['id'])
         form = UserInfoForm(instance=instance, data=request.POST)
@@ -43,9 +41,8 @@ def overview(request):
             form.instance.ip = get_client_ip(request)
             instance = form.save()
             if instance:
-                response = HttpResponseRedirect(reverse('rates') + '?name=' + instance.user.username)
-                response.set_cookie('name', instance.user.username)
-                return response
+                return set_name_cookie(HttpResponseRedirect(reverse('rates') + '?name=' + instance.user.username),
+                                       instance.user.username)
         return render(request, 'index.html', {
             'form': form,
         })
@@ -62,9 +59,16 @@ def get_rates(request):
     offices = user.exchange_offices.all()
     for office in offices:
         office.rates = office.rate_set.order_by('currency', '-buy')
+    best_rates = []
+    for currency in (x[0] for x in Rate.CURRENCIES):
+        best_rates.extend(get_best_rates(currency, user.exchange_offices.all(), True))
+        best_rates.extend(get_best_rates(currency, user.exchange_offices.all(), False))
+    for office in offices:
+        for best_rate in filter(lambda x: x in best_rates, office.rates):
+            best_rate.is_best = True
     response = render(request, 'rates.html', {'offices': offices})
     if request.COOKIES.get('name') != user.user.username:
-        response.set_cookie('name', user.user.username)
+        response = set_name_cookie(response, user.user.username)
     return response
 
 

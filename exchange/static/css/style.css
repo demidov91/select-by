@@ -23,3 +23,7 @@ body table.tablesorter{
 table.tablesorter td:first-child{
     font-size: 0.65em;
 }
+
+table.tablesorter td.is-best{
+    background-color: #AFFFAF;
+}

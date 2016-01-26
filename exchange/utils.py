@@ -6,6 +6,7 @@ from lxml import html
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.db.models import Min, Max
 
 from exchange.models import DynamicSettings, Bank, Rate, ExchangeOffice
 
@@ -41,6 +42,19 @@ def get_client_ip(request):
 
 def create_new_user():
     return User.objects.create(username=uuid4().hex[:30])
+
+
+def set_name_cookie(response, name: str):
+    response.set_cookie('name', name, max_age=365*86400)
+    return response
+
+
+def get_best_rates(currency: int, exchanger_offices, buy: bool):
+    return Rate.objects.filter(
+            rate=Rate.objects.filter(
+                exchange_office__in=exchanger_offices, currency=currency, buy=buy).aggregate(val=Max('rate') if buy else Min('rate'))['val'],
+            exchange_office__in=exchanger_offices, currency=currency, buy=buy
+    )
 
 
 class RatesLoader:
