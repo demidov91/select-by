@@ -1,4 +1,5 @@
 from uuid import uuid4
+import base64
 import re
 from decimal import Decimal
 
@@ -40,12 +41,14 @@ def get_client_ip(request):
     return request.META.get('REMOTE_ADDR')
 
 
-def create_new_user():
-    return User.objects.create(username=uuid4().hex[:30])
+def get_username(request):
+    return request.GET.get('name',
+                           request.COOKIES.get('name') and base64.b64decode(request.COOKIES.get('name')).decode('utf-8'))
 
 
 def set_name_cookie(response, name: str):
-    response.set_cookie('name', name, max_age=365*86400)
+    if name:
+        response.set_cookie('name', base64.b64encode(name.encode()).decode('ascii'), max_age=365*86400)
     return response
 
 

@@ -48,7 +48,7 @@ class DynamicSettings(models.Model):
 
 
 class UserInfo(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, verbose_name=_('user'))
+    name = models.CharField(max_length=127, null=True, unique=True, verbose_name=_('name'))
     ip = models.GenericIPAddressField(null=False, verbose_name=_('registration IP address'))
     exchange_offices = models.ManyToManyField(ExchangeOffice)
     last_changed = models.DateTimeField(auto_now=True, null=False, verbose_name=_('last changed'))

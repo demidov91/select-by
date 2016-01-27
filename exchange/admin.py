@@ -18,13 +18,8 @@ class RateAdmin(admin.ModelAdmin):
 
 
 class UserInfoAdmin(admin.ModelAdmin):
-    list_display = 'get_name', 'ip', 'last_changed'
+    list_display = 'name', 'ip', 'last_changed'
     filter_horizontal = 'exchange_offices',
-
-    def get_name(self, obj: UserInfo) -> str:
-        return obj.user.username
-
-    get_name.short_description = _('name')
 
 
 class DynamicSettingsAdmin(admin.ModelAdmin):
