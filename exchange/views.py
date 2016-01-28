@@ -1,5 +1,3 @@
-from uuid import uuid4
-
 from django.shortcuts import render, redirect
 from django.http.response import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -47,7 +45,6 @@ def overview(request):
 
 def get_rates(request):
     username = get_username(request)
-    print(username)
     if not username:
         return redirect('config')
     try:

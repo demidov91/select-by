@@ -5,24 +5,25 @@
 {% block content %}
 <div>
     <div>
-        <h1 class="toLeft">{% trans 'Hi Anon!' %}</h1>
+        {% trans 'Anon' as anonimus %}
+        <h1 class="toLeft">{% trans 'Hi' %}, {{ form.name.value|default:anonimus }}!</h1>
         <form class="toRight" id="other-name-form" action="{% url 'rates' %}" method="get">
-            {% trans "It's not me!" %} <input name="name">
+            {% trans "It's not me! My name is" %} <input name="name">
             <input type="submit" value="{% trans 'show me my rates!' %}" class="btn btn-primary btn-sm" />
         </form>
         <div class="clear"></div>
     </div>
     <div>
-        <h4>
+        <p>
             {% blocktrans %}Very likely you will prefer to use awesome
             <a href="http://mobile.tut.by/app-finance.html" target="_blank">tut.by application</a>
             or use original <a href="http://select.by/kurs/" target="_blank">select.by</a> site.
             {% endblocktrans%}
-        </h4>
-        <h4>
-            <p>{% trans 'If you still want to try this filter, select exchange offices you would like to follow and type any unique name.' %}</p>
-            <p>{% trans 'Your choice will be stored in cookies and can be restored by username' %}</p>
-        </h4>
+        </p>
+        <p>{% trans 'If you still want to try this filter, select exchange offices you would like to follow and type any unique name.' %}</p>
+        <p>{% trans 'Rates are updated each 15 minute: not too rare for you, not too often for me and select.by' %}</p>
+        <p>{% trans 'Your choice will be stored in cookies and can be restored by username' %}</p>
+        <p>{% trans 'Have a nice rate!' %}</p>
     </div>
 </div>
 <form id="config-form" method="post" action=".">{% csrf_token %}

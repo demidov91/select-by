@@ -7,3 +7,5 @@ logs/*
 exchange/local_settings.py
 .svn
 static/*
+*.mo
+*~
