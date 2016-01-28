@@ -42,8 +42,11 @@ def get_client_ip(request):
 
 
 def get_username(request):
-    return request.GET.get('name',
-                           request.COOKIES.get('name') and base64.b64decode(request.COOKIES.get('name')).decode('utf-8'))
+    try:
+        return request.GET.get('name',
+                               request.COOKIES.get('name') and base64.b64decode(request.COOKIES.get('name')).decode('utf-8'))
+    except UnicodeDecodeError:
+        return request.COOKIES.get('name')
 
 
 def set_name_cookie(response, name: str):
