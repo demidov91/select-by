@@ -4,7 +4,7 @@ $(function(){
         $('#id_exchange_offices li').css('display', 'block').filter(function(){
             var currentLine = $(this).text().toLowerCase();
             for (i in searchForPhrases){
-                if (!currentLine.contains(searchForPhrases[i])){
+                if (currentLine.indexOf(searchForPhrases[i]) < 0){
                     return true;
                 }
             }

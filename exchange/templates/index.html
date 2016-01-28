@@ -7,10 +7,15 @@
     <div>
         {% trans 'Anon' as anonimus %}
         <h1 class="toLeft">{% trans 'Hi' %}, {{ form.name.value|default:anonimus }}!</h1>
+        <form class="toRight" action="{% url 'set_language' %}" method="POST" id="language-switch">{% csrf_token %}
+            <button class="btn btn-sm btn-default" name="language" value="be">BE</button>
+            <button class="btn btn-sm btn-default" name="language" value="ru">RU</button>
+        </form>
         <form class="toRight" id="other-name-form" action="{% url 'rates' %}" method="get">
             {% trans "It's not me! My name is" %} <input name="name">
             <input type="submit" value="{% trans 'show me my rates!' %}" class="btn btn-primary btn-sm" />
         </form>
+
         <div class="clear"></div>
     </div>
     <div>
