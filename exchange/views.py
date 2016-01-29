@@ -20,17 +20,16 @@ def overview(request):
                 userinfo = UserInfo.objects.get(name=username)
             except UserInfo.DoesNotExist:
                 logger.info('{} does not exist'.format(userinfo))
-        if not userinfo:
-            if username:
-                userinfo = UserInfo.objects.create(name=username, ip=get_client_ip(request))
-            else:
-                userinfo = UserInfo.objects.create(ip=get_client_ip(request))
+        if not userinfo and username:
+            userinfo = UserInfo.objects.create(name=username, ip=get_client_ip(request))
         form = UserInfoForm(instance=userinfo)
         return set_name_cookie(render(request, 'index.html', {
             'form': form,
-        }), userinfo.name)
+        }), userinfo and userinfo.name)
     elif request.method == 'POST':
-        instance = UserInfo.objects.get(id=request.POST['id'])
+        instance = None
+        if request.POST.get('id'):
+            instance = UserInfo.objects.get(id=request.POST['id'])
         form = UserInfoForm(instance=instance, data=request.POST)
         if form.is_valid():
             form.instance.ip = get_client_ip(request)
