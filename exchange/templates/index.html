@@ -50,7 +50,9 @@
             {{ form.exchange_offices }}
         </div>
     </div>
+    {% if form.instance.id %}
     <input type="hidden" name="id" value="{{ form.instance.id }}" />
+    {% endif %}
 </form>
 {% endblock %}
 
