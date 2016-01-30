@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-28 21:36+0300\n"
+"POT-Creation-Date: 2016-01-30 20:00+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "identifier"
 msgstr "идентификатор"
 
-#: exchange/models.py:8 exchange/models.py:51
+#: exchange/models.py:8 exchange/models.py:55
 msgid "name"
 msgstr "имя"
 
@@ -63,11 +63,11 @@ msgstr "курс"
 msgid "sell"
 msgstr "продажа"
 
-#: exchange/models.py:52
+#: exchange/models.py:56
 msgid "registration IP address"
 msgstr "IP адрес регистрации"
 
-#: exchange/models.py:54
+#: exchange/models.py:58
 msgid "last changed"
 msgstr "последнее редактирование"
 
@@ -79,15 +79,15 @@ msgstr "Анон"
 msgid "Hi"
 msgstr "Привет"
 
-#: exchange/templates/index.html:11
+#: exchange/templates/index.html:15
 msgid "It's not me! My name is"
 msgstr "Это не я! Меня зовут"
 
-#: exchange/templates/index.html:12
+#: exchange/templates/index.html:16
 msgid "show me my rates!"
 msgstr "покажи мои курсы!"
 
-#: exchange/templates/index.html:18
+#: exchange/templates/index.html:23
 msgid ""
 "Very likely you will prefer to use awesome\n"
 "            <a href=\"http://mobile.tut.by/app-finance.html\" target=\"_blank"
@@ -95,38 +95,61 @@ msgid ""
 "            or use original <a href=\"http://select.by/kurs/\" target="
 "\"_blank\">select.by</a> site.\n"
 "            "
-msgstr "Сразу спойлер: скорее всего, тебе понравится прилага от <a href=\"http://mobile.tut.by/app-finance.html\" target=\"_blank"
-"\">tut.by</a> - там карта, свежие курсы, все дела. Но есть у неё один недостаток: если обменники стоят рядом, то их курсы \"наползают\" друг на друга и полезность приложения резко опускается до нуля. "
+msgstr ""
+"Сразу спойлер: скорее всего, тебе понравится прилага от <a href=\"http://"
+"mobile.tut.by/app-finance.html\" target=\"_blank\">tut.by</a> - там карта, "
+"свежие курсы, все дела. Но есть у неё один недостаток: если обменники стоят "
+"рядом, то их курсы \"наползают\" друг на друга и полезность приложения резко "
+"опускается до нуля. "
 
-#: exchange/templates/index.html:23
+#: exchange/templates/index.html:28
 msgid ""
 "If you still want to try this filter, select exchange offices you would like "
 "to follow and type any unique name."
-msgstr "Теперь о том, зачем это сделано.<br>Когда валюту надо купить/продать, надо долго ждать, когда загрузится и отсортируется огромная таблица с курсами на <a href=\"http://select.by/kurs/\" target=\"_blank\">select.by</a>. И вот получаешь эту огромную таблицу, и там видишь: лучший курс - в Кунцевщине. Ну, офигеть, думаешь, я-то на Уручье. Чуть хуже курс в Малиновке. Не то. Вот, банк, который рядом выставил хороший курс. А, нет, это только в нескольких отделениях хороший курс, в твоём - не такой привлекательный. Короче, пока так лазишь, браузер падает, съев всю оперативку на телефоне, данные там не маленькие на странице (не будем уточнять, в каком году характеристики моего телефона были топовыми)."
+msgstr ""
+"Теперь о том, зачем это сделано.<br>Когда валюту надо купить/продать, надо "
+"долго ждать, когда загрузится и отсортируется огромная таблица с курсами на "
+"<a href=\"http://select.by/kurs/\" target=\"_blank\">select.by</a>. И вот "
+"получаешь эту огромную таблицу, и там видишь: лучший курс - в Кунцевщине. "
+"Ну, офигеть, думаешь, я-то на Уручье. Чуть хуже курс в Малиновке. Не то. "
+"Вот, банк, который рядом выставил хороший курс. А, нет, это только в "
+"нескольких отделениях хороший курс, в твоём - не такой привлекательный. "
+"Короче, пока так лазишь, браузер падает, съев всю оперативку на телефоне, "
+"данные там не маленькие на странице (не будем уточнять, в каком году "
+"характеристики моего телефона были топовыми)."
 
-#: exchange/templates/index.html:24
+#: exchange/templates/index.html:29
 msgid ""
 "Rates are updated each 15 minute: not too rare for you, not too often for me "
 "and select.by"
-msgstr "В общем, здесь вы по адресу выбираете свои ближайшие отделения банка, вводите какое-нибудь имя пользователя, можно кирилическое, и просматриваете сокращённую версию последних данных с select.by. Обновление с select.by - каждые 15 минут: и вам должно хватить, и меня не должны забанить."
+msgstr ""
+"В общем, здесь вы по адресу выбираете свои ближайшие отделения банка, "
+"вводите какое-нибудь имя пользователя, можно кирилическое, и просматриваете "
+"сокращённую версию последних данных с select.by. Обновление с select.by - "
+"каждые 15 минут: и вам должно хватить, и меня не должны забанить."
 
-#: exchange/templates/index.html:25
+#: exchange/templates/index.html:30
 msgid "Your choice will be stored in cookies and can be restored by username"
-msgstr "После того как однажды создали набор обменников можно открыть свой набор на другом устройстве, другом браузере, введя имя пользователя в верхнем правом углу на этой странице. А как же пароль?  А он вам нужен? Пока что полагаюсь на вашу сознательность, но скоро для полноты картины допишу бан за подбор имён пользователей."
+msgstr ""
+"После того как однажды создали набор обменников можно открыть свой набор на "
+"другом устройстве, другом браузере, введя имя пользователя в верхнем правом "
+"углу на этой странице. А как же пароль?  А он вам нужен? Пока что полагаюсь "
+"на вашу сознательность, но скоро для полноты картины допишу бан за подбор "
+"имён пользователей."
 
-#: exchange/templates/index.html:26
+#: exchange/templates/index.html:31
 msgid "Have a nice rate!"
 msgstr "Приятного использования!"
 
-#: exchange/templates/index.html:35
+#: exchange/templates/index.html:40
 msgid "Name"
 msgstr "Имя"
 
-#: exchange/templates/index.html:35
+#: exchange/templates/index.html:40
 msgid "Save"
 msgstr "Сохранить"
 
-#: exchange/templates/index.html:39
+#: exchange/templates/index.html:44
 msgid "Oooh! How much offices there is here! Filter them!"
 msgstr "Ничоси, сколько обменников. Отфильтруй-ка их!"
 
@@ -134,7 +157,9 @@ msgstr "Ничоси, сколько обменников. Отфильтруй-
 msgid ""
 "This page exists thanks to <a href=\"http://select.by/\" target=\"_blank"
 "\">select.by</a> data!"
-msgstr "Это страница существует благодаря данным с сайта <a href=\"http://select.by/\" target=\"_blank\">select.by</a>!"
+msgstr ""
+"Это страница существует благодаря данным с сайта <a href=\"http://select.by/"
+"\" target=\"_blank\">select.by</a>!"
 
 #: exchange/templates/rates.html:16
 msgid "settings"
@@ -143,3 +168,49 @@ msgstr "настройки"
 #: exchange/templates/rates.html:24
 msgid "Exchange office"
 msgstr "Обменный пункт"
+
+#: exchange/templates/rates.html:51
+msgid "Previous NBRB USD rate"
+msgstr "Предыдущий курс доллара НБРБ"
+
+#: exchange/templates/rates.html:54
+msgid "Previous NBRB RUB rate"
+msgstr "Предыдущий курс российского рубля НБРБ"
+
+#: exchange/templates/rates.html:57
+msgid "Current RUB rate"
+msgstr "Текущий курс российского рубля"
+
+#: exchange/templates/rates.html:61
+msgid ""
+"<span> I expect </span><input id=\"next-nbrb\" value=\"\" /><span> for "
+"dollar on the end of the trades</span>"
+msgstr "<span> Ожидаю </span><input id=\"next-nbrb\" value=\"\" /><span> за доллар на закрытии торгов </span>"
+
+#: exchange/templates/rates.html:64
+msgid "Autocount end-rate"
+msgstr "Автоподсчёт курса на закрытии"
+
+#: exchange/templates/rates.html:69
+msgid "Results"
+msgstr "Результат"
+
+#: exchange/templates/rates.html:71
+msgid "You can sell at"
+msgstr "Продавай при"
+
+#: exchange/templates/rates.html:75
+msgid "You can buy at"
+msgstr "Покупай при"
+
+#: exchange/templates/rates.html:81
+msgid "Fix coefficients"
+msgstr "Поправочные коэфициенты"
+
+#: exchange/templates/rates.html:83
+msgid "Exchange office sell margin"
+msgstr "Маржа обменников на продажу"
+
+#: exchange/templates/rates.html:86
+msgid "Exchange office buy margin"
+msgstr "Маржа обменников на покупку"
