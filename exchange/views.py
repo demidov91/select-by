@@ -1,10 +1,16 @@
 from django.shortcuts import render, redirect
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, JsonResponse
 from django.core.urlresolvers import reverse
+from django.views.decorators.http import require_GET
+from django.views.decorators.cache import cache_page
 
-from exchange.models import UserInfo, Rate
-from exchange.utils import get_client_ip, set_name_cookie, get_best_rates, get_username
+from exchange.models import UserInfo, Rate, DynamicSettings
+from exchange.utils import get_client_ip, set_name_cookie, get_best_rates, get_username, get_dynamic_setting, save_rates
 from .forms import UserInfoForm
+from .defines import NBRB_URL
+
+from xml.etree import ElementTree as ET
+from urllib.request import urlopen
 
 
 import logging
@@ -42,6 +48,7 @@ def overview(request):
         })
 
 
+@require_GET
 def get_rates(request):
     username = get_username(request)
     if not username:
@@ -64,6 +71,28 @@ def get_rates(request):
         'offices': offices,
         'name': user.name,
     }), user.name)
+
+
+@require_GET
+@cache_page(5 * 60)
+def get_nbrb_rates(request):
+    logger.info('get_nbrb_rates method is called.')
+    doc = ET.fromstring(urlopen(NBRB_URL).read().decode('utf-8'))
+    currency_date = doc.get('Date')
+    if get_dynamic_setting(DynamicSettings.NBRB_RATES_DATE) != currency_date:
+        logger.info('New rates will be saved.')
+        save_rates(doc, currency_date)
+    return JsonResponse({
+        'USD': get_dynamic_setting(DynamicSettings.NBRB_USD),
+        'EUR': get_dynamic_setting(DynamicSettings.NBRB_EUR),
+        'RUB': get_dynamic_setting(DynamicSettings.NBRB_RUB),
+        'for_date': get_dynamic_setting(DynamicSettings.NBRB_RATES_DATE),
+    })
+
+
+
+
+
 
 
 

@@ -42,6 +42,10 @@ class Rate(models.Model):
 
 class DynamicSettings(models.Model):
     LAST_UPDATE_KEY = 'last update'
+    NBRB_RATES_DATE = 'nbrb rates date'
+    NBRB_USD = 'nbrb usd'
+    NBRB_EUR = 'nbrb eur'
+    NBRB_RUB = 'nbrb rub'
 
     key = models.CharField(max_length=31, null=False)
     value = models.CharField(max_length=255, null=True)

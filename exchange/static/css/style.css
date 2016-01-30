@@ -27,3 +27,7 @@ table.tablesorter td:first-child{
 table.tablesorter td.is-best{
     background-color: #AFFFAF;
 }
+
+#counter-data, #counter-results{
+    width: 50%;
+}

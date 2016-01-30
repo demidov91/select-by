@@ -42,6 +42,55 @@
     {% endfor %}
     </tbody>
 </table>
+
+<hr>
+
+<div>
+    <div class="toLeft" id="counter-data" data-nbrb-rates="{% url 'nbrb_rates' %}">
+        <div>
+            <span>{% trans 'Previous NBRB USD rate' %}</span><input id="prev-nbrb"/>
+        </div>
+        <div>
+            <span>{% trans 'Previous NBRB RUB rate' %}</span><input id="prev-rub"/>
+        </div>
+        <div>
+            <span>{% trans 'Current RUB rate' %}</span><input id="current-rub"/>
+        </div>
+        <div>
+            <p>
+                {% blocktrans %}
+                <span> I expect </span><input id="next-nbrb" value="" /><span> for dollar on the end of the trades</span>
+                {% endblocktrans  %}
+            </p>
+            <p>
+                <span>{% trans 'Autocount end-rate' %} </span><input id="count-nbrb" type="checkbox" checked="checked" />
+            </p>
+        </div>
+    </div>
+    <div class="toLeft" id="counter-results">
+        <h3>{% trans 'Results' %}:</h3>
+        <div>
+            <span>{% trans 'You can sell at' %}</span>: <span id="sell-at"></span>
+        </div>
+
+        <div>
+            <span>{% trans 'You can buy at' %}</span>: <span id="buy-at"></span>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div>
+    <h3>{% trans 'Fix coefficients' %}:</h3>
+    <div>
+        <span>{% trans 'Exchange office sell margin' %}</span><input id="exchange-sell-to-nbrb" value="1" /><span>%</span>
+    </div>
+    <div>
+        <span>{% trans 'Exchange office buy margin' %}</span><input id="exchange-buy-to-nbrb" value="1" /><span>%</span>
+    </div>
+</div>
+
+
+
 {% endblock %}
 
 

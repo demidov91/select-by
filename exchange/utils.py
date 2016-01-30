@@ -1,4 +1,3 @@
-from uuid import uuid4
 import base64
 import re
 from decimal import Decimal
@@ -6,8 +5,8 @@ from decimal import Decimal
 from lxml import html
 
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.db.models import Min, Max
+from django.db.transaction import atomic
 
 from exchange.models import DynamicSettings, Bank, Rate, ExchangeOffice
 
@@ -61,6 +60,15 @@ def get_best_rates(currency: int, exchanger_offices, buy: bool):
                 exchange_office__in=exchanger_offices, currency=currency, buy=buy).aggregate(val=Max('rate') if buy else Min('rate'))['val'],
             exchange_office__in=exchanger_offices, currency=currency, buy=buy
     )
+
+
+CURRENCY_TO_DYNAMIC_SETTING = {
+    '145': DynamicSettings.NBRB_USD,
+    '19': DynamicSettings.NBRB_EUR,
+    '190': DynamicSettings.NBRB_RUB,
+}
+
+
 
 
 class RatesLoader:
@@ -135,3 +143,17 @@ class RatesLoader:
     @classmethod
     def build_rate(cls, rate: Decimal, **keys) -> Rate:
         return Rate(rate=rate, **keys)
+
+
+@atomic
+def save_rates(doc, currency_date):
+    set_dynamic_setting(DynamicSettings.NBRB_RATES_DATE, currency_date)
+    for rate in filter(lambda x: x.get('Id') in CURRENCY_TO_DYNAMIC_SETTING.keys(), doc):
+        value = None
+        for field in rate:
+            if field.tag == 'Rate':
+                value = field.text
+        if value is None:
+            logger.error('Broken rate!')
+            raise ValueError('Broken {} rate.'.format(rate.get('Id')))
+        set_dynamic_setting(CURRENCY_TO_DYNAMIC_SETTING[rate.get('Id')], value)
