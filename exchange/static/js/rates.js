@@ -32,6 +32,15 @@ $(document).ready(function(){
             updateData();   
         }
     });
+    $.ajax({
+        url: 'https://query.yahooapis.com/v1/public/yql?q=select+*+from+yahoo.finance.xchange+where+pair+=+%22USDRUB%22&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=',
+        success: function(data){
+            $('#current-rub').val(data['query']['results']['rate']['Rate']);
+            $('#current-rub-time').text('(' + data['query']['results']['rate']['Date'] + ' ' + data['query']['results']['rate']['Time'] + ' UTC)');
+            updateData();  
+        }
+    });
+
     $('#prev-nbrb, #prev-rub, #current-rub, #next-nbrb, #exchange-buy-to-nbrb, #exchange-sell-to-nbrb').keyup(updateData);
     $('#count-nbrb').keyup(updateData);
 });

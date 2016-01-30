@@ -54,7 +54,7 @@
             <span>{% trans 'Previous NBRB RUB rate' %}</span><input id="prev-rub"/>
         </div>
         <div>
-            <span>{% trans 'Current RUB rate' %}</span><input id="current-rub"/>
+            <span>{% trans 'Current RUB rate' %}</span><input id="current-rub"/> <span id="current-rub-time"></span>
         </div>
         <div>
             <p>
@@ -68,11 +68,11 @@
     <div class="toLeft" id="counter-results">
         <h3>{% trans 'Results' %}:</h3>
         <div>
-            <span>{% trans 'You can sell at' %}</span>: <span id="sell-at"></span>
+            <span>{% trans 'You can sell at' %}: </span><span id="sell-at"></span>
         </div>
 
         <div>
-            <span>{% trans 'You can buy at' %}</span>: <span id="buy-at"></span>
+            <span>{% trans 'You can buy at' %}: </span><span id="buy-at"></span>
         </div>
     </div>
     <div class="clear"></div>
