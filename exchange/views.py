@@ -74,14 +74,14 @@ def get_rates(request):
 
 
 @require_GET
-@cache_page(5 * 60)
+@cache_page(15 * 60)
 def get_nbrb_rates(request):
     logger.info('get_nbrb_rates method is called.')
     doc = ET.fromstring(urlopen(NBRB_URL).read().decode('utf-8'))
     currency_date = doc.get('Date')
     if get_dynamic_setting(DynamicSettings.NBRB_RATES_DATE) != currency_date:
-        logger.info('New rates will be saved.')
-        save_rates(doc, currency_date)
+        logger.info('New NBRB rates will be saved.')
+        save_rates(doc)
     return JsonResponse({
         'USD': get_dynamic_setting(DynamicSettings.NBRB_USD),
         'EUR': get_dynamic_setting(DynamicSettings.NBRB_EUR),

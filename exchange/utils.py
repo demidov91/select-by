@@ -1,12 +1,14 @@
 import base64
 import re
 from decimal import Decimal
+from contextlib import contextmanager
 
 from lxml import html
 
 from django.conf import settings
-from django.db.models import Min, Max
+from django.db.models import Min, Max, Q
 from django.db.transaction import atomic
+from django.db import connection
 
 from exchange.models import DynamicSettings, Bank, Rate, ExchangeOffice
 
@@ -69,6 +71,20 @@ CURRENCY_TO_DYNAMIC_SETTING = {
 }
 
 
+@contextmanager
+def lock_table(table_name):
+    with connection.cursor() as cursor:
+        if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
+            with atomic:
+                logger.debug('Table will be locked now')
+                cursor.execute('lock table %s nowait', table_name)
+                logger.debug('Table is locked')
+                yield
+                logger.debug('Doing nothing to release the table')
+        else:
+            logger.warning('Unknown db table should be locked...')
+            yield
+            logger.warning('Unknown db table lock should be released...')
 
 
 class RatesLoader:
@@ -118,6 +134,7 @@ class RatesLoader:
     def save_page_data(cls, doc):
         bank = None
         bank_rates = []
+        fresh_offices = set()
         for row in doc.cssselect('#curr_table tbody tr:not(.static)'):
             classes = row.get('class')
             cells = row.getchildren()
@@ -129,6 +146,7 @@ class RatesLoader:
                 logger.error('Unknown bank!')
                 continue
             exchange_office = cls.get_exchange_office(bank, cells[0].cssselect('a')[0])
+            fresh_offices.add(exchange_office.id)
             bank_rates.extend((
                 cls.build_rate(rate=Decimal(cells[1].text), exchange_office=exchange_office, currency=Rate.USD, buy=True),
                 cls.build_rate(rate=Decimal(cells[2].text), exchange_office=exchange_office, currency=Rate.USD, buy=False),
@@ -137,8 +155,10 @@ class RatesLoader:
                 cls.build_rate(rate=Decimal(cells[5].text), exchange_office=exchange_office, currency=Rate.RUB, buy=True),
                 cls.build_rate(rate=Decimal(cells[6].text), exchange_office=exchange_office, currency=Rate.RUB, buy=False),
             ))
-        Rate.objects.all().delete()
-        Rate.objects.bulk_create(bank_rates)
+        with lock_table(Rate._meta.db_table):
+            Rate.objects.all().delete()
+            Rate.objects.bulk_create(bank_rates)
+        ExchangeOffice.objects.filter(~Q(id__in=fresh_offices)).delete()
 
     @classmethod
     def build_rate(cls, rate: Decimal, **keys) -> Rate:
@@ -146,8 +166,8 @@ class RatesLoader:
 
 
 @atomic
-def save_rates(doc, currency_date):
-    set_dynamic_setting(DynamicSettings.NBRB_RATES_DATE, currency_date)
+def save_rates(doc):
+    set_dynamic_setting(DynamicSettings.NBRB_RATES_DATE, doc.get('Date'))
     for rate in filter(lambda x: x.get('Id') in CURRENCY_TO_DYNAMIC_SETTING.keys(), doc):
         value = None
         for field in rate:
