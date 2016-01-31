@@ -75,9 +75,9 @@ CURRENCY_TO_DYNAMIC_SETTING = {
 def lock_table(table_name):
     with connection.cursor() as cursor:
         if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
-            with atomic:
-                logger.debug('Table will be locked now')
-                cursor.execute('lock table %s nowait', table_name)
+            with atomic():
+                logger.debug('Table {} will be locked now'.format(table_name))
+                cursor.execute('lock table {} nowait'.format(table_name))
                 logger.debug('Table is locked')
                 yield
                 logger.debug('Doing nothing to release the table')
