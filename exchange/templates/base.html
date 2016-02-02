@@ -1,4 +1,4 @@
-{% load i18n staticfiles %}
+{% load i18n staticfiles compress %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +8,9 @@
     {% block style %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    {% compress css %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    {% endcompress %}
     {% endblock %}
 </head>
 <body>

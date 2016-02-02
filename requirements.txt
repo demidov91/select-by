@@ -1,3 +1,8 @@
 cssselect==0.9.1
 Django==1.9.1
+django-appconf==1.0.1
+django-compressor==2.0
 lxml==3.5.0
+rcssmin==1.0.6
+rjsmin==1.0.12
+six==1.10.0
