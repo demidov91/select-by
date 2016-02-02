@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-30 20:00+0300\n"
+"POT-Creation-Date: 2016-02-02 22:33+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,7 +32,7 @@ msgstr "имя"
 msgid "address"
 msgstr "адрес"
 
-#: exchange/models.py:29
+#: exchange/models.py:29 exchange/templates/rates.html.py:55
 msgid "usd"
 msgstr "доллар"
 
@@ -40,7 +40,7 @@ msgstr "доллар"
 msgid "eur"
 msgstr "евро"
 
-#: exchange/models.py:31
+#: exchange/models.py:31 exchange/templates/rates.html.py:59
 msgid "rub"
 msgstr "рубль"
 
@@ -169,48 +169,46 @@ msgstr "настройки"
 msgid "Exchange office"
 msgstr "Обменный пункт"
 
-#: exchange/templates/rates.html:51
-msgid "Previous NBRB USD rate"
-msgstr "Предыдущий курс доллара НБРБ"
+#: exchange/templates/rates.html:52
+msgid "Last NBRB rates"
+msgstr "Последние курсы НБРБ"
 
-#: exchange/templates/rates.html:54
-msgid "Previous NBRB RUB rate"
-msgstr "Предыдущий курс российского рубля НБРБ"
-
-#: exchange/templates/rates.html:57
+#: exchange/templates/rates.html:65
 msgid "Current RUB rate"
 msgstr "Текущий курс российского рубля"
 
-#: exchange/templates/rates.html:61
-msgid ""
-"<span> I expect </span><input id=\"next-nbrb\" value=\"\" /><span> for "
-"dollar on the end of the trades</span>"
-msgstr "<span> Ожидаю </span><input id=\"next-nbrb\" value=\"\" /><span> за доллар на закрытии торгов </span>"
-
-#: exchange/templates/rates.html:64
+#: exchange/templates/rates.html:68
 msgid "Autocount end-rate"
 msgstr "Автоподсчёт курса на закрытии"
 
-#: exchange/templates/rates.html:69
-msgid "Results"
-msgstr "Результат"
+#: exchange/templates/rates.html:72
+msgid ""
+"<span> I expect </span><input id=\"next-nbrb\" value=\"\" /><span> for "
+"dollar on the end of the trades</span>"
+msgstr ""
+"<span> Ожидаю </span><input id=\"next-nbrb\" value=\"\" /><span> за доллар "
+"на закрытии торгов </span>"
 
-#: exchange/templates/rates.html:71
+#: exchange/templates/rates.html:78
+msgid "Condition for in-day buy-sell operation"
+msgstr "Критические значения"
+
+#: exchange/templates/rates.html:80
 msgid "You can sell at"
-msgstr "Продавай при"
+msgstr "Однозначно продавай при"
 
-#: exchange/templates/rates.html:75
+#: exchange/templates/rates.html:84
 msgid "You can buy at"
-msgstr "Покупай при"
+msgstr "Однозначно покупай при"
 
-#: exchange/templates/rates.html:81
+#: exchange/templates/rates.html:90
 msgid "Fix coefficients"
 msgstr "Поправочные коэфициенты"
 
-#: exchange/templates/rates.html:83
+#: exchange/templates/rates.html:92
 msgid "Exchange office sell margin"
 msgstr "Маржа обменников на продажу"
 
-#: exchange/templates/rates.html:86
+#: exchange/templates/rates.html:95
 msgid "Exchange office buy margin"
 msgstr "Маржа обменников на покупку"

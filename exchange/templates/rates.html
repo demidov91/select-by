@@ -47,33 +47,45 @@
 
 <div>
     <div class="toLeft" id="counter-data" data-nbrb-rates="{% url 'nbrb_rates' %}">
-        <div>
-            <span>{% trans 'Previous NBRB USD rate' %}</span><input id="prev-nbrb"/>
+        <div id="nbrb-block">        
+            <div>
+                <span class="h3">{% trans 'Last NBRB rates' %}</span> (<span id="nbrb-time"></span>)
+            </div>
+            <div>
+                <h4 class="toLeft rate-caption">{% trans 'usd' %}</h4> <h4 class="rate-value toLeft" id="prev-nbrb"></h4>
+                <div class="clear"></div>
+            </div>
+            <div>
+                <h4 class="toLeft rate-caption">{% trans 'rub' %}</h4> <h4 class="toLeft rate-value" id="prev-rub"></h4>
+                <div class="clear"></div>
+            </div>
         </div>
-        <div>
-            <span>{% trans 'Previous NBRB RUB rate' %}</span><input id="prev-rub"/>
-        </div>
-        <div>
-            <span>{% trans 'Current RUB rate' %}</span><input id="current-rub"/> <span id="current-rub-time"></span>
-        </div>
-        <div>
-            <p>
-                {% blocktrans %}<span> I expect </span><input id="next-nbrb" value="" /><span> for dollar on the end of the trades</span>{% endblocktrans  %}
-            </p>
-            <p>
-                <span>{% trans 'Autocount end-rate' %} </span><input id="count-nbrb" type="checkbox" checked="checked" />
-            </p>
+        <div id="predict-block"> 
+            <div>
+                <span class="h3">{% trans 'Current RUB rate' %}</span> (<span id="current-rub-time"></span>)
+            </div>
+            <div>
+                <input id="current-rub"/> <span>{% trans 'Autocount end-rate' %} </span><input id="count-nbrb" type="checkbox" checked="checked" />
+            </div>
+            <div>
+                <p id="predict-line">
+                    {% blocktrans %}<span> I expect </span><input id="next-nbrb" value="" /><span> for dollar on the end of the trades</span>{% endblocktrans  %}
+                </p>
+            </div>
         </div>
     </div>
     <div class="toLeft" id="counter-results">
-        <h3>{% trans 'Results' %}:</h3>
-        <div>
-            <span>{% trans 'You can sell at' %}: </span><span id="sell-at"></span>
-        </div>
-
-        <div>
-            <span>{% trans 'You can buy at' %}: </span><span id="buy-at"></span>
-        </div>
+        <h3>{% trans 'Condition for in-day buy-sell operation' %}:</h3>
+        <table>
+            <tr>
+                <td>{% trans 'You can sell at' %}: </td>
+                <td id="sell-at"></td>
+            </tr>
+            <tr>    
+                <td>{% trans 'You can buy at' %}: </td>
+                <td id="buy-at"></td>
+            </tr>
+        </table>
     </div>
     <div class="clear"></div>
 </div>

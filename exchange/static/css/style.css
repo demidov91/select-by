@@ -31,3 +31,27 @@ table.tablesorter td.is-best{
 #counter-data, #counter-results{
     width: 50%;
 }
+
+.rate-caption{width: 25%;}
+.rate-value{width: 75%;}
+
+#predict-block{
+    margin-top: 1em;
+}
+
+#predict-block input{
+    width: 5em;
+}
+
+#predict-line.up{
+    color: green;
+}
+
+#predict-line.down{
+    color: red;
+}
+
+#counter-results table td{
+    font-size: 16px;
+    padding: 0.25em; 
+}
