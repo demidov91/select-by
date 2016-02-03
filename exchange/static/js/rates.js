@@ -69,5 +69,5 @@ $(document).ready(function(){
     });
 
     $('#prev-nbrb, #prev-rub, #current-rub, #next-nbrb, #exchange-buy-to-nbrb, #exchange-sell-to-nbrb').keyup(updateData);
-    $('#count-nbrb').keyup(updateData);
+    $('#count-nbrb').change(updateData);
 });
