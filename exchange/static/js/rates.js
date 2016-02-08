@@ -6,14 +6,25 @@ function getFloatFromText(id){
 	return parseFloat($('#' + id).text());
 }
 
-
+// Lets consider that 275-285 for RUB is good rate for BYR.
+var minRubRate = 275;
+var maxRubRate = 285;
+var slowDownCoefficient = 0.5;
 
 function updateData(){
 	if ($('#count-nbrb')[0].checked){
 		var prevNbrb = getFloatFromText('prev-nbrb');
 		var prevRub = prevNbrb / getFloatFromText('prev-rub');
 		var currentRub = getFloat('current-rub');
-        var nextNbrb = Math.round(prevNbrb * currentRub / prevRub);
+		var rubChange = currentRub / prevRub;
+
+		var nextNbrb = Math.round(prevNbrb * (1 + (rubChange - 1) * slowDownCoefficient));
+		var nextRub = prevRub * (1 - slowDownCoefficient) * rubChange;
+
+		if (((nextRub > maxRubRate) && (rubChange > 1)) || ((nextRub < minRubRate) && (rubChange < 1))){
+			nextNbrb = Math.round(prevNbrb * rubChange);
+		}
+
         if (currentRub != NaN){
             $('#predict-line').removeClass('up down').addClass(currentRub > prevRub ? 'up' : 'down');
         }
