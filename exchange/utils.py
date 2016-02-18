@@ -158,6 +158,7 @@ class RatesLoader:
         with lock_table(Rate._meta.db_table):
             Rate.objects.all().delete()
             Rate.objects.bulk_create(bank_rates)
+        ExchangeOffice.objects.filter(~Q(id__in=fresh_offices)).update(is_removed=True)
 
     @classmethod
     def build_rate(cls, rate: Decimal, **keys) -> Rate:

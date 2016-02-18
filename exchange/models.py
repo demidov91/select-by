@@ -15,6 +15,7 @@ class ExchangeOffice(models.Model):
     identifier = models.CharField(null=False, max_length=63, unique=True, verbose_name=_('identifier'))
     address = models.CharField(null=False, max_length=127, verbose_name=_('address'))
     bank = models.ForeignKey(Bank, null=False)
+    is_removed = models.BooleanField(default=False, verbose_name=_('is removed'))
 
     def __str__(self):
         return '{}: {}'.format(self.bank.name, self.address)

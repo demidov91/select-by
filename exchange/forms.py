@@ -11,3 +11,7 @@ class UserInfoForm(forms.ModelForm):
         widgets = {
             'exchange_offices': CheckboxSelectMultiple,
         }
+
+    def __init__(self, *args, **kwargs):
+        super(UserInfoForm, self).__init__(*args, **kwargs)
+        self.fields['exchange_offices'].queryset = self.fields['exchange_offices'].queryset.filter(is_removed=False)
