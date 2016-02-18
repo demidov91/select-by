@@ -59,10 +59,7 @@ def get_rates(request):
         return HttpResponseRedirect(reverse('config') + '?name=' + username)
     offices = user.exchange_offices.all()
     for office in offices:
-        if office.is_removed:
-            office.rates = []
-        else:
-            office.rates = office.rate_set.order_by('currency', '-buy')
+        office.rates = office.rate_set.order_by('currency', '-buy')
     best_rates = []
     for currency in (x[0] for x in Rate.CURRENCIES):
         best_rates.extend(get_best_rates(currency, user.exchange_offices.all(), True))
