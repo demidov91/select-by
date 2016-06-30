@@ -1,6 +1,8 @@
 *.sqlite3
 env
 env/*
+env-3.5
+env-3.5/*
 *.pyc
 .idea
 logs/*
@@ -9,3 +11,4 @@ exchange/local_settings.py
 static/*
 *.mo
 *~
+aiohttp_server.py

@@ -3,7 +3,7 @@
 
 {% block style %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'js/lib/tablesorter/themes/blue/style.css' %}">
+    <link rel="stylesheet" href="{% static 'js/lib/tablesorter/themes/theme.blue.min.css' %}">
 {% endblock %}
 
 
@@ -18,7 +18,7 @@
     <div class="clear"></div>
 </div>
 
-<table class="tablesorter">
+<table class="tablesorter tablesorter-blue">
     <thead>
         <tr>
             <th>{% trans 'Exchange office' %}</th>
@@ -107,6 +107,7 @@
 {% block script %}
     {{ block.super}}
     <script type="text/javascript" src="{% static 'js/lib/tablesorter/jquery.tablesorter.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/lib/tablesorter/jquery.tablesorter.widgets.js' %}"></script>
     {% compress js %}
     <script type="text/javascript" src="{% static 'js/rates.js' %}"></script>
     {% endcompress %}
