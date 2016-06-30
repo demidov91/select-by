@@ -67,7 +67,7 @@ def get_best_rates(currency: int, exchanger_offices, buy: bool):
 CURRENCY_TO_DYNAMIC_SETTING = {
     '145': DynamicSettings.NBRB_USD,
     '19': DynamicSettings.NBRB_EUR,
-    '190': DynamicSettings.NBRB_RUB,
+    '298': DynamicSettings.NBRB_RUB,
 }
 
 
@@ -169,11 +169,13 @@ class RatesLoader:
 def save_rates(doc):
     set_dynamic_setting(DynamicSettings.NBRB_RATES_DATE, doc.get('Date'))
     for rate in filter(lambda x: x.get('Id') in CURRENCY_TO_DYNAMIC_SETTING.keys(), doc):
-        value = None
+        value = scale = None
         for field in rate:
             if field.tag == 'Rate':
-                value = field.text
-        if value is None:
+                value = Decimal(field.text)
+            elif field.tag == 'Scale':
+                scale = int(field.text)
+        if (value or scale) is None:
             logger.error('Broken rate!')
             raise ValueError('Broken {} rate.'.format(rate.get('Id')))
-        set_dynamic_setting(CURRENCY_TO_DYNAMIC_SETTING[rate.get('Id')], value)
+        set_dynamic_setting(CURRENCY_TO_DYNAMIC_SETTING[rate.get('Id')], value/scale)
