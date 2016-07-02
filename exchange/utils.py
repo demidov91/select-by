@@ -148,12 +148,18 @@ class RatesLoader:
             exchange_office = cls.get_exchange_office(bank, cells[0].cssselect('a')[0])
             fresh_offices.add(exchange_office.id)
             bank_rates.extend((
-                cls.build_rate(rate=Decimal(cells[1].text), exchange_office=exchange_office, currency=Rate.USD, buy=True),
-                cls.build_rate(rate=Decimal(cells[2].text), exchange_office=exchange_office, currency=Rate.USD, buy=False),
-                cls.build_rate(rate=Decimal(cells[3].text), exchange_office=exchange_office, currency=Rate.EUR, buy=True),
-                cls.build_rate(rate=Decimal(cells[4].text), exchange_office=exchange_office, currency=Rate.EUR, buy=False),
-                cls.build_rate(rate=Decimal(cells[5].text), exchange_office=exchange_office, currency=Rate.RUB, buy=True),
-                cls.build_rate(rate=Decimal(cells[6].text), exchange_office=exchange_office, currency=Rate.RUB, buy=False),
+                cls.build_rate(rate=Decimal(cells[1].text.replace(',', '.')),
+                               exchange_office=exchange_office, currency=Rate.USD, buy=True),
+                cls.build_rate(rate=Decimal(cells[2].text.replace(',', '.')),
+                               exchange_office=exchange_office, currency=Rate.USD, buy=False),
+                cls.build_rate(rate=Decimal(cells[3].text.replace(',', '.')),
+                               exchange_office=exchange_office, currency=Rate.EUR, buy=True),
+                cls.build_rate(rate=Decimal(cells[4].text.replace(',', '.')),
+                               exchange_office=exchange_office, currency=Rate.EUR, buy=False),
+                cls.build_rate(rate=Decimal(cells[5].text.replace(',', '.')),
+                               exchange_office=exchange_office, currency=Rate.RUB, buy=True),
+                cls.build_rate(rate=Decimal(cells[6].text.replace(',', '.')),
+                               exchange_office=exchange_office, currency=Rate.RUB, buy=False),
             ))
         with lock_table(Rate._meta.db_table):
             Rate.objects.all().delete()

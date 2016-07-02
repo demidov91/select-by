@@ -35,7 +35,7 @@
         <tr>
             <td>{{ office.bank.name }}. {{ office.address }}</td>
             {% for rate in office.rates %}
-            <td class="{% if rate.is_best %}is-best{% endif %}">{{ rate.rate|floatformat }}</td>
+            <td class="{% if rate.is_best %}is-best{% endif %}">{{ rate.rate|floatformat:-4 }}</td>
             {% endfor %}
 
         </tr>
