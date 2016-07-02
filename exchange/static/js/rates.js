@@ -6,9 +6,9 @@ function getFloatFromText(id){
 	return parseFloat($('#' + id).text());
 }
 
-// Lets consider that 275-285 for RUB is good rate for BYR.
-var minRubRate = 275;
-var maxRubRate = 285;
+// Lets consider that 3-3.1 for 100 RUB is good rate for BYN.
+var minRubRate = 0.03;
+var maxRubRate = 0.031;
 var slowDownCoefficient = 0.5;
 
 function updateData(){
@@ -18,11 +18,11 @@ function updateData(){
 		var currentRub = getFloat('current-rub');
 		var rubChange = currentRub / prevRub;
 
-		var nextNbrb = Math.round(prevNbrb * (1 + (rubChange - 1) * slowDownCoefficient));
+		var nextNbrb = (prevNbrb * (1 + (rubChange - 1) * slowDownCoefficient)).toFixed(4);
 		var nextRub = prevRub * (1 - slowDownCoefficient) * rubChange;
 
 		if (((nextRub > maxRubRate) && (rubChange > 1)) || ((nextRub < minRubRate) && (rubChange < 1))){
-			nextNbrb = Math.round(prevNbrb * rubChange);
+			nextNbrb = (prevNbrb * rubChange).toFixed(4);
 		}
 
         if (currentRub != NaN){
@@ -31,8 +31,8 @@ function updateData(){
 		$('#next-nbrb').val(nextNbrb);
 	}
 	var nextNbrb = getFloat('next-nbrb');
-    var sellAt = Math.round(nextNbrb * (1 + getFloat('exchange-sell-to-nbrb') / 100));
-    var buyAt = Math.round(nextNbrb / (1 + getFloat('exchange-buy-to-nbrb') / 100));
+    var sellAt = (nextNbrb * (1 + getFloat('exchange-sell-to-nbrb') / 100)).toFixed(4);
+    var buyAt = (nextNbrb / (1 + getFloat('exchange-buy-to-nbrb') / 100)).toFixed(4);
 	$('#sell-at').text(sellAt);
 	$('#buy-at').text(buyAt);
 }
