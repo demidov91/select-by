@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.shortcuts import render, redirect
 from django.http.response import HttpResponseRedirect, JsonResponse
 from django.core.urlresolvers import reverse
@@ -48,6 +50,13 @@ def overview(request):
         })
 
 
+def _quantize_to_cents(original: Decimal) -> Decimal:
+    cent_amount = original.quantize(Decimal('1.00'))
+    if original != cent_amount:
+        return original
+    return cent_amount
+
+
 @require_GET
 def get_rates(request):
     username = get_username(request)
@@ -60,6 +69,8 @@ def get_rates(request):
     offices = user.exchange_offices.all()
     for office in offices:
         office.rates = office.rate_set.order_by('currency', '-buy')
+        for rate in office.rates:
+            rate.rate = _quantize_to_cents(rate.rate)
     best_rates = []
     for currency in (x[0] for x in Rate.CURRENCIES):
         best_rates.extend(get_best_rates(currency, user.exchange_offices.all(), True))
