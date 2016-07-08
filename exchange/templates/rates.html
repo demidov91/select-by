@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n staticfiles compress %}
+{% load i18n staticfiles compress l10n %}
 
 {% block style %}
     {{ block.super }}
@@ -35,7 +35,7 @@
         <tr>
             <td>{{ office.bank.name }}. {{ office.address }}</td>
             {% for rate in office.rates %}
-            <td class="{% if rate.is_best %}is-best{% endif %}">{{ rate.rate }}</td>
+            <td class="{% if rate.is_best %}is-best{% endif %}">{{ rate.rate|unlocalize }}</td>
             {% endfor %}
 
         </tr>
