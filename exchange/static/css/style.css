@@ -35,7 +35,7 @@ table.tablesorter td.is-best{
 .rate-caption{width: 25%;}
 .rate-value{width: 75%;}
 
-#predict-block{
+#predict-block, #depo-planner{
     margin-top: 1em;
 }
 
@@ -55,3 +55,13 @@ table.tablesorter td.is-best{
     font-size: 16px;
     padding: 0.25em; 
 }
+
+#current-rub-time-wrapper{
+    margin-left: 9em;
+}
+
+#depo-planner input{width: 3em;}
+
+.planner-block>div{margin-right: 1em;}
+.planner-block{margin-top: 1em;}
+#expectations input{width: 5em;}

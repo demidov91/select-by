@@ -78,9 +78,11 @@ def get_rates(request):
     for office in offices:
         for best_rate in filter(lambda x: x in best_rates, office.rates):
             best_rate.is_best = True
+
     return set_name_cookie(render(request, 'rates.html', {
         'offices': offices,
         'name': user.name,
+        'dynamic_settings': dict(DynamicSettings.objects.all().values_list('key', 'value')),
     }), user.name)
 
 

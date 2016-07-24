@@ -9,6 +9,7 @@ from django.conf import settings
 from django.db.models import Min, Max, Q
 from django.db.transaction import atomic
 from django.db import connection
+from django.template.defaulttags import register
 
 from exchange.models import DynamicSettings, Bank, Rate, ExchangeOffice
 
@@ -185,3 +186,11 @@ def save_rates(doc):
             logger.error('Broken rate!')
             raise ValueError('Broken {} rate.'.format(rate.get('Id')))
         set_dynamic_setting(CURRENCY_TO_DYNAMIC_SETTING[rate.get('Id')], value/scale)
+
+
+@register.filter
+def get_item(dictionary, key):
+    """
+    Just don't wont to create separate package for one template filter...
+    """
+    return dictionary.get(key)
