@@ -11,18 +11,19 @@ var minRubRate = 0.03;
 var maxRubRate = 0.031;
 var slowDownCoefficient = 0.5;
 var exchangeMargin = getFloat('exchange-margin') / 100;
-var prevNbrb = getFloatFromText('prev-nbrb');
+var prevUsd = getFloatFromText('prev-usd');
+var prevEur = getFloatFromText('prev-eur');
 
 function updateData(){		
-	var prevRub = prevNbrb / getFloatFromText('prev-rub');
+	var prevRub = prevUsd / getFloatFromText('prev-rub');
 	var currentRub = getFloat('current-rub');
 	var rubChange = currentRub / prevRub;
 
-	var nextNbrb = (prevNbrb * (1 + (rubChange - 1) * slowDownCoefficient)).toFixed(4);
+	var nextNbrb = (prevUsd * (1 + (rubChange - 1) * slowDownCoefficient)).toFixed(4);
 	var nextRub = prevRub * (1 - slowDownCoefficient) * rubChange;
 
 	if (((nextRub > maxRubRate) && (rubChange > 1)) || ((nextRub < minRubRate) && (rubChange < 1))){
-		nextNbrb = (prevNbrb * rubChange).toFixed(4);
+		nextNbrb = (prevUsd * rubChange).toFixed(4);
 	}
 
     if (currentRub != NaN){
@@ -44,8 +45,9 @@ function updateDepoAdvice(){
     var rp = getFloat('byn-percent');
     var dp = getFloat('foreign-percent');
     var months = parseInt($('#months').val());
-    var currMax = getFloat('expect-max') / prevNbrb;
-    var currMin = getFloat('expect-min') / prevNbrb;
+    var prevForeignNbrb = $('#plan-foreign-currency').val() == 'usd' ? prevUsd : prevEur;
+    var currMax = getFloat('expect-max') / prevForeignNbrb;
+    var currMin = getFloat('expect-min') / prevForeignNbrb;
 
     if (!(rp && dp && months && currMax && currMin)){
         return;
@@ -159,7 +161,7 @@ $(document).ready(function(){
         }
     });
     $('#nbrb-time').text(formatDate(new Date($('#nbrb-time').text())));
-    $('#prev-nbrb, #prev-rub, #current-rub, #next-nbrb, #exchange-buy-to-nbrb, #exchange-sell-to-nbrb').keyup(updateData);
+    $('#prev-usd, #prev-eur, #prev-rub, #current-rub, #next-nbrb, #exchange-buy-to-nbrb, #exchange-sell-to-nbrb').keyup(updateData);
     $('#depo-planner input').keyup(updateDepoAdvice);
     $('#depo-planner input[type="checkbox"]').change(updateDepoAdvice);
     $('#deposit-planner-question').tooltip();

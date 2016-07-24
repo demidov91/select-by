@@ -67,7 +67,7 @@ def get_best_rates(currency: int, exchanger_offices, buy: bool):
 
 CURRENCY_TO_DYNAMIC_SETTING = {
     '145': DynamicSettings.NBRB_USD,
-    '19': DynamicSettings.NBRB_EUR,
+    '292': DynamicSettings.NBRB_EUR,
     '298': DynamicSettings.NBRB_RUB,
 }
 
