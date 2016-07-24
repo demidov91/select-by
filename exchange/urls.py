@@ -23,6 +23,4 @@ urlpatterns = [
     url(r'^$', get_rates, name='rates'),
     url(r'^config/$', overview, name='config'),
     url(r'^i18n/', include('django.conf.urls.i18n')),
-
-    url(r'^ajax/nbrb/', get_nbrb_rates, name='nbrb_rates'),
 ]

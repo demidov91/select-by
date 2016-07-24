@@ -9,10 +9,6 @@ from django.views.decorators.cache import cache_page
 from exchange.models import UserInfo, Rate, DynamicSettings
 from exchange.utils import get_client_ip, set_name_cookie, get_best_rates, get_username, get_dynamic_setting, save_rates
 from .forms import UserInfoForm
-from .defines import NBRB_URL
-
-from xml.etree import ElementTree as ET
-from urllib.request import urlopen
 
 
 import logging
@@ -84,24 +80,6 @@ def get_rates(request):
         'name': user.name,
         'dynamic_settings': dict(DynamicSettings.objects.all().values_list('key', 'value')),
     }), user.name)
-
-
-@require_GET
-@cache_page(15 * 60)
-def get_nbrb_rates(request):
-    logger.info('get_nbrb_rates method is called.')
-    doc = ET.fromstring(urlopen(NBRB_URL).read().decode('utf-8'))
-    currency_date = doc.get('Date')
-    if get_dynamic_setting(DynamicSettings.NBRB_RATES_DATE) != currency_date:
-        logger.info('New NBRB rates will be saved.')
-        save_rates(doc)
-    return JsonResponse({
-        'USD': get_dynamic_setting(DynamicSettings.NBRB_USD),
-        'EUR': get_dynamic_setting(DynamicSettings.NBRB_EUR),
-        'RUB': get_dynamic_setting(DynamicSettings.NBRB_RUB),
-        'for_date': get_dynamic_setting(DynamicSettings.NBRB_RATES_DATE),
-    })
-
 
 
 
