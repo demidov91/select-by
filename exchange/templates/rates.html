@@ -37,7 +37,6 @@
             {% for rate in office.rates %}
             <td class="{% if rate.is_best %}is-best{% endif %}">{{ rate.rate|unlocalize }}</td>
             {% endfor %}
-
         </tr>
     {% endfor %}
     </tbody>
@@ -58,7 +57,7 @@
                 <div class="clear"></div>
             </div>
             <div>
-                <h4 class="toLeft rate-caption">{% trans 'usd' %}</h4>
+                <h4 class="toLeft rate-caption">{% trans 'eur' %}</h4>
                 <h4 class="rate-value toLeft" id="prev-eur">{{ dynamic_settings|get_item:"nbrb eur"}}</h4>
                 <div class="clear"></div>
             </div>
@@ -66,7 +65,7 @@
                 <h4 class="toLeft rate-caption">{% trans 'rub' %}</h4>
                 <div class="toLeft">
                     <h4 class="rate-value" id="prev-rub">{{ dynamic_settings|get_item:"nbrb rub"}}</h4>
-                    (<h8 id="prev-usd-rub"></h8> &#8381;/$)
+                    (<h8 id="prev-usd-rub"></h8> <img src="http://u4ilka.kcbux.ru/Raznoe/image/rub-002.png" alt="&#8381;" id="rub-to-usd-symbol">/$)
                 </div>
                 <div class="clear"></div>
             </div>
@@ -108,7 +107,7 @@
                     <option value="eur">EUR</option>
                 </select>
                 <span class="h3">{% trans 'for' %}</span>
-                <input id="months">
+                <input id="months" value="3">
                 <span class="h3"> {% trans 'months' context 'plan-deposit' %}</span>
                 <span id="deposit-planner-question"
                       class="glyphicon glyphicon-question-sign"
