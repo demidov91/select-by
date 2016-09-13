@@ -166,6 +166,8 @@ class RatesLoader:
             Rate.objects.all().delete()
             Rate.objects.bulk_create(bank_rates)
         ExchangeOffice.objects.filter(~Q(id__in=fresh_offices)).update(is_removed=True)
+        ExchangeOffice.objects.filter(id__in=fresh_offices).update(is_removed=False)
+        
 
     @classmethod
     def build_rate(cls, rate: Decimal, **keys) -> Rate:

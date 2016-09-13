@@ -7,7 +7,7 @@ function getFloatFromText(id){
 }
 
 // Lets consider that 3-3.1 for 100 RUB is good rate for BYN.
-var minRubRate = 0.03;
+var minRubRate = 3;
 var maxRubRate = 0.031;
 var slowDownCoefficient = 0.5;
 var exchangeMargin = getFloat('exchange-margin') / 100;
@@ -20,9 +20,9 @@ function updateData(){
 	var rubChange = currentRub / prevRub;
 
 	var nextNbrb = (prevUsd * (1 + (rubChange - 1) * slowDownCoefficient)).toFixed(4);
-	var nextRub = prevRub * (1 - slowDownCoefficient) * rubChange;
+	var nextRubByn = nextNbrb / (prevRub*rubChange);
 
-	if (((nextRub > maxRubRate) && (rubChange > 1)) || ((nextRub < minRubRate) && (rubChange < 1))){
+	if (((nextRubByn > maxRubRate) && (rubChange > 1)) || ((nextRubByn < minRubRate) && (rubChange < 1))){
 		nextNbrb = (prevUsd * rubChange).toFixed(4);
 	}
 
