@@ -4,5 +4,6 @@ django-appconf==1.0.1
 django-compressor==2.0
 lxml==3.5.0
 rcssmin==1.0.6
+requests==2.11.1
 rjsmin==1.0.12
 six==1.10.0

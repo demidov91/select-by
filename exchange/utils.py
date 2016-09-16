@@ -1,17 +1,18 @@
 import base64
 import re
 from decimal import Decimal
-from contextlib import contextmanager
+import requests
+import json
 
 from lxml import html
 
 from django.conf import settings
 from django.db.models import Min, Max, Q
 from django.db.transaction import atomic
-from django.db import connection
 from django.template.defaulttags import register
 
 from exchange.models import DynamicSettings, Bank, Rate, ExchangeOffice
+from .defines import MTBANK_REQUEST_BODY, MTBANK_RATES_START_LINE, MTBANK_IDENTIFIER, MTBANK_COMMON_OFFICE
 
 import logging
 logger = logging.getLogger(__name__)
@@ -72,56 +73,98 @@ CURRENCY_TO_DYNAMIC_SETTING = {
 }
 
 
-@contextmanager
-def lock_table(table_name):
-    with connection.cursor() as cursor:
-        if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
-            with atomic():
-                logger.debug('Table {} will be locked now'.format(table_name))
-                cursor.execute('lock table {} nowait'.format(table_name))
-                logger.debug('Table is locked')
-                yield
-                logger.debug('Doing nothing to release the table')
-        else:
-            logger.warning('Unknown db table should be locked...')
-            yield
-            logger.warning('Unknown db table lock should be released...')
-
-
 class RatesLoader:
     bank_identifier_matcher = re.compile('.*/(\d+/\d+)/')
     exchange_office_identifier_matcher = re.compile('.*id(\d+)')
 
-    @classmethod
-    def load(cls):
-        page_doc = cls.load_page_source()
-        last_update = cls.get_last_page_update(page_doc)
-        if get_dynamic_setting(DynamicSettings.LAST_UPDATE_KEY) == last_update:
-            logger.info('Nothing has changed')
-            return
-        set_dynamic_setting(DynamicSettings.LAST_UPDATE_KEY, last_update)
-        cls.save_page_data(page_doc)
+    def __init__(self):
+        self.bank_rates = []
+        self.fresh_offices = set()
 
-    @classmethod
-    def load_page_source(cls):
+    def _load_select_by(self):
+        page_doc = self.load_page_source()
+        last_update = self.get_last_page_update(page_doc)
+        if get_dynamic_setting(DynamicSettings.LAST_UPDATE_KEY) == last_update:
+            return False
+        set_dynamic_setting(DynamicSettings.LAST_UPDATE_KEY, last_update)
+        self.parse_page_data(page_doc)
+        return True
+
+    def _load_mtbank(self):
+        client = requests.session()
+        response = client.post(
+            'https://www.mtbank.by/_run.php?xoadCall=true',
+            data=MTBANK_REQUEST_BODY.encode('utf-8'),
+            headers={
+                'Accept': 'text/html; charset=UTF-8',
+                'Content-Type': 'text/plain; charset=UTF-8',
+            })
+        response_line = response.text
+        start_position = response_line.find(MTBANK_RATES_START_LINE)
+        if start_position < 0:
+            logger.error('Illegal format')
+            return
+        start_position += len(MTBANK_RATES_START_LINE)
+        end_position = start_position
+        brekets_counter = 0
+        while end_position < len(response_line):
+            if response_line[end_position] == '{':
+                brekets_counter += 1
+            elif response_line[end_position] == '}':
+                brekets_counter -= 1
+            end_position += 1
+            if brekets_counter == 0:
+                break
+        else:
+            logger.error('Illegal format')
+            return
+        try:
+            office = ExchangeOffice.objects.get_or_create(identifier=MTBANK_COMMON_OFFICE,
+                                                 address='common',
+                                                 bank=Bank.objects.get(identifier=MTBANK_IDENTIFIER))[0]
+        except Bank.DoesNotExist:
+            logger.error('MTBank identifier does not exist in DB')
+            return
+        self.fresh_offices.add(office.id)
+        all_rates = json.loads(response_line[start_position:end_position])
+        for curr_key, curr_val in ('USD', Rate.USD), ('EUR', Rate.EUR), ('RUB', Rate.RUB):
+            self.bank_rates.append(Rate(exchange_office=office, currency=curr_val, buy=True,
+                                        rate=Decimal(all_rates[curr_key+'BYN']['Rate'])))
+            self.bank_rates.append(Rate(exchange_office=office, currency=curr_val, buy=False,
+                                        rate=Decimal(all_rates['BYN'+curr_key]['Rate'])))
+        logger.debug('Additional MTBank rates are processed.')
+
+    def _save(self):
+        Rate.objects.filter(exchange_office__in=self.fresh_offices).delete()
+        Rate.objects.bulk_create(self.bank_rates)
+        ExchangeOffice.objects.filter(~Q(id__in=self.fresh_offices)).update(is_removed=True)
+        ExchangeOffice.objects.filter(id__in=self.fresh_offices).update(is_removed=False)
+
+    @atomic
+    def load(self):
+        if not self._load_select_by():
+            logger.info('Nothing has changed')
+            return False
+        self._load_mtbank()
+        self._save()
+        return True
+
+    def load_page_source(self):
         return html.parse(settings.RATES_SOURCE).getroot()
 
-    @classmethod
-    def get_last_page_update(cls, doc) -> str:
+    def get_last_page_update(self, doc) -> str:
         return doc.cssselect('.kurs_h3')[0].text.strip()
 
-    @classmethod
-    def get_bank(cls, link) -> Bank:
+    def get_bank(self, link) -> Bank:
         try:
             return Bank.objects.get(identifier=link.get('href'))
         except Bank.DoesNotExist:
             logger.info('Bank with identifier {} and name {} will be created.'.format(
                 link.get('href'), link.text.strip()))
-            return Bank.objects.get_or_create(identifier=link.get('href'), name=link.text.strip())[0]
+            return Bank.objects.create(identifier=link.get('href'), name=link.text.strip())
 
-    @classmethod
-    def get_exchange_office(cls, bank: Bank, link) -> ExchangeOffice:
-        match = cls.exchange_office_identifier_matcher.match(link.get('href'))
+    def get_exchange_office(self, bank: Bank, link) -> ExchangeOffice:
+        match = self.exchange_office_identifier_matcher.match(link.get('href'))
         if not match:
             raise ValueError('{} is illegal bank link'.format(link.get('href')))
         try:
@@ -129,48 +172,38 @@ class RatesLoader:
         except ExchangeOffice.DoesNotExist:
             logger.info('Exchange office with identifier {} and address {} will be created for bank {}.'.format(
                 match.group(1), link.text.strip(), bank.name))
-            return ExchangeOffice.objects.get_or_create(bank=bank, identifier=match.group(1), address=link.text.strip())[0]
+            return ExchangeOffice.objects.create(bank=bank, identifier=match.group(1), address=link.text.strip())
 
-    @classmethod
-    def save_page_data(cls, doc):
+    def parse_page_data(self, doc):
         bank = None
-        bank_rates = []
-        fresh_offices = set()
         for row in doc.cssselect('#curr_table tbody tr:not(.static)'):
             classes = row.get('class')
             cells = row.getchildren()
             if not classes or 'tablesorter-childRow' not in classes:
-                bank = cls.get_bank(next(cells[1].iterchildren()))
+                bank = self.get_bank(next(cells[1].iterchildren()))
                 logger.debug('Processing bank {}'.format(bank.name))
                 continue
             if bank is None:
                 logger.error('Unknown bank!')
                 continue
-            exchange_office = cls.get_exchange_office(bank, cells[0].cssselect('a')[0])
-            fresh_offices.add(exchange_office.id)
-            bank_rates.extend((
-                cls.build_rate(rate=Decimal(cells[1].text.replace(',', '.')),
+            exchange_office = self.get_exchange_office(bank, cells[0].cssselect('a')[0])
+            self.fresh_offices.add(exchange_office.id)
+            self.bank_rates.extend((
+                self.build_rate(rate=Decimal(cells[1].text.replace(',', '.')),
                                exchange_office=exchange_office, currency=Rate.USD, buy=True),
-                cls.build_rate(rate=Decimal(cells[2].text.replace(',', '.')),
+                self.build_rate(rate=Decimal(cells[2].text.replace(',', '.')),
                                exchange_office=exchange_office, currency=Rate.USD, buy=False),
-                cls.build_rate(rate=Decimal(cells[3].text.replace(',', '.')),
+                self.build_rate(rate=Decimal(cells[3].text.replace(',', '.')),
                                exchange_office=exchange_office, currency=Rate.EUR, buy=True),
-                cls.build_rate(rate=Decimal(cells[4].text.replace(',', '.')),
+                self.build_rate(rate=Decimal(cells[4].text.replace(',', '.')),
                                exchange_office=exchange_office, currency=Rate.EUR, buy=False),
-                cls.build_rate(rate=Decimal(cells[5].text.replace(',', '.')),
+                self.build_rate(rate=Decimal(cells[5].text.replace(',', '.')),
                                exchange_office=exchange_office, currency=Rate.RUB, buy=True),
-                cls.build_rate(rate=Decimal(cells[6].text.replace(',', '.')),
+                self.build_rate(rate=Decimal(cells[6].text.replace(',', '.')),
                                exchange_office=exchange_office, currency=Rate.RUB, buy=False),
             ))
-        with lock_table(Rate._meta.db_table):
-            Rate.objects.all().delete()
-            Rate.objects.bulk_create(bank_rates)
-        ExchangeOffice.objects.filter(~Q(id__in=fresh_offices)).update(is_removed=True)
-        ExchangeOffice.objects.filter(id__in=fresh_offices).update(is_removed=False)
-        
 
-    @classmethod
-    def build_rate(cls, rate: Decimal, **keys) -> Rate:
+    def build_rate(self, rate: Decimal, **keys) -> Rate:
         return Rate(rate=rate, **keys)
 
 

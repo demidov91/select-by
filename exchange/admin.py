@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.utils.translation import ugettext_lazy as _
 
 from exchange.models import Bank, ExchangeOffice, Rate, UserInfo, DynamicSettings
 
@@ -9,7 +8,8 @@ class BankAdmin(admin.ModelAdmin):
 
 
 class ExchangeOfficeAdmin(admin.ModelAdmin):
-    list_display = 'bank', 'address', 'identifier'
+    list_display = 'bank', 'address', 'identifier', 'is_removed'
+    list_filter = 'is_removed', 'bank'
 
 
 class RateAdmin(admin.ModelAdmin):
