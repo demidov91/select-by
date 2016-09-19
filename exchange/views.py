@@ -29,7 +29,7 @@ class OverView(View):
         form = UserInfoForm(instance=userinfo)
         return set_name_cookie(render(request, 'index.html', {
             'form': form,
-            'exists': userinfo.exchange_offices.all().exists(),
+            'exists': userinfo and userinfo.exchange_offices.all().exists(),
         }), userinfo and userinfo.name)
 
     def post(self, request):
