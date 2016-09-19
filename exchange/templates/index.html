@@ -37,7 +37,13 @@
     </div>
     <div id="name-wrapper">
         <p>{{ form.name.errors}}</p>
-        <p>{% trans 'Name'%}: {{ form.name }} <input type="submit" value="{% trans 'Save' %}" class="btn btn-success"></p>
+        <p>
+            {% trans 'Name'%}: {{ form.name }}
+            <input type="submit" value="{% trans 'Save' %}" class="btn btn-success">
+            {% if exists %}
+            <a href="{% url 'rates' %}" class="btn btn-default">{% trans 'Without changes' %}</a>
+            {% endif %}
+        </p>
     </div>
     <hr>
 

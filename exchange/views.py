@@ -1,13 +1,13 @@
 from decimal import Decimal
 
 from django.shortcuts import render, redirect
-from django.http.response import HttpResponseRedirect, JsonResponse
+from django.http.response import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views.decorators.http import require_GET
-from django.views.decorators.cache import cache_page
+from django.views.generic import View
 
 from exchange.models import UserInfo, Rate, DynamicSettings
-from exchange.utils import get_client_ip, set_name_cookie, get_best_rates, get_username, get_dynamic_setting, save_rates
+from exchange.utils import get_client_ip, set_name_cookie, get_best_rates, get_username
 from .forms import UserInfoForm
 
 
@@ -15,8 +15,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def overview(request):
-    if request.method == 'GET':
+class OverView(View):
+    def get(self, request):
         username = get_username(request)
         userinfo = None
         if username:
@@ -29,8 +29,10 @@ def overview(request):
         form = UserInfoForm(instance=userinfo)
         return set_name_cookie(render(request, 'index.html', {
             'form': form,
+            'exists': userinfo.exchange_offices.all().exists(),
         }), userinfo and userinfo.name)
-    elif request.method == 'POST':
+
+    def post(self, request):
         instance = None
         if request.POST.get('id'):
             instance = UserInfo.objects.get(id=request.POST['id'])
@@ -38,9 +40,7 @@ def overview(request):
         if form.is_valid():
             form.instance.ip = get_client_ip(request)
             instance = form.save()
-            if instance:
-                return set_name_cookie(HttpResponseRedirect(reverse('rates') + '?name=' + instance.name),
-                                       instance.name)
+            return set_name_cookie(HttpResponseRedirect(reverse('rates') + '?name=' + instance.name), instance.name)
         return render(request, 'index.html', {
             'form': form,
         })

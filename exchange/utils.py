@@ -106,14 +106,14 @@ class RatesLoader:
             return
         start_position += len(MTBANK_RATES_START_LINE)
         end_position = start_position
-        brekets_counter = 0
+        brackets_counter = 0
         while end_position < len(response_line):
             if response_line[end_position] == '{':
-                brekets_counter += 1
+                brackets_counter += 1
             elif response_line[end_position] == '}':
-                brekets_counter -= 1
+                brackets_counter -= 1
             end_position += 1
-            if brekets_counter == 0:
+            if brackets_counter == 0:
                 break
         else:
             logger.error('Illegal format')

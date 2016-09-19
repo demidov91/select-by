@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-24 14:09+0300\n"
+"POT-Creation-Date: 2016-09-19 15:46+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,15 +36,15 @@ msgstr "адрес"
 msgid "is removed"
 msgstr "удалён"
 
-#: exchange/models.py:30 exchange/templates/rates.html.py:56
+#: exchange/models.py:30 exchange/templates/rates.html.py:55
 msgid "usd"
 msgstr "доллар"
 
-#: exchange/models.py:31
+#: exchange/models.py:31 exchange/templates/rates.html.py:60
 msgid "eur"
 msgstr "евро"
 
-#: exchange/models.py:32 exchange/templates/rates.html.py:61
+#: exchange/models.py:32 exchange/templates/rates.html.py:65
 msgid "rub"
 msgstr "рубль"
 
@@ -144,15 +144,19 @@ msgstr ""
 msgid "Have a nice rate!"
 msgstr "Приятного использования!"
 
-#: exchange/templates/index.html:40
+#: exchange/templates/index.html:41
 msgid "Name"
 msgstr "Имя"
 
-#: exchange/templates/index.html:40
+#: exchange/templates/index.html:42
 msgid "Save"
 msgstr "Сохранить"
 
 #: exchange/templates/index.html:44
+msgid "Without changes"
+msgstr "Не изменять"
+
+#: exchange/templates/index.html:50
 msgid "Oooh! How much offices there is here! Filter them!"
 msgstr "Ничоси, сколько обменников. Отфильтруй-ка их!"
 
@@ -172,15 +176,15 @@ msgstr "настройки"
 msgid "Exchange office"
 msgstr "Обменный пункт"
 
-#: exchange/templates/rates.html:52
+#: exchange/templates/rates.html:51
 msgid "Last NBRB rates"
 msgstr "Последние курсы НБРБ"
 
-#: exchange/templates/rates.html:71
+#: exchange/templates/rates.html:75
 msgid "Current RUB rate"
 msgstr "Текущий курс российского рубля"
 
-#: exchange/templates/rates.html:79
+#: exchange/templates/rates.html:83
 msgid ""
 "<span> I expect </span><input id=\"next-nbrb\" value=\"\" /><span> for "
 "dollar on the end of the trades</span>"
@@ -188,34 +192,32 @@ msgstr ""
 "<span> Ожидаю </span><input id=\"next-nbrb\" value=\"\" /><span> за доллар "
 "на закрытии торгов </span>"
 
-#: exchange/templates/rates.html:86
+#: exchange/templates/rates.html:90
 msgid "Condition for in-day buy-sell operation"
 msgstr "Критические значения"
 
-#: exchange/templates/rates.html:89
+#: exchange/templates/rates.html:93
 msgid "You can sell at"
 msgstr "Однозначно продавай при"
 
-#: exchange/templates/rates.html:93
+#: exchange/templates/rates.html:97
 msgid "You can buy at"
 msgstr "Однозначно покупай при"
 
-#: exchange/templates/rates.html:100
-#, fuzzy
-#| msgid "Plan your deposit for"
+#: exchange/templates/rates.html:104
 msgid "Plan your deposit in"
-msgstr "Планировщик депозита на"
+msgstr "Запланируйте свой депозит в"
 
-#: exchange/templates/rates.html:105
+#: exchange/templates/rates.html:109
 msgid "for"
 msgstr "на"
 
-#: exchange/templates/rates.html:107
+#: exchange/templates/rates.html:111
 msgctxt "plan-deposit"
 msgid "months"
 msgstr "месяцев"
 
-#: exchange/templates/rates.html:111
+#: exchange/templates/rates.html:115
 msgid ""
 "When exchange rate is stable deposits with lower percents are not effective "
 "and can even lead to money loss nominated in national currency. Here you can "
@@ -223,62 +225,63 @@ msgid ""
 "in months and this tool will advice you what share of savings can prevent "
 "money loss. Remember that middle-term and long-term savings need different "
 "management."
-msgstr "Когда обменный курс стабилен, депозиты с более низкими ставками номинированные в иностранной валюте "
-"становятся не эффективны и могут даже привести к потерям номинированным в национальной валюте. "
-"Здесь вы можете ввести свои оптимистичные и пессимистичные ожидания изменения курса на конец интересующего вас периода "
-"и увидеть, какое распределение вкладов предотвратит потери в том или ином случае. "
-"Помните, что долгосрочные и среднесрочные сбережения требуют разного управления."
+msgstr ""
+"Когда обменный курс стабилен, депозиты с более низкими ставками "
+"номинированные в иностранной валюте становятся не эффективны и могут даже "
+"привести к потерям номинированным в национальной валюте. Здесь вы можете "
+"ввести свои оптимистичные и пессимистичные ожидания изменения курса на конец "
+"интересующего вас периода и увидеть, какое распределение вкладов "
+"предотвратит потери в том или ином случае. Помните, что долгосрочные и "
+"среднесрочные сбережения требуют разного управления."
 
-#: exchange/templates/rates.html:116 exchange/templates/rates.html.py:151
+#: exchange/templates/rates.html:120 exchange/templates/rates.html.py:155
 msgid "National currency"
 msgstr "Рубли"
 
-#: exchange/templates/rates.html:119
+#: exchange/templates/rates.html:123
 msgid "Double capitalization"
 msgstr "Двойная капитализация"
 
-#: exchange/templates/rates.html:125
+#: exchange/templates/rates.html:129
 msgid "Foreign currency"
 msgstr "Валюта"
 
-#: exchange/templates/rates.html:128
+#: exchange/templates/rates.html:132
 msgid "Take conversation loss into account"
 msgstr "Учитывать потери на конвертацию"
 
-#: exchange/templates/rates.html:135
+#: exchange/templates/rates.html:139
 msgid "Exchange rates expectations"
 msgstr "Ожидания валютного курса"
 
-#: exchange/templates/rates.html:137
-#, fuzzy
-#| msgid "Minimal"
-msgid "Maximal"
-msgstr "Минимальный"
-
 #: exchange/templates/rates.html:141
+msgid "Maximal"
+msgstr "Максимальный"
+
+#: exchange/templates/rates.html:145
 msgid "Minimal"
 msgstr "Минимальный"
 
-#: exchange/templates/rates.html:147
+#: exchange/templates/rates.html:151
 msgid "Currencies proportion"
 msgstr "Распределение по валютам"
 
-#: exchange/templates/rates.html:149
+#: exchange/templates/rates.html:153
 msgid "Loss of"
 msgstr "Потеря"
 
-#: exchange/templates/rates.html:149
+#: exchange/templates/rates.html:153
 msgid "can't be prevented with such rates expectations."
 msgstr "не может быть предотвращена при введённых параметрах."
 
-#: exchange/templates/rates.html:152
+#: exchange/templates/rates.html:156
 msgid "Foreign"
 msgstr "Валюта"
 
-#: exchange/templates/rates.html:160
+#: exchange/templates/rates.html:164
 msgid "Fix coefficients"
 msgstr "Поправочные коэфициенты"
 
-#: exchange/templates/rates.html:162
+#: exchange/templates/rates.html:166
 msgid "Exchange office margin"
 msgstr "Маржа обменников"
