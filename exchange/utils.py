@@ -12,7 +12,8 @@ from django.db.transaction import atomic
 from django.template.defaulttags import register
 
 from exchange.models import DynamicSettings, Bank, Rate, ExchangeOffice
-from .defines import MTBANK_REQUEST_BODY, MTBANK_RATES_START_LINE, MTBANK_IDENTIFIER, MTBANK_COMMON_OFFICE
+from .defines import MTBANK_COMMON_BODY, MTBANK_68_BODY, MTBANK_RATES_START_LINE, MTBANK_IDENTIFIER, \
+    MTBANK_68_OFFICE, MTBANK_COMMON_OFFICE
 
 import logging
 logger = logging.getLogger(__name__)
@@ -90,11 +91,10 @@ class RatesLoader:
         self.parse_page_data(page_doc)
         return True
 
-    def _load_mtbank(self):
-        client = requests.session()
+    def _load_mtbank_office(self, client, request_body, office_identifier, office_address):
         response = client.post(
             'https://www.mtbank.by/_run.php?xoadCall=true',
-            data=MTBANK_REQUEST_BODY.encode('utf-8'),
+            data=request_body.encode('utf-8'),
             headers={
                 'Accept': 'text/html; charset=UTF-8',
                 'Content-Type': 'text/plain; charset=UTF-8',
@@ -119,9 +119,9 @@ class RatesLoader:
             logger.error('Illegal format')
             return
         try:
-            office = ExchangeOffice.objects.get_or_create(identifier=MTBANK_COMMON_OFFICE,
-                                                 address='common',
-                                                 bank=Bank.objects.get(identifier=MTBANK_IDENTIFIER))[0]
+            office = ExchangeOffice.objects.get_or_create(identifier=office_identifier,
+                                                          address=office_address,
+                                                          bank=Bank.objects.get(identifier=MTBANK_IDENTIFIER))[0]
         except Bank.DoesNotExist:
             logger.error('MTBank identifier does not exist in DB')
             return
@@ -129,9 +129,14 @@ class RatesLoader:
         all_rates = json.loads(response_line[start_position:end_position])
         for curr_key, curr_val in ('USD', Rate.USD), ('EUR', Rate.EUR), ('RUB', Rate.RUB):
             self.bank_rates.append(Rate(exchange_office=office, currency=curr_val, buy=True,
-                                        rate=Decimal(all_rates[curr_key+'BYN']['Rate'])))
+                                        rate=Decimal(all_rates[curr_key + 'BYN']['Rate'])))
             self.bank_rates.append(Rate(exchange_office=office, currency=curr_val, buy=False,
-                                        rate=Decimal(all_rates['BYN'+curr_key]['Rate'])))
+                                        rate=Decimal(all_rates['BYN' + curr_key]['Rate'])))
+
+    def _load_mtbank(self):
+        client = requests.session()
+        self._load_mtbank_office(client, MTBANK_COMMON_BODY, MTBANK_COMMON_OFFICE, 'common')
+        self._load_mtbank_office(client, MTBANK_68_BODY, MTBANK_68_OFFICE, 'РКЦ-68')
         logger.debug('Additional MTBank rates are processed.')
 
     def _save(self):
