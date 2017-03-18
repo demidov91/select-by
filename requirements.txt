@@ -7,3 +7,4 @@ rcssmin==1.0.6
 requests==2.11.1
 rjsmin==1.0.12
 six==1.10.0
+factory-boy==2.8.1

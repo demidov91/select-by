@@ -107,3 +107,21 @@ class BaseLoader:
 
     def get_rates(self):
         return self._rates
+
+    def get_expected_exchange_offices(self):
+        return ExchangeOffice.objects.none()
+
+    def _load(self) ->bool:
+        raise NotImplementedError()
+
+    @atomic
+    def load(self):
+        is_updated = self._load()
+        if is_updated:
+            logger.info('{} data will be updated.'.format(self.__class__.__name__))
+            Rate.objects.filter(exchange_office__in=self.get_offices()).delete()
+            Rate.objects.bulk_create(self.get_rates())
+            self.get_expected_exchange_offices().exclude(id__in=self.get_offices()).update(is_removed=True)
+            ExchangeOffice.objects.filter(id__in=self.get_offices()).update(is_removed=False)
+        else:
+            logger.info("{} data won't be updated.".format(self.__class__.__name__))

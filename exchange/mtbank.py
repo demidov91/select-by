@@ -12,10 +12,12 @@ logger = logging.getLogger(__name__)
 
 
 class MtbankLoader(BaseLoader):
-    def load(self):
+    def get_expected_exchange_offices(self):
+        return ExchangeOffice.objects.filter(identifier__in=(MTBANK_COMMON_OFFICE, MTBANK_68_OFFICE))
+
+    def _load(self):
         self._load_office(MTBANK_COMMON_BODY, MTBANK_COMMON_OFFICE, 'common')
         self._load_office(MTBANK_68_BODY, MTBANK_68_OFFICE, 'РКЦ-68')
-        logger.debug('Additional MTBank rates are processed.')
 
     def _load_office(self, request_body, office_identifier, office_address):
         response = self.client.post(

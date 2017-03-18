@@ -10,23 +10,28 @@ logger = logging.getLogger(__name__)
 
 
 class IdeaBankLoader(BaseLoader):
+    def get_expected_exchange_offices(self):
+        return ExchangeOffice.objects.filter(identifier=IDEABANK_ONLINE_OFFICE)
 
-    def load(self):
+    def _load(self):
         today = datetime.date.today()
 
         response = self.client.post(IDEABANK_URL, data={
             'date': today.strftime(IDEA_REMOTE_DATE_FORMAT),
             'id': 70,
+        }, headers={
+            'X-Requested-With': 'XMLHttpRequest',
         })
 
         raw_rates = response.json()['data']
 
         if 'rates' not in raw_rates:
+            logger.info('No rates for today.')
             return False
 
         last_rates = max(raw_rates['rates'].items(), key=lambda x: x[0])
 
-        office_name = 'IdeaBank online {} {}'.format(today.strftime(DEFAULT_DATE_FORMAT), last_rates[0])
+        office_name = '{} {}'.format(today.strftime(DEFAULT_DATE_FORMAT), last_rates[0])
         raw_rates = last_rates[1]
 
         try:

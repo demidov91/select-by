@@ -4,6 +4,7 @@ from .utils import BaseLoader, get_dynamic_setting, set_dynamic_setting
 from lxml import html
 from .models import DynamicSettings, Rate, Bank, ExchangeOffice
 from django.conf import settings
+from django.db.models.functions import Length
 
 import logging
 logger = logging.getLogger(__name__)
@@ -20,7 +21,10 @@ class SelectbyLoader(BaseLoader):
     def add_office(self, *office_id):
         self._offices.update(office_id)
 
-    def load(self):
+    def get_expected_exchange_offices(self):
+        return ExchangeOffice.objects.annotate(length=Length('identifier')).filter(length__lt=4)
+
+    def _load(self):
         page_doc = self.load_page_source()
         last_update = self.get_last_page_update(page_doc)
         if get_dynamic_setting(DynamicSettings.LAST_UPDATE_KEY) == last_update:
