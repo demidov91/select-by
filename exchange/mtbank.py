@@ -1,22 +1,17 @@
 import json
 from decimal import Decimal
-import requests
 
 from .defines import MTBANK_68_BODY, MTBANK_COMMON_BODY, MTBANK_68_OFFICE, MTBANK_COMMON_OFFICE, MTBANK_IDENTIFIER,\
     MTBANK_RATES_START_LINE
 
 from .models import ExchangeOffice, Bank, Rate
+from .utils import BaseLoader
 
 import logging
 logger = logging.getLogger(__name__)
 
 
-class MtbankLoader():
-    def __init__(self):
-        self.client = requests.session()
-        self._offices = []
-        self._rates = []
-
+class MtbankLoader(BaseLoader):
     def load(self):
         self._load_office(MTBANK_COMMON_BODY, MTBANK_COMMON_OFFICE, 'common')
         self._load_office(MTBANK_68_BODY, MTBANK_68_OFFICE, 'РКЦ-68')
@@ -64,8 +59,4 @@ class MtbankLoader():
             self._rates.append(Rate(exchange_office=office, currency=curr_val, buy=False,
                                         rate=Decimal(all_rates['BYN' + curr_key]['Rate'])))
 
-    def get_offices(self):
-        return self._offices
 
-    def get_rates(self):
-        return self._rates
