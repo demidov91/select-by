@@ -1,13 +1,26 @@
 from decimal import Decimal
+from unittest.mock import patch
 
 from django.test import TestCase
 
 from ..factories import ExchangeOfficeFactory, RateFactory
 from ..models import Rate
 from ..selectby import SelectbyLoader
+from lxml import html
+import os
+
+
+class PatchedHtmlParse:
+    def __init__(self, *args, **kwargs):
+        super(PatchedHtmlParse, self).__init__()
+
+    def getroot(self):
+        with open(os.path.join(os.path.dirname(__file__), 'data', 'selectby.html'), mode='rb') as f:
+            return html.fromstring(f.read())
 
 
 class SelectbyLoaderTest(TestCase):
+    @patch('lxml.html.parse', PatchedHtmlParse)
     def test_load(self):
         fake_office = ExchangeOfficeFactory(identifier='5')
         real_office = ExchangeOfficeFactory(identifier='478')
