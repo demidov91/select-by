@@ -16,8 +16,9 @@ class MtbankLoader(BaseLoader):
         return ExchangeOffice.objects.filter(identifier__in=(MTBANK_COMMON_OFFICE, MTBANK_68_OFFICE))
 
     def _load(self) -> bool:
-        return self._load_office(MTBANK_COMMON_BODY, MTBANK_COMMON_OFFICE, 'common') or \
-               self._load_office(MTBANK_68_BODY, MTBANK_68_OFFICE, 'РКЦ-68')
+        common_loaded = self._load_office(MTBANK_COMMON_BODY, MTBANK_COMMON_OFFICE, 'common')
+        titul_loaded = self._load_office(MTBANK_68_BODY, MTBANK_68_OFFICE, 'РКЦ-68')
+        return common_loaded or titul_loaded
 
     def _load_office(self, request_body, office_identifier, office_address) -> bool:
         response = self.client.post(
