@@ -6,9 +6,9 @@ function getFloatFromText(id){
 	return parseFloat($('#' + id).text());
 }
 
-// Lets consider that 3-3.1 for 100 RUB is good rate for BYN.
-var minRubRate = 3;
-var maxRubRate = 0.031;
+// Lets consider that 3.1-3.3 for 100 RUB is good rate for BYN.
+var minRubRate = 3.1;
+var maxRubRate = 0.033;
 var slowDownCoefficient = 0.5;
 var exchangeMargin = getFloat('exchange-margin') / 100;
 var prevUsd = getFloatFromText('prev-usd');
