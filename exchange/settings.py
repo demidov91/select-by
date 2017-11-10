@@ -140,7 +140,7 @@ STATICFILES_FINDERS = [
 COMPRESS_JS_FILTERS = []
 
 
-RATES_SOURCE = 'http://select.by/kurs/'
+RATES_SOURCE = 'https://select.by/kurs/'
 
 LOGS_DIR = os.path.join(BASE_DIR, 'logs')
 

@@ -1,10 +1,12 @@
 import re
 from decimal import Decimal
-from .utils import BaseLoader, get_dynamic_setting, set_dynamic_setting
-from lxml import html
-from .models import DynamicSettings, Rate, Bank, ExchangeOffice
+
 from django.conf import settings
 from django.db.models.functions import Length
+from lxml import html
+
+from .utils import BaseLoader, get_dynamic_setting, set_dynamic_setting
+from .models import DynamicSettings, Rate, Bank, ExchangeOffice
 
 import logging
 logger = logging.getLogger(__name__)
@@ -34,7 +36,7 @@ class SelectbyLoader(BaseLoader):
         return True
 
     def load_page_source(self):
-        return html.parse(settings.RATES_SOURCE).getroot()
+        return html.fromstring(self.client.get(settings.RATES_SOURCE).content)
 
     def get_last_page_update(self, doc) -> str:
         return doc.cssselect('.kurs_h3')[0].text.strip()
