@@ -54,7 +54,7 @@ async def load_coordinates(
     ) as response:
         if response.status != 200:
             raise ValueError(
-                f'Unexpected http status: {response.status_code} '
+                f'Unexpected http status: {response.status} '
                 f'for office {exchange_office.identifier}'
             )
 
@@ -68,7 +68,7 @@ async def load_and_save_coordinates(office: ExchangeOffice, client: ClientSessio
     except Exception as e:
         logger.exception(
             'Unexpected error on fetching %s coordinates.',
-            office
+            office.identifier
         )
         if office.latitude is None or office.longitude is None:
             office.no_coordinates = True
