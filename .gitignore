@@ -14,3 +14,4 @@ static/*
 aiohttp_server.py
 .pytest_cache
 *.pid
+.vscode

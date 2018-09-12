@@ -1,15 +1,30 @@
-$(function(){
-    $('#filter-list').keyup(function(){
-        var searchForPhrases = this.value.toLowerCase().split(/[^\w(А-я)(І-ў)]+/);
-        $('#id_exchange_offices li').css('display', 'block').filter(function(){
-            var currentLine = $(this).text().toLowerCase();
-            for (i in searchForPhrases){
-                if (currentLine.indexOf(searchForPhrases[i]) < 0){
-                    return true;
-                }
-            }
-            return false;
-        }).css('display', 'none');
+ymaps.ready(init);
+
+function init() {
+    var map = new ymaps.Map("map", {
+        center: [53.902257, 27.561831],
+        zoom: 11
+    }, {
+        searchControlProvider: 'yandex#search'
     });
-    $('#filter-list').keyup();
-});
+
+    $.ajax({
+        url: "/my-points/",
+        method: "GET",
+        dataType: "json"
+    }).done(function(data){
+        var points = data["exchange"];
+        var my_places = data["my_places"];
+
+        var ya_points = ymaps.geoQuery(
+            points.map(function(x){
+                return {
+                    coordinates: x.coordinates,
+                    type: 'Point',                
+                }
+            })
+        );
+
+        ya_points.addToMap(map);
+    });
+}

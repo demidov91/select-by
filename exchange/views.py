@@ -1,17 +1,17 @@
+import logging
 from decimal import Decimal
 
 from django.shortcuts import render, redirect
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views.decorators.http import require_GET
 from django.views.generic import View
 
-from exchange.models import UserInfo, Rate, DynamicSettings
+from exchange.models import UserInfo, Rate, DynamicSettings, ExchangeOffice
 from exchange.utils import get_client_ip, set_name_cookie, get_best_rates, get_username
 from .forms import UserInfoForm
 
 
-import logging
 logger = logging.getLogger(__name__)
 
 
@@ -23,7 +23,7 @@ class OverView(View):
             try:
                 userinfo = UserInfo.objects.get(name=username)
             except UserInfo.DoesNotExist:
-                logger.info('{} does not exist'.format(userinfo))
+                logger.info('%s does not exist', userinfo)
         if not userinfo and username:
             userinfo = UserInfo.objects.create(name=username, ip=get_client_ip(request))
         form = UserInfoForm(instance=userinfo)
@@ -82,9 +82,10 @@ def get_rates(request):
     }), user.name)
 
 
-
-
-
-
-
-
+@require_GET
+def my_points(request):
+    return JsonResponse({
+        'exchange': [{
+            'coordinates': (x.latitude, x.longitude),
+        } for x in ExchangeOffice.objects.filter(is_removed=False)],
+    })
