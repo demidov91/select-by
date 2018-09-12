@@ -1,8 +1,8 @@
 *.sqlite3
 env
 env/*
-env-3.5
-env-3.5/*
+env-3.6
+env-3.6/*
 *.pyc
 .idea
 logs/*
@@ -13,3 +13,4 @@ static/*
 *~
 aiohttp_server.py
 .pytest_cache
+*.pid

@@ -9,12 +9,14 @@ django-appconf==1.0.1
 django-compressor==2.0
 factory-boy==2.8.1
 Faker==0.8.6
+gunicorn==19.9.0
 idna==2.7
 idna-ssl==1.1.0
 lxml==3.5.0
 more-itertools==4.3.0
 multidict==4.4.0
 pluggy==0.7.1
+psycopg2==2.7.5
 py==1.6.0
 pytest==3.8.0
 pytest-django==3.4.2
