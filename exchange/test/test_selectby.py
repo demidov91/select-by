@@ -1,7 +1,7 @@
 from decimal import Decimal
 from unittest.mock import patch
 
-from django.test import TestCase
+import pytest
 
 from ..factories import ExchangeOfficeFactory, RateFactory
 from ..models import Rate
@@ -10,18 +10,21 @@ from lxml import html
 import os
 
 
-class PatchedHtmlParse:
-    def __init__(self, *args, **kwargs):
-        super(PatchedHtmlParse, self).__init__()
-
-    def getroot(self):
-        with open(os.path.join(os.path.dirname(__file__), 'data', 'selectby.html'), mode='rb') as f:
-            return html.fromstring(f.read())
+original_fromstring = html.fromstring
 
 
-class SelectbyLoaderTest(TestCase):
-    @patch('lxml.html.parse', PatchedHtmlParse)
-    def test_load(self):
+def patched(*args, **kwargs):
+    with open(os.path.join(os.path.dirname(__file__), 'data', 'selectby.html'), mode='rb') as f:
+        return original_fromstring(f.read())
+
+
+
+class TestSelectbyLoader:
+
+    @pytest.mark.django_db
+    @patch('lxml.html.fromstring', patched)
+    @patch('exchange.selectby.update_all_coordinates')
+    def test_load(self, patched_update_all_coordinates):
         fake_office = ExchangeOfficeFactory(identifier='5')
         real_office = ExchangeOfficeFactory(identifier='478')
         my_office = ExchangeOfficeFactory(identifier='1011')
@@ -35,13 +38,13 @@ class SelectbyLoaderTest(TestCase):
         real_office.refresh_from_db()
         my_office.refresh_from_db()
 
-        self.assertTrue(fake_office.is_removed)
-        self.assertFalse(real_office.is_removed)
-        self.assertFalse(my_office.is_removed)
+        assert fake_office.is_removed
+        assert not real_office.is_removed
+        assert not my_office.is_removed
+        assert patched_update_all_coordinates.called
 
-        self.assertEqual(
-            Decimal('1.875'),
-            Rate.objects.get(exchange_office__identifier='478', buy=True, currency=Rate.USD).rate
+        assert (
+            Rate.objects.get(exchange_office__identifier='478', buy=True, currency=Rate.USD).rate ==
+            Decimal('1.875')
         )
-
-        self.assertEqual(1, my_office.rate_set.count())
+        assert real_office.rate_set.count() != 1

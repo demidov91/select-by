@@ -12,3 +12,4 @@ static/*
 *.mo
 *~
 aiohttp_server.py
+.pytest_cache

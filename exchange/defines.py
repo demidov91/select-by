@@ -24,3 +24,5 @@ MTBANK_RATES_START_LINE = '"rates":'
 
 IDEA_REMOTE_DATE_FORMAT = '%d-%m-%Y'
 DEFAULT_DATE_FORMAT = '%d.%m.%Y'
+
+SELECTBY_EXCHANGE_OFFICE_PAGE_PATTERN = 'https://select.by/kurs/karta/id%s'

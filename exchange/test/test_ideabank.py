@@ -3,7 +3,7 @@ from unittest.mock import patch
 import datetime
 
 from django.test import TestCase
-from exchange.models import Bank, ExchangeOffice, Rate
+from exchange.models import ExchangeOffice, Rate
 from exchange.defines import IDEABANK_IDENTIFIER, IDEABANK_ONLINE_OFFICE
 from exchange.ideabank import IdeaBankLoader
 from .data.ideabank import JSON_RESPONSE

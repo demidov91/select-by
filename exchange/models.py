@@ -14,7 +14,23 @@ class Bank(models.Model):
 class ExchangeOffice(models.Model):
     identifier = models.CharField(null=False, max_length=63, unique=True, verbose_name=_('identifier'))
     address = models.CharField(null=False, max_length=127, verbose_name=_('address'))
-    bank = models.ForeignKey(Bank, null=False)
+    bank = models.ForeignKey(Bank, null=False, on_delete=models.CASCADE)
+    latitude = models.DecimalField(
+        max_digits=8,
+        decimal_places=6,
+        null=True,
+        blank=True,
+        verbose_name=_('latitude')
+    )
+    longitude = models.DecimalField(
+        max_digits=9,
+        decimal_places=6,
+        null=True,
+        blank=True,
+        verbose_name=_('longitude')
+    )
+    no_coordinates = models.BooleanField(default=False, verbose_name=_('no coordinates'))
+
     is_removed = models.BooleanField(default=False, verbose_name=_('is removed'))
 
     def __str__(self):
@@ -32,13 +48,16 @@ class Rate(models.Model):
         (RUB, _('rub')),
     )
 
-    exchange_office = models.ForeignKey(ExchangeOffice, null=False)
+    exchange_office = models.ForeignKey(ExchangeOffice, null=False, on_delete=models.CASCADE)
     currency = models.PositiveSmallIntegerField(null=False, choices=CURRENCIES, verbose_name=_('currency'))
     buy = models.BooleanField(verbose_name=_('buy'))
     rate = models.DecimalField(max_digits=11, decimal_places=4, null=False, verbose_name=_('rate'))
 
     def __str__(self):
-        return '{} {} for {}'.format(_('buy') if self.buy else _('sell'), self.CURRENCIES[self.currency][1], self.exchange_office.bank)
+        return '{} {} for {}'.format(
+            _('buy') if self.buy else _('sell'),
+            self.CURRENCIES[self.currency][1], self.exchange_office.bank
+        )
 
 
 class DynamicSettings(models.Model):

@@ -5,8 +5,10 @@ from django.conf import settings
 from django.db.models.functions import Length
 from lxml import html
 
-from .utils import BaseLoader, get_dynamic_setting, set_dynamic_setting
-from .models import DynamicSettings, Rate, Bank, ExchangeOffice
+from exchange.coordinates_loader import update_all_coordinates
+from exchange.models import DynamicSettings, Rate, Bank, ExchangeOffice
+from exchange.utils import BaseLoader, get_dynamic_setting, set_dynamic_setting
+
 
 import logging
 logger = logging.getLogger(__name__)
@@ -34,6 +36,10 @@ class SelectbyLoader(BaseLoader):
         set_dynamic_setting(DynamicSettings.LAST_UPDATE_KEY, last_update)
         self.parse_page_data(page_doc)
         return True
+
+    def load(self):
+        super().load()
+        update_all_coordinates()
 
     def load_page_source(self):
         return html.fromstring(self.client.get(settings.RATES_SOURCE).content)

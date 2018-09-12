@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from django.shortcuts import render, redirect
 from django.http.response import HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.views.decorators.http import require_GET
 from django.views.generic import View
 
