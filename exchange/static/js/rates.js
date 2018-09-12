@@ -149,14 +149,10 @@ $(document).ready(function(){
         sortList: [[2, 0]]
     });
     $.ajax({
-        url: 'https://query.yahooapis.com/v1/public/yql?q=select+*+from+yahoo.finance.xchange+where+pair+=+%22USDRUB%22&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys',
-        jsonp: "callback",
-        dataType: "jsonp",
+        url: 'https://free.currencyconverterapi.com/api/v5/convert?q=USD_RUB&compact=y',
+        method: 'GET',
         success: function(data){
-            $('#current-rub').val(data['query']['results']['rate']['Rate']);
-            var rubTime = data['query']['results']['rate']['Time'].slice(0, - 2) + ' ' + data['query']['results']['rate']['Time'].slice(-2);
-            var rubDateTime = data['query']['results']['rate']['Date'] + ' ' + rubTime + ' UTC';
-            $('#current-rub-time').text(formatDateTime(new Date(rubDateTime)));
+            $('#current-rub').val(data['USD_RUB']['val']);
             updateData();  
         }
     });
