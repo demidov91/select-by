@@ -1,6 +1,6 @@
-ymaps.ready(init);
+ymaps.ready(initMap);
 
-function init() {
+function initMap() {
     var map = new ymaps.Map("map", {
         center: [53.902257, 27.561831],
         zoom: 11
@@ -13,18 +13,67 @@ function init() {
         method: "GET",
         dataType: "json"
     }).done(function(data){
-        var points = data["exchange"];
-        var my_places = data["my_places"];
-
-        var ya_points = ymaps.geoQuery(
-            points.map(function(x){
-                return {
-                    coordinates: x.coordinates,
-                    type: 'Point',                
-                }
-            })
-        );
-
-        ya_points.addToMap(map);
+        for (var point of data.exchange){
+            map.geoObjects.add(externalDataToPoint(point));
+        }        
     });
+
+    configMapRelatedBehaviour(map);
+}
+
+function configMapRelatedBehaviour(map){
+    map.geoObjects.events.add('click', onPointClick);
+
+    $(".clear-points").click(function(event){
+        for (point in map.geoObjects){
+            turnPointOff(point);
+        }
+    });
+}
+
+function onPointClick(event){
+    var point = event.get('target');
+    if (point.properties.get('isSelected')){
+        turnPointOff(point);
+    } else {
+        turnPointOn(point);
+    }
+}
+
+function turnPointOff(point){
+    point.properties.set('isSelected', false);
+    point.options.set('preset', 'islands#grayIcon');
+    return point;
+}
+
+function turnPointOn(point){
+    point.properties.set('isSelected', true);
+    point.options.set('preset', 'islands#darkGreenIcon');
+    return point;
+}
+
+function externalDataToPoint(externalPoint){    
+    if (externalPoint.isSelected){
+        return new ymaps.Placemark(
+            x.coordinates,
+            {
+                isSelected: true,
+                iconContent: externalPoint.content
+            },
+            {
+                preset: 'islands#darkGreenIcon'
+            }      
+        );
+    }
+
+    return new ymaps.Placemark(
+        externalPoint.coordinates,
+        {
+            isSelected: false,
+            content: externalPoint.content
+        },
+        {
+            preset: 'islands#grayIcon'
+        }      
+    );    
 }
