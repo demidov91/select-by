@@ -24,10 +24,9 @@ function initMap() {
 function configMapRelatedBehaviour(map){
     map.geoObjects.events.add('click', onPointClick);
 
-    $(".clear-points").click(function(event){
-        for (point in map.geoObjects){
-            turnPointOff(point);
-        }
+    $(".js-clear").click(function(event){
+        event.preventDefault();
+        map.geoObjects.each(turnPointOff);        
     });
 }
 

@@ -39,7 +39,17 @@
     </div>
     <hr>
 
-    <div id="map"></div>
+    <div class="row">
+        <div id="map" class="col-md-8"></div>
+        <div class="col-md-4">
+            <input type="checkbox" /> IdeaBank
+            <hr>
+            <button class="btn btn-warning js-clear">
+                <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                {% trans "Clear" %}
+            </button>
+        </div>
+    </div>
 
 
     {% if form.instance.id %}
