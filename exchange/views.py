@@ -14,9 +14,12 @@ from exchange.utils import (
     set_name_cookie,
     get_best_rates,
     get_username,
-    get_exchnage_offices_id,
-    get_exchange_offices,
 )
+from exchange.utils.exchange_office import (
+    get_exchange_offices,
+    get_exchnage_offices_id,
+)
+from exchange.constants import BANK_NAME_TO_SHORT_NAME
 from .forms import UserInfoForm
 
 
@@ -101,7 +104,8 @@ def my_points(request):
             'coordinates': (x.latitude, x.longitude),
             'id': x.id,
             'isSelected': x.id in points_id,
-        } for x in ExchangeOffice.objects.filter(is_removed=False)],
+            'content': BANK_NAME_TO_SHORT_NAME.get(x.bank.name),
+        } for x in ExchangeOffice.objects.filter(is_removed=False).select_related('bank')],
     })
 
 

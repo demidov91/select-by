@@ -70,13 +70,13 @@ function onMapClick(event){
 
 function turnPointOff(point){
     point.properties.set('isSelected', false);
-    point.options.set('preset', 'islands#grayIcon');
+    point.options.set('preset', 'islands#grayDotIcon');
     return point;
 }
 
 function turnPointOn(point){
     point.properties.set('isSelected', true);
-    point.options.set('preset', 'islands#darkGreenIcon');
+    point.options.set('preset', 'islands#darkGreenStretchyIcon');
     return point;
 }
 
@@ -90,7 +90,7 @@ function externalDataToPoint(externalPoint){
                 iconContent: externalPoint.content
             },
             {
-                preset: 'islands#darkGreenIcon'
+                preset: 'islands#darkGreenStretchyIcon'
             }      
         );
     }
@@ -100,10 +100,10 @@ function externalDataToPoint(externalPoint){
         {
             id: externalPoint.id,
             isSelected: false,
-            content: externalPoint.content
+            iconContent: externalPoint.content
         },
         {
-            preset: 'islands#grayIcon'
+            preset: 'islands#grayDotIcon'
         }      
     );    
 }
