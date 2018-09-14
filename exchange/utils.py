@@ -38,17 +38,30 @@ def get_client_ip(request):
 
 
 def get_username(request):
+    if 'name' not in request.COOKIES:
+        return None
     try:
-        return request.GET.get('name',
-                               request.COOKIES.get('name') and base64.b64decode(request.COOKIES.get('name')).decode('utf-8'))
-    except UnicodeDecodeError:
-        return request.COOKIES.get('name')
+        return base64.b64decode(request.COOKIES['name']).decode('utf-8')
+    except Exception as e:
+        return None
 
 
 def set_name_cookie(response, name: str):
     if name:
         response.set_cookie('name', base64.b64encode(name.encode()).decode('ascii'), max_age=365*86400)
     return response
+
+
+def get_exchange_offices(request):
+    if request.user.is_authenticated:
+        return request.user.exchange_offices.all()
+
+    return ExchangeOffice.objects.filter(id__in=request.session.get('exchange_offices', []))
+
+
+def get_exchnage_offices_id(request):
+    return get_exchange_offices(request).values_list('id', flat=True)
+
 
 
 def get_best_rates(currency: int, exchanger_offices, buy: bool):

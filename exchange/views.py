@@ -2,13 +2,21 @@ import logging
 from decimal import Decimal
 
 from django.shortcuts import render, redirect
-from django.http.response import HttpResponseRedirect, JsonResponse
+from django.http.response import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.urls import reverse
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST
 from django.views.generic import View
 
 from exchange.models import UserInfo, Rate, DynamicSettings, ExchangeOffice
-from exchange.utils import get_client_ip, set_name_cookie, get_best_rates, get_username
+from exchange.services import set_exchange_offices
+from exchange.utils import (
+    get_client_ip,
+    set_name_cookie,
+    get_best_rates,
+    get_username,
+    get_exchnage_offices_id,
+    get_exchange_offices,
+)
 from .forms import UserInfoForm
 
 
@@ -40,7 +48,9 @@ class OverView(View):
         if form.is_valid():
             form.instance.ip = get_client_ip(request)
             instance = form.save()
-            return set_name_cookie(HttpResponseRedirect(reverse('rates') + '?name=' + instance.name), instance.name)
+            return set_name_cookie(
+                HttpResponseRedirect(reverse('rates') + '?name=' + instance.name), instance.name
+            )
         return render(request, 'index.html', {
             'form': form,
         })
@@ -84,9 +94,23 @@ def get_rates(request):
 
 @require_GET
 def my_points(request):
+    points_id = get_exchnage_offices_id(request)
+
     return JsonResponse({
         'exchange': [{
             'coordinates': (x.latitude, x.longitude),
             'id': x.id,
+            'isSelected': x.id in points_id,
         } for x in ExchangeOffice.objects.filter(is_removed=False)],
     })
+
+
+@require_POST
+def save_points(request):
+    id_list = request.POST.getlist('points[]', [])
+    id_list.extend(get_exchange_offices(request).filter(is_removed=True).values_list('id', flat=True))
+
+    points = ExchangeOffice.objects.filter(id__in=id_list)
+    set_exchange_offices(request, exchange_offices=points)
+
+    return HttpResponse()

@@ -83,7 +83,7 @@ function turnPointOn(point){
 function externalDataToPoint(externalPoint){    
     if (externalPoint.isSelected){
         return new ymaps.Placemark(
-            x.coordinates,
+            externalPoint.coordinates,
             {
                 id: externalPoint.id,
                 isSelected: true,
