@@ -87,5 +87,6 @@ def my_points(request):
     return JsonResponse({
         'exchange': [{
             'coordinates': (x.latitude, x.longitude),
+            'id': x.id,
         } for x in ExchangeOffice.objects.filter(is_removed=False)],
     })

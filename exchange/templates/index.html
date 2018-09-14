@@ -10,52 +10,33 @@
             <button class="btn btn-sm btn-default" name="language" value="be">BE</button>
             <button class="btn btn-sm btn-default" name="language" value="ru">RU</button>
         </form>
-        <form class="toRight" id="other-name-form" action="{% url 'rates' %}" method="get">
-            {% trans "It's not me! My name is" %} <input name="name">
-            <input
-                    type="submit"
-                    value="{% trans 'show me my rates!' %}"
-                    class="btn btn-primary btn-sm"
-            />
-        </form>
-
         <div class="clear"></div>
     </div>
 </div>
 
-<form id="config-form" method="post" action=".">{% csrf_token %}
-    <div>
-        {{ form.non_field_errors }}
-    </div>
-    <div id="name-wrapper">
-        <p>{{ form.name.errors}}</p>
-        <p>
-            {% trans 'Name'%}: {{ form.name }}
-            <input type="submit" value="{% trans 'Save' %}" class="btn btn-success">
-            {% if exists %}
-            <a href="{% url 'rates' %}" class="btn btn-default">{% trans 'Without changes' %}</a>
-            {% endif %}
-        </p>
-    </div>
-    <hr>
 
     <div class="row">
         <div id="map" class="col-md-8"></div>
         <div class="col-md-4">
-            <input type="checkbox" /> IdeaBank
+            
+            <input type="checkbox" /> {% trans "IdeaBank24" %}
+            
             <hr>
-            <button class="btn btn-warning js-clear">
-                <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-                {% trans "Clear" %}
-            </button>
+            <div class="col-md-6">
+                <button class="btn btn-warning js-clear map-action-button">
+                    <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                    {% trans "Clear" %}
+                </button>            
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-primary js-save map-action-button">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    {% trans "Save" %}
+                </button>            
+            </div>
         </div>
     </div>
 
-
-    {% if form.instance.id %}
-    <input type="hidden" name="id" value="{{ form.instance.id }}" />
-    {% endif %}
-</form>
 {% endblock %}
 
 
