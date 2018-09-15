@@ -54,6 +54,6 @@ def auth_by_cookie(request):
 
     login(request, user)
 
-    logger.info('Successfully duplicated user % info', user.username)
+    logger.info('Successfully duplicated user %s info', user.username)
 
     return

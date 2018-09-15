@@ -9,7 +9,7 @@ from exchange.coordinates_loader import update_all_coordinates
 from exchange.models import DynamicSettings, Rate, Bank, ExchangeOffice
 from exchange.services import set_dynamic_setting
 from exchange.utils.common import BaseLoader
-from exchange.utils.dynamic_settings import BaseLoader, get_dynamic_setting
+from exchange.utils.dynamic_settings import get_dynamic_setting
 
 
 import logging

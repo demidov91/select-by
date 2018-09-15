@@ -3,39 +3,31 @@
 {% load i18n staticfiles %}
 
 {% block content %}
-<div>
-    <div>
-        <h1 class="toLeft">{% trans "Click on the map!" %}</h1>
-        <form class="toRight" action="{% url 'set_language' %}" method="POST" id="language-switch">{% csrf_token %}
-            <button class="btn btn-sm btn-default" name="language" value="be">BE</button>
-            <button class="btn btn-sm btn-default" name="language" value="ru">RU</button>
-        </form>
-        <div class="clear"></div>
-    </div>
-</div>
+
+    <h1>{% trans "Click on the map!" %}</h1>
 
 
-    <div class="row">
-        <div id="map" class="col-md-8"></div>
-        <div class="col-md-4">
-            
-            <input type="checkbox" /> {% trans "IdeaBank24" %}
-            
-            <hr>
-            <div class="col-md-6">
-                <button class="btn btn-warning js-clear map-action-button">
-                    <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-                    {% trans "Clear" %}
-                </button>            
-            </div>
-            <div class="col-md-6">
-                <button class="btn btn-primary js-save map-action-button">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                    {% trans "Save" %}
-                </button>            
-            </div>
+<div class="row editor--all">
+    <div id="map" class="col-md-8"></div>
+    <div class="col-md-4">
+
+        <input type="checkbox" /> {% trans "IdeaBank24" %}
+
+        <hr>
+        <div class="col-md-6">
+            <button class="btn btn-warning js-clear map-action-button">
+                <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                {% trans "Clear" %}
+            </button>
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-primary js-save map-action-button">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                {% trans "Save" %}
+            </button>
         </div>
     </div>
+</div>
 
 {% endblock %}
 
