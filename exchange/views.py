@@ -2,25 +2,18 @@ import logging
 from decimal import Decimal
 
 from django.shortcuts import render, redirect
-from django.http.response import HttpResponseRedirect, JsonResponse, HttpResponse
-from django.urls import reverse
+from django.http.response import JsonResponse, HttpResponse
 from django.views.decorators.http import require_GET, require_POST
-from django.views.generic import View
 
-from exchange.models import UserInfo, Rate, DynamicSettings, ExchangeOffice
+from exchange.models import Rate, DynamicSettings, ExchangeOffice
 from exchange.services import set_exchange_offices
-from exchange.utils import (
-    get_client_ip,
-    set_name_cookie,
-    get_best_rates,
-)
-from exchange.utils.deprecated import get_username
 from exchange.utils.exchange_office import (
     get_exchange_offices,
     get_exchnage_offices_id,
 )
+from exchange.utils.common import quantize_to_cents
+from exchange.utils.rate import get_best_rates
 from exchange.constants import BANK_NAME_TO_SHORT_NAME
-from .forms import UserInfoForm
 
 
 logger = logging.getLogger(__name__)
@@ -30,21 +23,17 @@ def config(request):
     return render(request, 'config.html')
 
 
-def _quantize_to_cents(original: Decimal) -> Decimal:
-    cent_amount = original.quantize(Decimal('1.00'))
-    if original != cent_amount:
-        return original
-    return cent_amount
-
-
 @require_GET
 def get_rates(request):
     offices = get_exchange_offices(request)
 
+    if not offices.exists():
+        return redirect('config')
+
     for office in offices:
         office.rates = office.rate_set.order_by('currency', '-buy')
         for rate in office.rates:
-            rate.rate = _quantize_to_cents(rate.rate)
+            rate.rate = quantize_to_cents(rate.rate)
 
     best_rates = []
     for currency in (x[0] for x in Rate.CURRENCIES):

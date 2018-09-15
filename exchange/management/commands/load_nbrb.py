@@ -4,8 +4,9 @@ import datetime
 
 from django.core.management.base import BaseCommand
 
+from exchange.services import save_nbrb_rates
 from ...defines import NBRB_URL
-from ...utils import get_dynamic_setting, save_rates
+from exchange.utils.dynamic_settings import get_dynamic_setting
 from ...models import DynamicSettings
 
 
@@ -26,4 +27,4 @@ class Command(BaseCommand):
         currency_date = doc.get('Date')
         if stored_date != currency_date:
             logger.info('New NBRB rates will be saved.')
-            save_rates(doc)
+            save_nbrb_rates(doc)
