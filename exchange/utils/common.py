@@ -3,6 +3,7 @@ Unsorted utils.
 """
 import base64
 from decimal import Decimal
+
 import requests
 from django.db.models import Min, Max, Q
 from django.db.transaction import atomic
@@ -38,15 +39,6 @@ def get_client_ip(request):
     if x_forwarded_for:
         return x_forwarded_for.split(',')[0]
     return request.META.get('REMOTE_ADDR')
-
-
-def get_username(request):
-    if 'name' not in request.COOKIES:
-        return None
-    try:
-        return base64.b64decode(request.COOKIES['name']).decode('utf-8')
-    except Exception as e:
-        return None
 
 
 def set_name_cookie(response, name: str):

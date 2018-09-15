@@ -21,7 +21,7 @@ from exchange.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', get_rates, name='rates'),
-    url(r'^config/$', OverView.as_view(), name='config'),
+    url(r'^config/$', config, name='config'),
     url(r'my-points/$', my_points, name="my_points"),
     url(r'save-points/$', save_points, name="save_points"),
     url(r'^i18n/', include('django.conf.urls.i18n')),

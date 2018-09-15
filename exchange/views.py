@@ -13,8 +13,8 @@ from exchange.utils import (
     get_client_ip,
     set_name_cookie,
     get_best_rates,
-    get_username,
 )
+from exchange.utils.deprecated import get_username
 from exchange.utils.exchange_office import (
     get_exchange_offices,
     get_exchnage_offices_id,
@@ -26,37 +26,8 @@ from .forms import UserInfoForm
 logger = logging.getLogger(__name__)
 
 
-class OverView(View):
-    def get(self, request):
-        username = get_username(request)
-        userinfo = None
-        if username:
-            try:
-                userinfo = UserInfo.objects.get(name=username)
-            except UserInfo.DoesNotExist:
-                logger.info('%s does not exist', userinfo)
-        if not userinfo and username:
-            userinfo = UserInfo.objects.create(name=username, ip=get_client_ip(request))
-        form = UserInfoForm(instance=userinfo)
-        return set_name_cookie(render(request, 'index.html', {
-            'form': form,
-            'exists': userinfo and userinfo.exchange_offices.all().exists(),
-        }), userinfo and userinfo.name)
-
-    def post(self, request):
-        instance = None
-        if request.POST.get('id'):
-            instance = UserInfo.objects.get(id=request.POST['id'])
-        form = UserInfoForm(instance=instance, data=request.POST)
-        if form.is_valid():
-            form.instance.ip = get_client_ip(request)
-            instance = form.save()
-            return set_name_cookie(
-                HttpResponseRedirect(reverse('rates') + '?name=' + instance.name), instance.name
-            )
-        return render(request, 'index.html', {
-            'form': form,
-        })
+def config(request):
+    return render(request, 'config.html')
 
 
 def _quantize_to_cents(original: Decimal) -> Decimal:
@@ -68,31 +39,26 @@ def _quantize_to_cents(original: Decimal) -> Decimal:
 
 @require_GET
 def get_rates(request):
-    username = get_username(request)
-    if not username:
-        return redirect('config')
-    try:
-        user = UserInfo.objects.get(name=username)
-    except UserInfo.DoesNotExist:
-        return HttpResponseRedirect(reverse('config') + '?name=' + username)
-    offices = user.exchange_offices.all()
+    offices = get_exchange_offices(request)
+
     for office in offices:
         office.rates = office.rate_set.order_by('currency', '-buy')
         for rate in office.rates:
             rate.rate = _quantize_to_cents(rate.rate)
+
     best_rates = []
     for currency in (x[0] for x in Rate.CURRENCIES):
-        best_rates.extend(get_best_rates(currency, user.exchange_offices.all(), True))
-        best_rates.extend(get_best_rates(currency, user.exchange_offices.all(), False))
+        best_rates.extend(get_best_rates(currency, offices, True))
+        best_rates.extend(get_best_rates(currency, offices, False))
+
     for office in offices:
         for best_rate in filter(lambda x: x in best_rates, office.rates):
             best_rate.is_best = True
 
-    return set_name_cookie(render(request, 'rates.html', {
+    return render(request, 'rates.html', {
         'offices': offices,
-        'name': user.name,
         'dynamic_settings': dict(DynamicSettings.objects.all().values_list('key', 'value')),
-    }), user.name)
+    })
 
 
 @require_GET

@@ -1,6 +1,8 @@
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.conf import settings
+
 
 
 class Bank(models.Model):
@@ -13,6 +15,8 @@ class Bank(models.Model):
 
 class ExchangeOffice(models.Model):
     identifier = models.CharField(null=False, max_length=63, unique=True, verbose_name=_('identifier'))
+    users = models.ManyToManyField(User, related_name='exchange_offices')
+
     address = models.CharField(null=False, max_length=127, verbose_name=_('address'))
     bank = models.ForeignKey(Bank, null=False, on_delete=models.CASCADE)
     latitude = models.DecimalField(
