@@ -20,7 +20,9 @@ logger = logging.getLogger(__name__)
 
 
 def config(request):
-    return render(request, 'config.html')
+    return render(request, 'config.html', {
+        'is_authenticated': request.user.is_authenticated,
+    })
 
 
 @require_GET
@@ -47,6 +49,10 @@ def get_rates(request):
     return render(request, 'rates.html', {
         'offices': offices,
         'dynamic_settings': dict(DynamicSettings.objects.all().values_list('key', 'value')),
+        'is_authenticated': request.user.is_authenticated,
+        'has_social_account': (
+            request.user.is_authenticated and request.user.socialaccount_set.exists()
+        ),
     })
 
 

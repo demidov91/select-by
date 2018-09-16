@@ -5,7 +5,9 @@
 body{padding: 0 2em;}
 #config-form{margin: 2em auto; width: 50em;}
 #name-wrapper{text-align: center;}
-#other-name-form, #rates-header, #language-switch{padding: 1em;}
+.rates--header{padding: 1em;}
+.rates--actions{text-align:right;}
+.rates--logout{display: inline;}
 
 .errorlist{
     background-color: #f2dede;
@@ -68,4 +70,5 @@ table.tablesorter td.is-best{
 #rub-to-usd-symbol{height: 0.8em;}
 #depo-planner{margin-bottom: 2em;}
 #map{height: 500px;}
-.map-action-button{width: 100%;}
+.map-action{width: 100%;}
+.map-action--back{margin: 10px 0px; }

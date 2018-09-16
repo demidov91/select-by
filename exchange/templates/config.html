@@ -7,27 +7,34 @@
     <h1>{% trans "Click on the map!" %}</h1>
 
 
-<div class="row editor--all">
-    <div id="map" class="col-md-8"></div>
-    <div class="col-md-4">
+    <div class="row editor--all">
+        <div id="map" class="col-md-8"></div>
+        <div class="col-md-4">
 
-        <input type="checkbox" /> {% trans "IdeaBank24" %}
+            <input type="checkbox" /> {% trans "IdeaBank24" %}
 
-        <hr>
-        <div class="col-md-6">
-            <button class="btn btn-warning js-clear map-action-button">
-                <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-                {% trans "Clear" %}
-            </button>
-        </div>
-        <div class="col-md-6">
-            <button class="btn btn-primary js-save map-action-button">
-                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                {% trans "Save" %}
-            </button>
+            <hr>
+            <div class="col-md-6">
+                <button class="btn btn-warning js-clear map-action">
+                    <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                    {% trans "Clear" %}
+                </button>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-primary js-save map-action">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    {% trans "Save" %}
+                </button>
+            </div>
+            {% if is_authenticated %}
+            <div class="col-md-12">
+                <a href="{% url 'rates' %}" class="btn btn-default map-action map-action--back">
+                    {% trans 'Return to rates' %}
+                </a>
+            </div>
+            {% endif %}
         </div>
     </div>
-</div>
 
 {% endblock %}
 
