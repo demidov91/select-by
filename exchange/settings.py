@@ -162,6 +162,7 @@ AUTHENTICATION_BACKENDS = (
 )
 ACCOUNT_EMAIL_VERIFICATION = None
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 365 * 2     # 2 years.
+SOCIALACCOUNT_ADAPTER = 'exchange.utils.allauth.AccountAdapter'
 
 LOGS_DIR = os.path.join(BASE_DIR, 'logs')
 

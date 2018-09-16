@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 def config(request):
     return render(request, 'config.html', {
         'is_authenticated': request.user.is_authenticated,
+        'has_exchange_offices': get_exchange_offices(request).exists(),
     })
 
 

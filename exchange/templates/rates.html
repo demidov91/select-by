@@ -18,15 +18,15 @@
                 {% url "rates" as this_page %}
                 {% with auth_process=is_authenticated|yesno:"connect,login" %}
 
-                <a data="{{ action }}"
+                <!--<a data="{{ action }}"
                     href="{% provider_login_url "twitter" process=auth_process next=this_page %}"
                 >
                     <img width="32" src="https://twitter.com/favicon.ico" alt="twitter"/>
-                </a>
+                </a>-->
                 <a
                     href="{% provider_login_url "facebook" process=auth_process next=this_page %}"
                 >
-                    <img width="32" src="https://facebook.com/favicon.ico" alt="twitter"/>
+                    <img width="32" src="{% static 'img/facebook.svg' %}" alt="facebook"/>
                 </a>
                 {% endwith %}
             {% else %}

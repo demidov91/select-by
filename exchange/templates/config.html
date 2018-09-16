@@ -30,13 +30,15 @@
                     </div>
                 </div>
 
-                {% if is_authenticated %}
-                    <div class="col-md-12 row">
-                        <a href="{% url 'rates' %}" class="btn btn-default map-action">
-                            {% trans 'Return to rates' %}
-                        </a>
-                    </div>
+                {% if has_exchange_offices %}
+                <div class="col-md-12 row">
+                    <a href="{% url 'rates' %}" class="btn btn-default map-action">
+                        {% trans 'Return to rates' %}
+                    </a>
+                </div>
+                {% endif %}
 
+                {% if is_authenticated %}
                     <div class="col-md-12 row">
                         <form
                                 action="{% url 'account_logout' %}"
@@ -55,11 +57,11 @@
                             <h3>{% trans 'Login:' %}</h3>
                         </div>
                         <div class="col-md-9 map-action--login-cell">
-                            <a class="btn btn-default" href="{% provider_login_url "twitter" process="login" next=this_page %}">
+                            <!-- <a class="btn btn-default" href="{% provider_login_url "twitter" process="login" next=this_page %}">
                                 <img width="32" src="https://twitter.com/favicon.ico" alt="twitter"/>
-                            </a>
+                            </a> -->
                             <a class="btn btn-default" href="{% provider_login_url "facebook" process="login" next=this_page %}">
-                                <img width="32" src="https://facebook.com/favicon.ico" alt="twitter"/>
+                                <img width="32" src="{% static 'img/facebook.svg' %}" alt="facebook"/>
                             </a>
                         </div>
                     </div>
@@ -75,6 +77,6 @@
 
 {% block script %}
     {{ block.super }}
-    <script src="https://api-maps.yandex.ru/2.1/?lang=be_BY" type="text/javascript"></script>
+    <script src="https://api-maps.yandex.com/2.1/?lang=ru_UA" type="text/javascript"></script>
     <script type="text/javascript" src="{% static 'js/config.js' %}"></script>
 {% endblock %}
