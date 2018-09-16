@@ -161,6 +161,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 ACCOUNT_EMAIL_VERIFICATION = None
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 365 * 2     # 2 years.
 
 LOGS_DIR = os.path.join(BASE_DIR, 'logs')
 

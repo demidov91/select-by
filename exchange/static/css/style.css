@@ -71,4 +71,4 @@ table.tablesorter td.is-best{
 #depo-planner{margin-bottom: 2em;}
 #map{height: 500px;}
 .map-action{width: 100%;}
-.map-action--back{margin: 10px 0px; }
+.editor-right--block>.row{margin: 10px 0px;}

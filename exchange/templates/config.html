@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load i18n staticfiles %}
+{% load i18n staticfiles socialaccount %}
 
 {% block content %}
 
@@ -14,25 +14,59 @@
             <input type="checkbox" /> {% trans "IdeaBank24" %}
 
             <hr>
-            <div class="col-md-6">
-                <button class="btn btn-warning js-clear map-action">
-                    <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-                    {% trans "Clear" %}
-                </button>
+            <div class="editor-right--block">
+                <div class="row">
+                    <div class="col-md-6">
+                        <button class="btn btn-warning js-clear map-action">
+                            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                            {% trans "Clear" %}
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-primary js-save map-action">
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                            {% trans "Save" %}
+                        </button>
+                    </div>
+                </div>
+
+                {% if is_authenticated %}
+                    <div class="col-md-12 row">
+                        <a href="{% url 'rates' %}" class="btn btn-default map-action">
+                            {% trans 'Return to rates' %}
+                        </a>
+                    </div>
+
+                    <div class="col-md-12 row">
+                        <form
+                                action="{% url 'account_logout' %}"
+                                method="POST"
+                        >
+                            {% csrf_token %}
+                            <input class="btn btn-default map-action" type="submit" value="{% trans 'Logout' %}" />
+                        </form>
+                    </div>
+
+                {% else %}
+                    {% url "rates" as this_page %}
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h3>{% trans 'Login:' %}</h3>
+                        </div>
+                        <div class="col-md-9 map-action--login-cell">
+                            <a class="btn btn-default" href="{% provider_login_url "twitter" process="login" next=this_page %}">
+                                <img width="32" src="https://twitter.com/favicon.ico" alt="twitter"/>
+                            </a>
+                            <a class="btn btn-default" href="{% provider_login_url "facebook" process="login" next=this_page %}">
+                                <img width="32" src="https://facebook.com/favicon.ico" alt="twitter"/>
+                            </a>
+                        </div>
+                    </div>
+
+                {% endif %}
             </div>
-            <div class="col-md-6">
-                <button class="btn btn-primary js-save map-action">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                    {% trans "Save" %}
-                </button>
-            </div>
-            {% if is_authenticated %}
-            <div class="col-md-12">
-                <a href="{% url 'rates' %}" class="btn btn-default map-action map-action--back">
-                    {% trans 'Return to rates' %}
-                </a>
-            </div>
-            {% endif %}
+
         </div>
     </div>
 
