@@ -15,6 +15,14 @@
     <div class="col-md-4 rates--actions">
 
             {% if not has_social_account %}
+                <h4 class="rates-login--text">
+                {% if is_authenticated %}
+                    {% trans 'Attach:' %}
+                {% else %}
+                    {% trans 'Login:' %}
+                {% endif %}
+                </h4>
+
                 {% url "rates" as this_page %}
                 {% with auth_process=is_authenticated|yesno:"connect,login" %}
 
@@ -28,8 +36,15 @@
                 >
                     <img width="32" src="{% static 'img/facebook.svg' %}" alt="facebook"/>
                 </a>
+                <a
+                    href="{% provider_login_url "vk" process=auth_process next=this_page %}"
+                >
+                    <img width="32" src="{% static 'img/vk.svg' %}" alt="vk"/>
+                </a>
                 {% endwith %}
-            {% else %}
+            {% endif %}
+
+            {% if is_authenticated %}
             <form
                     action="{% url 'account_logout' %}"
                     class="rates--logout"

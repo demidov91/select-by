@@ -7,7 +7,7 @@ body{padding: 0 2em;}
 #name-wrapper{text-align: center;}
 .rates--header{padding: 1em;}
 .rates--actions{text-align:right;}
-.rates--logout{display: inline;}
+.rates--logout, .rates-login--text{display: inline;}
 
 .errorlist{
     background-color: #f2dede;

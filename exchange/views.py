@@ -1,5 +1,4 @@
 import logging
-from decimal import Decimal
 
 from django.shortcuts import render, redirect
 from django.http.response import JsonResponse, HttpResponse
@@ -13,6 +12,7 @@ from exchange.utils.exchange_office import (
 )
 from exchange.utils.common import quantize_to_cents
 from exchange.utils.rate import get_best_rates
+from exchange.utils.user import has_social_account
 from exchange.constants import BANK_NAME_TO_SHORT_NAME
 
 
@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 def config(request):
     return render(request, 'config.html', {
         'is_authenticated': request.user.is_authenticated,
+        'has_social_account': has_social_account(request.user),
         'has_exchange_offices': get_exchange_offices(request).exists(),
     })
 
@@ -51,9 +52,7 @@ def get_rates(request):
         'offices': offices,
         'dynamic_settings': dict(DynamicSettings.objects.all().values_list('key', 'value')),
         'is_authenticated': request.user.is_authenticated,
-        'has_social_account': (
-            request.user.is_authenticated and request.user.socialaccount_set.exists()
-        ),
+        'has_social_account': has_social_account(request.user),
     })
 
 

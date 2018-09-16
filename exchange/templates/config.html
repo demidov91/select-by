@@ -39,33 +39,42 @@
                 {% endif %}
 
                 {% if is_authenticated %}
-                    <div class="col-md-12 row">
-                        <form
-                                action="{% url 'account_logout' %}"
-                                method="POST"
-                        >
-                            {% csrf_token %}
-                            <input class="btn btn-default map-action" type="submit" value="{% trans 'Logout' %}" />
-                        </form>
-                    </div>
+                <div class="col-md-12 row">
+                    <form
+                            action="{% url 'account_logout' %}"
+                            method="POST"
+                    >
+                        {% csrf_token %}
+                        <input class="btn btn-default map-action" type="submit" value="{% trans 'Logout' %}" />
+                    </form>
+                </div>
+                {% endif %}
 
-                {% else %}
-                    {% url "rates" as this_page %}
+                {% if not has_social_account %}
+                {% with auth_process=is_authenticated|yesno:"connect,login" %}
+                    {% url "config" as this_page %}
 
-                    <div class="row">
+                    <div class="row col-md-12">
                         <div class="col-md-3">
+                            {% if is_authenticated %}
+                            <h3>{% trans 'Attach:' %}</h3>
+                            {% else %}
                             <h3>{% trans 'Login:' %}</h3>
+                            {% endif %}
                         </div>
                         <div class="col-md-9 map-action--login-cell">
-                            <!-- <a class="btn btn-default" href="{% provider_login_url "twitter" process="login" next=this_page %}">
+                            <!-- <a class="btn btn-default" href="{% provider_login_url "twitter" process=auth_process next=this_page %}">
                                 <img width="32" src="https://twitter.com/favicon.ico" alt="twitter"/>
                             </a> -->
-                            <a class="btn btn-default" href="{% provider_login_url "facebook" process="login" next=this_page %}">
+                            <a class="btn btn-default" href="{% provider_login_url "facebook" process=auth_process next=this_page %}">
                                 <img width="32" src="{% static 'img/facebook.svg' %}" alt="facebook"/>
+                            </a>
+                            <a class="btn btn-default" href="{% provider_login_url "vk" process=auth_process next=this_page %}">
+                                <img width="32" src="{% static 'img/vk.svg' %}" alt="facebook"/>
                             </a>
                         </div>
                     </div>
-
+                {% endwith %}
                 {% endif %}
             </div>
 
