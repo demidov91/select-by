@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-19 15:46+0300\n"
+"POT-Creation-Date: 2018-09-17 12:57+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,145 +20,111 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: exchange/models.py:7 exchange/models.py:15
+#: exchange/admin.py:26
+msgid "Undefined"
+msgstr ""
+
+#: exchange/admin.py:30
+msgid "Update coordinates"
+msgstr ""
+
+#: exchange/constants.py:34
+msgid "IdeaBank24"
+msgstr ""
+
+#: exchange/models.py:9 exchange/models.py:17
 msgid "identifier"
 msgstr "ідэнтыфікатар"
 
-#: exchange/models.py:8 exchange/models.py:56
+#: exchange/models.py:10 exchange/models.py:79
 msgid "name"
 msgstr "імя"
 
-#: exchange/models.py:16
+#: exchange/models.py:20
 msgid "address"
 msgstr "адрас"
 
-#: exchange/models.py:18
+#: exchange/models.py:27
+msgid "latitude"
+msgstr ""
+
+#: exchange/models.py:34
+msgid "longitude"
+msgstr ""
+
+#: exchange/models.py:36
+msgid "no coordinates"
+msgstr ""
+
+#: exchange/models.py:38
 msgid "is removed"
 msgstr "выдалены"
 
-#: exchange/models.py:30 exchange/templates/rates.html.py:55
+#: exchange/models.py:50 exchange/templates/rates.html:99
 msgid "usd"
 msgstr "долар"
 
-#: exchange/models.py:31 exchange/templates/rates.html.py:60
+#: exchange/models.py:51 exchange/templates/rates.html:104
 msgid "eur"
 msgstr "еўра"
 
-#: exchange/models.py:32 exchange/templates/rates.html.py:65
+#: exchange/models.py:52 exchange/templates/rates.html:109
 msgid "rub"
 msgstr "расійскі рубель"
 
-#: exchange/models.py:36
+#: exchange/models.py:56
 msgid "currency"
 msgstr "валюта"
 
-#: exchange/models.py:37 exchange/models.py:41 exchange/templates/rates.html:25
-#: exchange/templates/rates.html.py:27 exchange/templates/rates.html:29
+#: exchange/models.py:57 exchange/models.py:62 exchange/templates/rates.html:69
+#: exchange/templates/rates.html:71 exchange/templates/rates.html:73
 msgid "buy"
 msgstr "пакупка"
 
-#: exchange/models.py:38
+#: exchange/models.py:58
 msgid "rate"
 msgstr "курс"
 
-#: exchange/models.py:41 exchange/templates/rates.html.py:26
-#: exchange/templates/rates.html:28 exchange/templates/rates.html.py:30
+#: exchange/models.py:62 exchange/templates/rates.html:70
+#: exchange/templates/rates.html:72 exchange/templates/rates.html:74
 msgid "sell"
 msgstr "продаж"
 
-#: exchange/models.py:57
+#: exchange/models.py:80
 msgid "registration IP address"
 msgstr "IP рэгістрацыі"
 
-#: exchange/models.py:59
+#: exchange/models.py:82
 msgid "last changed"
 msgstr "апошняе рэдагаванне"
 
-#: exchange/templates/index.html:8
-msgid "Anon"
-msgstr "Анон"
-
-#: exchange/templates/index.html:9
-msgid "Hi"
-msgstr "Вітаю цябе"
-
-#: exchange/templates/index.html:15
-msgid "It's not me! My name is"
-msgstr "Гэта не я! Меня завуць"
-
-#: exchange/templates/index.html:16
-msgid "show me my rates!"
-msgstr "пакажы мне мае курсы!"
-
-#: exchange/templates/index.html:23
-msgid ""
-"Very likely you will prefer to use awesome\n"
-"            <a href=\"http://mobile.tut.by/app-finance.html\" target=\"_blank"
-"\">tut.by application</a>\n"
-"            or use original <a href=\"http://select.by/kurs/\" target="
-"\"_blank\">select.by</a> site.\n"
-"            "
+#: exchange/templates/config.html:7
+msgid "Click on the map!"
 msgstr ""
-"Адразу спойлер: хутчэй за ўсё, такбе спадабаецца мабільны дадатак ад <a href="
-"\"http://mobile.tut.by/app-finance.html\" target=\"_blank\">tut.by</a> - там "
-"мапа, свежыя курсы, усё такое. Але ёсць у яе адзін недахоп: калі некалькі "
-"абменнікаў стаяць побач, то іх курсы \"напаўзаюць\" адзін на аднаго, і "
-"карыснасць прылады зніжаецца да нуля."
 
-#: exchange/templates/index.html:28
-msgid ""
-"If you still want to try this filter, select exchange offices you would like "
-"to follow and type any unique name."
+#: exchange/templates/config.html:28
+msgid "Clear"
 msgstr ""
-"Зараз аб тым, навошта гэта зроблена.<br>Калі валюту трэба набыць/прадаць, "
-"трэба доўга чакаць, калі загрузіцца і адсарціруецца велізарная табліца на <a "
-"href=\"http://select.by/kurs/\" target=\"_blank\">select.by</a>. І вось "
-"атрымаў ты гэту табліцу і бачыш: лепшы курс - на Кунцаўшчыне. Ну, шыкоўна, "
-"думаеш, я-та на Уруччы. Крыху лепшы курс у Малінаўке. Не тое. Вось, банк, "
-"які побач выставіў добры курс. А, не, гэта толькі у некалькіх аддзяленнях "
-"добры курс, у тваім - не такі прывабны. Карацей, пакуль ты лазіш, браўзэр "
-"падае, з'еўшы ўсю апераціўку на тэлефоне, дадзеных у табліцы нямала (не "
-"будзем удакладняць, у якім годзе характарыстыкі майго тэлефона былі "
-"топавымі)."
 
-#: exchange/templates/index.html:29
-msgid ""
-"Rates are updated each 15 minute: not too rare for you, not too often for me "
-"and select.by"
-msgstr ""
-"Так што, тут вы па адрасу выбіраеце свае бліжэйшыя аддзялення банка, "
-"уводзіце якое-небудзь імя карыстальніка, можна кірылічнае, і вам паказваецца "
-"скарочаная версія дадзеных з select.by. Абнаўленне з select.by - кожныя 15 "
-"хвілін: і вам павінна хапіць, і мяне не павінны забаніць."
-
-#: exchange/templates/index.html:30
-msgid "Your choice will be stored in cookies and can be restored by username"
-msgstr ""
-"Пасля таго як аднойчы стварылі набор абменнікаў, можна адчыніць свой набор "
-"на іншай прыладзе, іншым браўзеры, калі ўведзяце імя карыстальніка у правым "
-"верхнім куту экрана. А як жа пароль?  Я ён вам патрэбны? Пакуль што "
-"спадзяюся на вашу сумленнасць, але планую дапісаць бан за падбор імені "
-"карыстальніка."
-
-#: exchange/templates/index.html:31
-msgid "Have a nice rate!"
-msgstr "Прыемнага карыстання!"
-
-#: exchange/templates/index.html:41
-msgid "Name"
-msgstr "Імя"
-
-#: exchange/templates/index.html:42
+#: exchange/templates/config.html:34
 msgid "Save"
 msgstr "Захаваць"
 
-#: exchange/templates/index.html:44
-msgid "Without changes"
-msgstr "Не змяняць"
+#: exchange/templates/config.html:42
+msgid "Return to rates"
+msgstr ""
 
-#: exchange/templates/index.html:50
-msgid "Oooh! How much offices there is here! Filter them!"
-msgstr "Колькі тут абменнікаў развялось! А дзе маі? (па-расейску, на жаль)"
+#: exchange/templates/config.html:54 exchange/templates/rates.html:54
+msgid "Logout"
+msgstr ""
+
+#: exchange/templates/config.html:66 exchange/templates/rates.html:20
+msgid "Attach:"
+msgstr ""
+
+#: exchange/templates/config.html:68 exchange/templates/rates.html:22
+msgid "Login:"
+msgstr ""
 
 #: exchange/templates/rates.html:13
 msgid ""
@@ -168,23 +134,25 @@ msgstr ""
 "Гэта старонка існуе дзякуючы <a href=\"http://select.by/\" target=\"_blank"
 "\">select.by</a>"
 
-#: exchange/templates/rates.html:16
-msgid "settings"
+#: exchange/templates/rates.html:59
+#, fuzzy
+#| msgid "settings"
+msgid "Settings"
 msgstr "налады"
 
-#: exchange/templates/rates.html:24
+#: exchange/templates/rates.html:68
 msgid "Exchange office"
 msgstr "Абменнікі"
 
-#: exchange/templates/rates.html:51
+#: exchange/templates/rates.html:95
 msgid "Last NBRB rates"
 msgstr "Апошнія курсы НБРБ"
 
-#: exchange/templates/rates.html:75
+#: exchange/templates/rates.html:119
 msgid "Current RUB rate"
 msgstr "Бягучы курс расійскага рубля"
 
-#: exchange/templates/rates.html:83
+#: exchange/templates/rates.html:126
 msgid ""
 "<span> I expect </span><input id=\"next-nbrb\" value=\"\" /><span> for "
 "dollar on the end of the trades</span>"
@@ -192,96 +160,147 @@ msgstr ""
 "<span>Разлічваю на </span><input id=\"next-nbrb\" value=\"\" /><span> за "
 "даляр пры закрыцці</span>"
 
-#: exchange/templates/rates.html:90
-msgid "Condition for in-day buy-sell operation"
-msgstr "Крытычная ўзроўні"
+#~ msgid "Anon"
+#~ msgstr "Анон"
 
-#: exchange/templates/rates.html:93
-msgid "You can sell at"
-msgstr "Адназначна прадаваць пры"
+#~ msgid "Hi"
+#~ msgstr "Вітаю цябе"
 
-#: exchange/templates/rates.html:97
-msgid "You can buy at"
-msgstr "Адназначна купляць пры"
+#~ msgid "It's not me! My name is"
+#~ msgstr "Гэта не я! Меня завуць"
 
-#: exchange/templates/rates.html:104
-msgid "Plan your deposit in"
-msgstr "Планаванне дэпазіту ў"
+#~ msgid "show me my rates!"
+#~ msgstr "пакажы мне мае курсы!"
 
-#: exchange/templates/rates.html:109
-msgid "for"
-msgstr "на"
+#~ msgid ""
+#~ "Very likely you will prefer to use awesome\n"
+#~ "            <a href=\"http://mobile.tut.by/app-finance.html\" target="
+#~ "\"_blank\">tut.by application</a>\n"
+#~ "            or use original <a href=\"http://select.by/kurs/\" target="
+#~ "\"_blank\">select.by</a> site.\n"
+#~ "            "
+#~ msgstr ""
+#~ "Адразу спойлер: хутчэй за ўсё, такбе спадабаецца мабільны дадатак ад <a "
+#~ "href=\"http://mobile.tut.by/app-finance.html\" target=\"_blank\">tut.by</"
+#~ "a> - там мапа, свежыя курсы, усё такое. Але ёсць у яе адзін недахоп: калі "
+#~ "некалькі абменнікаў стаяць побач, то іх курсы \"напаўзаюць\" адзін на "
+#~ "аднаго, і карыснасць прылады зніжаецца да нуля."
 
-#: exchange/templates/rates.html:111
-msgctxt "plan-deposit"
-msgid "months"
-msgstr "месяцаў"
+#~ msgid ""
+#~ "If you still want to try this filter, select exchange offices you would "
+#~ "like to follow and type any unique name."
+#~ msgstr ""
+#~ "Зараз аб тым, навошта гэта зроблена.<br>Калі валюту трэба набыць/прадаць, "
+#~ "трэба доўга чакаць, калі загрузіцца і адсарціруецца велізарная табліца на "
+#~ "<a href=\"http://select.by/kurs/\" target=\"_blank\">select.by</a>. І "
+#~ "вось атрымаў ты гэту табліцу і бачыш: лепшы курс - на Кунцаўшчыне. Ну, "
+#~ "шыкоўна, думаеш, я-та на Уруччы. Крыху лепшы курс у Малінаўке. Не тое. "
+#~ "Вось, банк, які побач выставіў добры курс. А, не, гэта толькі у некалькіх "
+#~ "аддзяленнях добры курс, у тваім - не такі прывабны. Карацей, пакуль ты "
+#~ "лазіш, браўзэр падае, з'еўшы ўсю апераціўку на тэлефоне, дадзеных у "
+#~ "табліцы нямала (не будзем удакладняць, у якім годзе характарыстыкі майго "
+#~ "тэлефона былі топавымі)."
 
-#: exchange/templates/rates.html:115
-msgid ""
-"When exchange rate is stable deposits with lower percents are not effective "
-"and can even lead to money loss nominated in national currency. Here you can "
-"type your most optimistic and pessimistic rate expectations, specify period "
-"in months and this tool will advice you what share of savings can prevent "
-"money loss. Remember that middle-term and long-term savings need different "
-"management."
-msgstr ""
-"Калі абменны курс устойлівы, дэпазіты з ніжэйшымі стаўкамі намінаваныя у "
-"інвалюце становяцца не эфектыўнымі і могуць нават прывесці да страт у "
-"пераліке на нацыянальную валюту. Тут вы можаце ўвесці свае самыя "
-"аптымістычныя і песімістычная чаканні валютнагы курсу на канец актуальнага "
-"для вас перыяду і ўбачыць, якое размеркаванне укладаў перадухіліць страты ў "
-"тым ці іншым вападку. Памятайце, што доўгачасовыя і сярэднечасовыя "
-"зберажэнні патрабуюць рознага кіравання."
+#~ msgid ""
+#~ "Rates are updated each 15 minute: not too rare for you, not too often for "
+#~ "me and select.by"
+#~ msgstr ""
+#~ "Так што, тут вы па адрасу выбіраеце свае бліжэйшыя аддзялення банка, "
+#~ "уводзіце якое-небудзь імя карыстальніка, можна кірылічнае, і вам "
+#~ "паказваецца скарочаная версія дадзеных з select.by. Абнаўленне з select."
+#~ "by - кожныя 15 хвілін: і вам павінна хапіць, і мяне не павінны забаніць."
 
-#: exchange/templates/rates.html:120 exchange/templates/rates.html.py:155
-msgid "National currency"
-msgstr "Рублі"
+#~ msgid ""
+#~ "Your choice will be stored in cookies and can be restored by username"
+#~ msgstr ""
+#~ "Пасля таго як аднойчы стварылі набор абменнікаў, можна адчыніць свой "
+#~ "набор на іншай прыладзе, іншым браўзеры, калі ўведзяце імя карыстальніка "
+#~ "у правым верхнім куту экрана. А як жа пароль?  Я ён вам патрэбны? Пакуль "
+#~ "што спадзяюся на вашу сумленнасць, але планую дапісаць бан за падбор "
+#~ "імені карыстальніка."
 
-#: exchange/templates/rates.html:123
-msgid "Double capitalization"
-msgstr "Двайная капіталізацыя"
+#~ msgid "Have a nice rate!"
+#~ msgstr "Прыемнага карыстання!"
 
-#: exchange/templates/rates.html:129
-msgid "Foreign currency"
-msgstr "Валюта"
+#~ msgid "Name"
+#~ msgstr "Імя"
 
-#: exchange/templates/rates.html:132
-msgid "Take conversation loss into account"
-msgstr "Улічываць страты на канвертацыю"
+#~ msgid "Without changes"
+#~ msgstr "Не змяняць"
 
-#: exchange/templates/rates.html:139
-msgid "Exchange rates expectations"
-msgstr "Чаканні абменннага курсу"
+#~ msgid "Oooh! How much offices there is here! Filter them!"
+#~ msgstr "Колькі тут абменнікаў развялось! А дзе маі? (па-расейску, на жаль)"
 
-#: exchange/templates/rates.html:141
-msgid "Maximal"
-msgstr "Максімальны"
+#~ msgid "Condition for in-day buy-sell operation"
+#~ msgstr "Крытычная ўзроўні"
 
-#: exchange/templates/rates.html:145
-msgid "Minimal"
-msgstr "Мнімальны"
+#~ msgid "You can sell at"
+#~ msgstr "Адназначна прадаваць пры"
 
-#: exchange/templates/rates.html:151
-msgid "Currencies proportion"
-msgstr "Размеркаванне па валютах"
+#~ msgid "You can buy at"
+#~ msgstr "Адназначна купляць пры"
 
-#: exchange/templates/rates.html:153
-msgid "Loss of"
-msgstr "Страты"
+#~ msgid "Plan your deposit in"
+#~ msgstr "Планаванне дэпазіту ў"
 
-#: exchange/templates/rates.html:153
-msgid "can't be prevented with such rates expectations."
-msgstr "не могуць быць перадухіліны з уведзенымі чаканнямі курсу."
+#~ msgid "for"
+#~ msgstr "на"
 
-#: exchange/templates/rates.html:156
-msgid "Foreign"
-msgstr "Валюта"
+#~ msgctxt "plan-deposit"
+#~ msgid "months"
+#~ msgstr "месяцаў"
 
-#: exchange/templates/rates.html:164
-msgid "Fix coefficients"
-msgstr "Паправачныя каэфіцыенты"
+#~ msgid ""
+#~ "When exchange rate is stable deposits with lower percents are not "
+#~ "effective and can even lead to money loss nominated in national currency. "
+#~ "Here you can type your most optimistic and pessimistic rate expectations, "
+#~ "specify period in months and this tool will advice you what share of "
+#~ "savings can prevent money loss. Remember that middle-term and long-term "
+#~ "savings need different management."
+#~ msgstr ""
+#~ "Калі абменны курс устойлівы, дэпазіты з ніжэйшымі стаўкамі намінаваныя у "
+#~ "інвалюце становяцца не эфектыўнымі і могуць нават прывесці да страт у "
+#~ "пераліке на нацыянальную валюту. Тут вы можаце ўвесці свае самыя "
+#~ "аптымістычныя і песімістычная чаканні валютнагы курсу на канец "
+#~ "актуальнага для вас перыяду і ўбачыць, якое размеркаванне укладаў "
+#~ "перадухіліць страты ў тым ці іншым вападку. Памятайце, што доўгачасовыя і "
+#~ "сярэднечасовыя зберажэнні патрабуюць рознага кіравання."
 
-#: exchange/templates/rates.html:166
-msgid "Exchange office margin"
-msgstr "Маржа абменнікаў"
+#~ msgid "National currency"
+#~ msgstr "Рублі"
+
+#~ msgid "Double capitalization"
+#~ msgstr "Двайная капіталізацыя"
+
+#~ msgid "Foreign currency"
+#~ msgstr "Валюта"
+
+#~ msgid "Take conversation loss into account"
+#~ msgstr "Улічываць страты на канвертацыю"
+
+#~ msgid "Exchange rates expectations"
+#~ msgstr "Чаканні абменннага курсу"
+
+#~ msgid "Maximal"
+#~ msgstr "Максімальны"
+
+#~ msgid "Minimal"
+#~ msgstr "Мнімальны"
+
+#~ msgid "Currencies proportion"
+#~ msgstr "Размеркаванне па валютах"
+
+#~ msgid "Loss of"
+#~ msgstr "Страты"
+
+#~ msgid "can't be prevented with such rates expectations."
+#~ msgstr "не могуць быць перадухіліны з уведзенымі чаканнямі курсу."
+
+#~ msgid "Foreign"
+#~ msgstr "Валюта"
+
+#~ msgid "Fix coefficients"
+#~ msgstr "Паправачныя каэфіцыенты"
+
+#~ msgid "Exchange office margin"
+#~ msgstr "Маржа абменнікаў"

@@ -1,5 +1,5 @@
-function getFloat(id){
-	return parseFloat($('#' + id).val());
+function getFloat(selector){
+	return parseFloat($(selector).val());
 }
 
 function getFloatFromText(id){
@@ -10,13 +10,11 @@ function getFloatFromText(id){
 var minRubRate = 3.1;
 var maxRubRate = 0.033;
 var slowDownCoefficient = 0.5;
-var exchangeMargin = getFloat('exchange-margin') / 100;
 var prevUsd = getFloatFromText('prev-usd');
-var prevEur = getFloatFromText('prev-eur');
 
 function updateData(){		
 	var prevRub = prevUsd / getFloatFromText('prev-rub');
-	var currentRub = getFloat('current-rub');
+	var currentRub = getFloat('.js-current-rub');
 	var rubChange = currentRub / prevRub;
 
 	var nextNbrb = (prevUsd * (1 + (rubChange - 1) * slowDownCoefficient)).toFixed(4);
@@ -29,7 +27,7 @@ function updateData(){
     if (currentRub != NaN){
         $('#predict-line').removeClass('up down').addClass(currentRub > prevRub ? 'up' : 'down');
     }
-	$('#next-nbrb').val(nextNbrb);
+	$('.js-next-nbrb').text(nextNbrb);
     $('#prev-usd-rub').text(prevRub.toFixed(2));
 }
 
@@ -52,11 +50,11 @@ $(document).ready(function(){
         url: 'https://free.currencyconverterapi.com/api/v5/convert?q=USD_RUB&compact=y',
         method: 'GET',
         success: function(data){
-            $('#current-rub').val(data['USD_RUB']['val']);
+            $('.js-current-rub').val(data['USD_RUB']['val']);
             updateData();  
         }
     });
     $('#nbrb-time').text(formatDate(new Date($('#nbrb-time').text())));
-    $('#prev-usd, #prev-eur, #prev-rub, #current-rub, #next-nbrb, #exchange-buy-to-nbrb, #exchange-sell-to-nbrb').keyup(updateData);
+    $('.js-current-rub').keyup(updateData);
 
 });

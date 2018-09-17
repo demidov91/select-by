@@ -51,12 +51,12 @@
                     method="POST"
             >
                 {% csrf_token %}
-                <input class="btn btn-default" type="submit" value="{% trans 'logout' %}" />
+                <input class="btn btn-default" type="submit" value="{% trans 'Logout' %}" />
             </form>
             {% endif %}
 
 
-            <a href="{% url 'config' %}" class="btn btn-default">{% trans 'settings' %}</a>
+            <a href="{% url 'config' %}" class="btn btn-default">{% trans 'Settings' %}</a>
 
     </div>
     <div class="clear"></div>
@@ -89,46 +89,53 @@
 <hr>
 
 <div>
-    <div class="toLeft" id="counter-data">
-        <div id="nbrb-block">        
+    <div class="col-md-6 rates-counter--left">
+        <div id="nbrb-block" class="row">
             <div>
                 <span class="h3">{% trans 'Last NBRB rates' %}</span>
                 (<span id="nbrb-time">{{ dynamic_settings|get_item:"nbrb rates date"}}</span>)
             </div>
             <div>
-                <h4 class="toLeft rate-caption">{% trans 'usd' %}</h4>
-                <h4 class="rate-value toLeft" id="prev-usd">{{ dynamic_settings|get_item:"nbrb usd"}}</h4>
-                <div class="clear"></div>
+                <h4 class="rate-caption col-md-3">{% trans 'usd' %}</h4>
+                <h4 class="rate-value col-md-9" id="prev-usd">{{ dynamic_settings|get_item:"nbrb usd"}}</h4>
             </div>
             <div>
-                <h4 class="toLeft rate-caption">{% trans 'eur' %}</h4>
-                <h4 class="rate-value toLeft" id="prev-eur">{{ dynamic_settings|get_item:"nbrb eur"}}</h4>
-                <div class="clear"></div>
+                <h4 class="rate-caption col-md-3">{% trans 'eur' %}</h4>
+                <h4 class="rate-value col-md-9" id="prev-eur">{{ dynamic_settings|get_item:"nbrb eur"}}</h4>
             </div>
             <div>
-                <h4 class="toLeft rate-caption">{% trans 'rub' %}</h4>
-                <div class="toLeft">
-                    <h4 class="rate-value" id="prev-rub">{{ dynamic_settings|get_item:"nbrb rub"}}</h4>
-                    (<h8 id="prev-usd-rub"></h8> <img src="{% static 'img/rub.png' %}" alt="&#8381;" id="rub-to-usd-symbol">/$)
+                <h4 class="rate-caption col-md-3">{% trans 'rub' %}</h4>
+                <h4 class="rate-value col-md-9" id="prev-rub">{{ dynamic_settings|get_item:"nbrb rub"}}</h4>
+            </div>
+            <div>
+                <div class="col-md-offset-3 col-md-9">
+                    (<h8 id="prev-usd-rub"></h8> <img src="{% static 'img/rub.png' %}" alt="&#8381;" class="rates-rub-to-usd-symbol">/$)
                 </div>
-                <div class="clear"></div>
             </div>
         </div>
-        <div id="predict-block">
-            <div>
-                <span class="h3">{% trans 'Current RUB rate' %}</span>
+        <div id="predict-block" class="row">
+            <div class="row">
+                <h3 class="col-md-3">
+                    {% trans 'Current' context 'current-rub-rate' %}
+                    <img src="{% static 'img/rub.png' %}" alt="&#8381;" class="rates-rub-to-usd-symbol">/$
+                </h3>
+                <div class="col-md-9">
+                    <input class="js-current-rub  rates-predict--current-rub"/>
+                </div>
             </div>
-            <div>
-                <input id="current-rub"/>
-            </div>
-            <div>
-                <p id="predict-line">
-                    {% blocktrans %}<span> I expect </span><input id="next-nbrb" value="" /><span> for dollar on the end of the trades</span>{% endblocktrans  %}
-                </p>
+            <div class="row">
+                <div class="col-md-12">
+                    <p id="predict-line">
+                        {% blocktrans %}
+                        <span> I expect </span>
+                        <span class="js-next-nbrb h4"></span>
+                        <span> for dollar on the end of the trades</span>
+                        {% endblocktrans  %}
+                    </p>
+                </div>
             </div>
         </div>
     </div>
-    <div class="clear"></div>
 </div>
 
 

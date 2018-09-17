@@ -8,6 +8,8 @@ body{padding: 0 2em;}
 .rates--header{padding: 1em;}
 .rates--actions{text-align:right;}
 .rates--logout, .rates-login--text{display: inline;}
+.rates-predict--current-rub {margin-top: 15px; }
+.rates-rub-to-usd-symbol{height: 0.8em;}
 
 .errorlist{
     background-color: #f2dede;
@@ -30,19 +32,13 @@ table.tablesorter td.is-best{
     background-color: #AFFFAF;
 }
 
-#counter-data, #counter-results{
-    width: 50%;
-}
 
-.rate-caption{width: 25%;}
-.rate-value{width: 75%;}
-
-#predict-block, #depo-planner{
+.rates-counter--left>.row {
     margin-top: 1em;
 }
 
 #predict-block input{
-    width: 5em;
+    max-width: 6em;
 }
 
 #predict-line.up{
@@ -51,11 +47,6 @@ table.tablesorter td.is-best{
 
 #predict-line.down{
     color: red;
-}
-
-#counter-results table td{
-    font-size: 16px;
-    padding: 0.25em; 
 }
 
 #current-rub-time-wrapper{
@@ -67,7 +58,6 @@ table.tablesorter td.is-best{
 .planner-block>div{margin-right: 1em;}
 .planner-block{margin-top: 1em;}
 #expectations input{width: 5em;}
-#rub-to-usd-symbol{height: 0.8em;}
 #depo-planner{margin-bottom: 2em;}
 #map{height: 500px;}
 .map-action{width: 100%;}
