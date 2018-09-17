@@ -28,24 +28,10 @@ function configMapRelatedBehaviour(map){
     map.events.add('click', onMapClick);
 
     $(".js-clear").click(function(event){
-        event.preventDefault();
         allPoints.each(turnPointOff);        
     });    
 
-    $('.js-save').click(function(e){
-        var points = allPoints.search('properties.isSelected=true');
-        var data = {
-            'points': points._objects.map(function(x){return x.properties.get('id');})
-        }; 
-
-        $.ajax({
-            url: '/save-points/',
-            method: 'POST',
-            data: data
-        }).done(function(e){
-            window.location.href = '/';
-        });
-    });
+    $('.js-save').click(onSave);
 }
 
 function onPointClick(event){
@@ -66,6 +52,24 @@ function onMapClick(event){
     var pointsToAdd = allPoints.searchInside(circle);
     pointsToAdd.each(turnPointOn); 
     map.geoObjects.remove(circle);   
+}
+
+function onSave(event){
+    var points = allPoints.search('properties.isSelected=true');
+    var points_id = points._objects.map(function(x){return x.properties.get('id');});
+    var online_id = $.map($('[name=online]:checked'), (function(x){return x.value;}));
+
+    var data = {
+        'points': points_id.concat(online_id)
+    }; 
+
+    $.ajax({
+        url: '/save-points/',
+        method: 'POST',
+        data: data
+    }).done(function(e){
+        window.location.href = '/';
+    });
 }
 
 function turnPointOff(point){

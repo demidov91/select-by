@@ -1,8 +1,13 @@
 import datetime
 
+from exchange.constants import IDEABANK_ONLINE_OFFICE
 from .utils import BaseLoader
-from .defines import IDEABANK_URL, IDEABANK_ONLINE_OFFICE, IDEABANK_IDENTIFIER, IDEA_REMOTE_DATE_FORMAT,\
-    DEFAULT_DATE_FORMAT
+from .defines import (
+    IDEABANK_URL,
+    IDEABANK_IDENTIFIER,
+    IDEA_REMOTE_DATE_FORMAT,
+    DEFAULT_DATE_FORMAT,
+)
 from .models import ExchangeOffice, Bank, Rate
 
 import logging

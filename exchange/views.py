@@ -1,14 +1,18 @@
 import logging
 
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.http.response import JsonResponse, HttpResponse
+from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_GET, require_POST
 
+from exchange.constants import ONLINE_EXCHANGE_OFFICES_NAMES, ONLINE_EXCHANGE_OFFICES_IDENTIFIERS
 from exchange.models import Rate, DynamicSettings, ExchangeOffice
 from exchange.services import set_exchange_offices
 from exchange.utils.exchange_office import (
     get_exchange_offices,
     get_exchnage_offices_id,
+    get_online_exchange_offices,
 )
 from exchange.utils.common import quantize_to_cents
 from exchange.utils.rate import get_best_rates
@@ -20,10 +24,19 @@ logger = logging.getLogger(__name__)
 
 
 def config(request):
+    active_id = get_exchnage_offices_id(request)
+
+    online_exchange_offices_data = tuple({
+        'id': x.id,
+        'name': ONLINE_EXCHANGE_OFFICES_NAMES.get(x.identifier),
+        'is_selected': x.id in active_id,
+    } for x in get_online_exchange_offices())
+
     return render(request, 'config.html', {
         'is_authenticated': request.user.is_authenticated,
         'has_social_account': has_social_account(request.user),
         'has_exchange_offices': get_exchange_offices(request).exists(),
+        'online': online_exchange_offices_data,
     })
 
 
@@ -66,7 +79,10 @@ def my_points(request):
             'id': x.id,
             'isSelected': x.id in points_id,
             'content': BANK_NAME_TO_SHORT_NAME.get(x.bank.name),
-        } for x in ExchangeOffice.objects.filter(is_removed=False).select_related('bank')],
+        } for x in ExchangeOffice.objects.filter(
+            Q(is_removed=False),
+            ~Q(identifier__in=ONLINE_EXCHANGE_OFFICES_IDENTIFIERS),
+        ).select_related('bank')],
     })
 
 

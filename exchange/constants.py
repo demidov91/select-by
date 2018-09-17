@@ -1,3 +1,5 @@
+from django.utils.translation import ugettext_lazy as _
+
 BANK_NAME_TO_SHORT_NAME = {
     "Банк Решение": "R",
     "Идея Банк": "I",
@@ -25,3 +27,11 @@ BANK_NAME_TO_SHORT_NAME = {
     "БПС-Сбербанк": "БПС",
     "ЕвроТоргИнвестБанк": "Евр",    
 }
+
+IDEABANK_ONLINE_OFFICE = '1101'
+
+ONLINE_EXCHANGE_OFFICES_NAMES = {
+    IDEABANK_ONLINE_OFFICE: _('IdeaBank24'),
+}
+
+ONLINE_EXCHANGE_OFFICES_IDENTIFIERS = ONLINE_EXCHANGE_OFFICES_NAMES.keys()

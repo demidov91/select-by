@@ -10,8 +10,14 @@
     <div class="row editor--all">
         <div id="map" class="col-md-8"></div>
         <div class="col-md-4">
-
-            <input type="checkbox" /> {% trans "IdeaBank24" %}
+            {% for office in online %}
+            <input 
+                type="checkbox" 
+                value="{{ office.id }}" 
+                name="online"  
+                {% if office.is_selected %}checked=checked{% endif %}
+            /> {{ office.name }}
+            {% endfor %}
 
             <hr>
             <div class="editor-right--block">

@@ -2,7 +2,7 @@ NBRB_URL = 'http://www.nbrb.by/Services/XmlExRates.aspx'
 IDEABANK_URL = 'https://www.ideabank.by/o-banke/kursy-valyut/'
 
 MTBANK_IDENTIFIER = 'http://select.by/content/view/410/339/'
-IDEABANK_IDENTIFIER = 'http://select.by/content/view/532/411/'
+IDEABANK_IDENTIFIER = 'https://select.by/content/view/532/411/'
 
 MTBANK_COMMON_OFFICE = '1001'
 MTBANK_68_OFFICE = '1068'
