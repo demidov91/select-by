@@ -18,7 +18,6 @@ lxml==3.5.0
 more-itertools==4.3.0
 multidict==4.4.0
 oauthlib==2.1.0
-pkg-resources==0.0.0
 pluggy==0.7.1
 psycopg2==2.7.5
 py==1.6.0

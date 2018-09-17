@@ -52,7 +52,7 @@ def auth_by_cookie(request):
     user.exchange_offices.set(deprecated_user.exchange_offices.all())
     deprecated_user.delete()
 
-    login(request, user)
+    login(request, user, backend='django.contrib.auth.backends.ModelBackend')
 
     logger.info('Successfully duplicated user %s info', user.username)
 
