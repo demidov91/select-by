@@ -5,7 +5,7 @@ from .defines import MTBANK_68_BODY, MTBANK_COMMON_BODY, MTBANK_68_OFFICE, MTBAN
     MTBANK_RATES_START_LINE
 
 from .models import ExchangeOffice, Bank, Rate
-from .utils import BaseLoader
+from exchange.utils.common import BaseLoader
 
 import logging
 logger = logging.getLogger(__name__)

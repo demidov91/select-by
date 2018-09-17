@@ -1,7 +1,7 @@
 import datetime
 
 from exchange.constants import IDEABANK_ONLINE_OFFICE
-from .utils import BaseLoader
+from exchange.utils.common import BaseLoader
 from .defines import (
     IDEABANK_URL,
     IDEABANK_IDENTIFIER,
