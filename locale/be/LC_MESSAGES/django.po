@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-17 12:57+0300\n"
+"POT-Creation-Date: 2018-09-17 14:36+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -64,11 +64,11 @@ msgstr "выдалены"
 msgid "usd"
 msgstr "долар"
 
-#: exchange/models.py:51 exchange/templates/rates.html:104
+#: exchange/models.py:51 exchange/templates/rates.html:103
 msgid "eur"
 msgstr "еўра"
 
-#: exchange/models.py:52 exchange/templates/rates.html:109
+#: exchange/models.py:52 exchange/templates/rates.html:107
 msgid "rub"
 msgstr "расійскі рубель"
 
@@ -149,16 +149,30 @@ msgid "Last NBRB rates"
 msgstr "Апошнія курсы НБРБ"
 
 #: exchange/templates/rates.html:119
-msgid "Current RUB rate"
-msgstr "Бягучы курс расійскага рубля"
+#, fuzzy
+#| msgid "currency"
+msgctxt "current-rub-rate"
+msgid "Current"
+msgstr "валюта"
 
-#: exchange/templates/rates.html:126
+#: exchange/templates/rates.html:129
 msgid ""
-"<span> I expect </span><input id=\"next-nbrb\" value=\"\" /><span> for "
-"dollar on the end of the trades</span>"
+"\n"
+"                        <span> I expect </span>\n"
+"                        <span class=\"js-next-nbrb h4\"></span>\n"
+"                        <span> for dollar on the end of the trades</span>\n"
+"                        "
 msgstr ""
-"<span>Разлічваю на </span><input id=\"next-nbrb\" value=\"\" /><span> за "
-"даляр пры закрыцці</span>"
+
+#~ msgid "Current RUB rate"
+#~ msgstr "Бягучы курс расійскага рубля"
+
+#~ msgid ""
+#~ "<span> I expect </span><input id=\"next-nbrb\" value=\"\" /><span> for "
+#~ "dollar on the end of the trades</span>"
+#~ msgstr ""
+#~ "<span>Разлічваю на </span><input id=\"next-nbrb\" value=\"\" /><span> за "
+#~ "даляр пры закрыцці</span>"
 
 #~ msgid "Anon"
 #~ msgstr "Анон"

@@ -33,6 +33,7 @@ table.tablesorter td.is-best{
 }
 
 
+.rates-counter--left{width: 280px;}
 .rates-counter--left>.row {
     margin-top: 1em;
 }
