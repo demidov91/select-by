@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% load i18n staticfiles socialaccount %}
+
+{% block content %}
+
+    <h1>{% trans "Click on the map!" %}</h1>
+
+
+    <div class="row editor--all">
+        <div id="map" class="col-md-8"></div>
+        <div class="col-md-4">
+            {% for office in online %}
+            <input 
+                type="checkbox" 
+                value="{{ office.id }}" 
+                name="online"  
+                {% if office.is_selected %}checked=checked{% endif %}
+            /> {{ office.name }}
+            {% endfor %}
+
+            <hr>
+            <div class="editor-right--block">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button class="btn btn-warning js-clear map-action">
+                            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                            {% trans "Clear" %}
+                        </button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button class="btn btn-primary js-save map-action">
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                            {% trans "Save" %}
+                        </button>
+                    </div>
+                </div>
+
+                {% if has_exchange_offices %}
+                <div class="col-md-12 row">
+                    <a href="{% url 'rates' %}" class="btn btn-default map-action">
+                        {% trans 'Return to rates' %}
+                    </a>
+                </div>
+                {% endif %}
+
+                {% if is_authenticated %}
+                <div class="col-md-12 row">
+                    <form
+                            action="{% url 'account_logout' %}"
+                            method="POST"
+                    >
+                        {% csrf_token %}
+                        <input class="btn btn-default map-action" type="submit" value="{% trans 'Logout' %}" />
+                    </form>
+                </div>
+                {% endif %}
+
+                {% if not has_social_account %}
+                {% with auth_process=is_authenticated|yesno:"connect,login" %}
+                    {% url "config" as this_page %}
+
+                    <div class="row col-sm-12">
+                        <div class="col-sm-4">
+                            {% if is_authenticated %}
+                            <h3>{% trans 'Attach:' %}</h3>
+                            {% else %}
+                            <h3>{% trans 'Login:' %}</h3>
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-8 map-action--login-cell">
+                            <!-- <a class="btn btn-default" href="{% provider_login_url "twitter" process=auth_process next=this_page %}">
+                                <img width="32" src="https://twitter.com/favicon.ico" alt="twitter"/>
+                            </a> -->
+                            <a class="btn btn-default" href="{% provider_login_url "facebook" process=auth_process next=this_page %}">
+                                <img width="32" src="{% static 'img/facebook.svg' %}" alt="facebook"/>
+                            </a>
+                            <a class="btn btn-default" href="{% provider_login_url "vk" process=auth_process next=this_page %}">
+                                <img width="32" src="{% static 'img/vk.svg' %}" alt="facebook"/>
+                            </a>
+                        </div>
+                    </div>
+                {% endwith %}
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block script %}
+    {{ block.super }}
+    <script src="https://api-maps.yandex.com/2.1/?lang=ru_UA" type="text/javascript"></script>
+    <script type="text/javascript" src="{% static 'js/config.js' %}"></script>
+{% endblock %}

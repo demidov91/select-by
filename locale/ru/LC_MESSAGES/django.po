@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-19 15:46+0300\n"
+"POT-Creation-Date: 2018-09-17 14:36+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,145 +20,111 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: exchange/models.py:7 exchange/models.py:15
+#: exchange/admin.py:26
+msgid "Undefined"
+msgstr "Не определены"
+
+#: exchange/admin.py:30
+msgid "Update coordinates"
+msgstr "Обновить координаты"
+
+#: exchange/constants.py:34
+msgid "IdeaBank24"
+msgstr "IdeaBank24"
+
+#: exchange/models.py:9 exchange/models.py:17
 msgid "identifier"
 msgstr "идентификатор"
 
-#: exchange/models.py:8 exchange/models.py:56
+#: exchange/models.py:10 exchange/models.py:79
 msgid "name"
 msgstr "имя"
 
-#: exchange/models.py:16
+#: exchange/models.py:20
 msgid "address"
 msgstr "адрес"
 
-#: exchange/models.py:18
+#: exchange/models.py:27
+msgid "latitude"
+msgstr "широта"
+
+#: exchange/models.py:34
+msgid "longitude"
+msgstr "долгота"
+
+#: exchange/models.py:36
+msgid "no coordinates"
+msgstr "нет координат"
+
+#: exchange/models.py:38
 msgid "is removed"
 msgstr "удалён"
 
-#: exchange/models.py:30 exchange/templates/rates.html.py:55
+#: exchange/models.py:50 exchange/templates/rates.html:99
 msgid "usd"
 msgstr "доллар"
 
-#: exchange/models.py:31 exchange/templates/rates.html.py:60
+#: exchange/models.py:51 exchange/templates/rates.html:103
 msgid "eur"
 msgstr "евро"
 
-#: exchange/models.py:32 exchange/templates/rates.html.py:65
+#: exchange/models.py:52 exchange/templates/rates.html:107
 msgid "rub"
 msgstr "рубль"
 
-#: exchange/models.py:36
+#: exchange/models.py:56
 msgid "currency"
 msgstr "валюта"
 
-#: exchange/models.py:37 exchange/models.py:41 exchange/templates/rates.html:25
-#: exchange/templates/rates.html.py:27 exchange/templates/rates.html:29
+#: exchange/models.py:57 exchange/models.py:62 exchange/templates/rates.html:69
+#: exchange/templates/rates.html:71 exchange/templates/rates.html:73
 msgid "buy"
 msgstr "покупка"
 
-#: exchange/models.py:38
+#: exchange/models.py:58
 msgid "rate"
 msgstr "курс"
 
-#: exchange/models.py:41 exchange/templates/rates.html.py:26
-#: exchange/templates/rates.html:28 exchange/templates/rates.html.py:30
+#: exchange/models.py:62 exchange/templates/rates.html:70
+#: exchange/templates/rates.html:72 exchange/templates/rates.html:74
 msgid "sell"
 msgstr "продажа"
 
-#: exchange/models.py:57
+#: exchange/models.py:80
 msgid "registration IP address"
 msgstr "IP адрес регистрации"
 
-#: exchange/models.py:59
+#: exchange/models.py:82
 msgid "last changed"
 msgstr "последнее редактирование"
 
-#: exchange/templates/index.html:8
-msgid "Anon"
-msgstr "Анон"
+#: exchange/templates/config.html:7
+msgid "Click on the map!"
+msgstr "Тыкай в карту!"
 
-#: exchange/templates/index.html:9
-msgid "Hi"
-msgstr "Привет"
+#: exchange/templates/config.html:28
+msgid "Clear"
+msgstr "Очистить"
 
-#: exchange/templates/index.html:15
-msgid "It's not me! My name is"
-msgstr "Это не я! Меня зовут"
-
-#: exchange/templates/index.html:16
-msgid "show me my rates!"
-msgstr "покажи мои курсы!"
-
-#: exchange/templates/index.html:23
-msgid ""
-"Very likely you will prefer to use awesome\n"
-"            <a href=\"http://mobile.tut.by/app-finance.html\" target=\"_blank"
-"\">tut.by application</a>\n"
-"            or use original <a href=\"http://select.by/kurs/\" target="
-"\"_blank\">select.by</a> site.\n"
-"            "
-msgstr ""
-"Сразу спойлер: скорее всего, тебе понравится прилага от <a href=\"http://"
-"mobile.tut.by/app-finance.html\" target=\"_blank\">tut.by</a> - там карта, "
-"свежие курсы, все дела. Но есть у неё один недостаток: если обменники стоят "
-"рядом, то их курсы \"наползают\" друг на друга и полезность приложения резко "
-"опускается до нуля. "
-
-#: exchange/templates/index.html:28
-msgid ""
-"If you still want to try this filter, select exchange offices you would like "
-"to follow and type any unique name."
-msgstr ""
-"Теперь о том, зачем это сделано.<br>Когда валюту надо купить/продать, надо "
-"долго ждать, когда загрузится и отсортируется огромная таблица с курсами на "
-"<a href=\"http://select.by/kurs/\" target=\"_blank\">select.by</a>. И вот "
-"получаешь эту огромную таблицу, и там видишь: лучший курс - в Кунцевщине. "
-"Ну, офигеть, думаешь, я-то на Уручье. Чуть хуже курс в Малиновке. Не то. "
-"Вот, банк, который рядом выставил хороший курс. А, нет, это только в "
-"нескольких отделениях хороший курс, в твоём - не такой привлекательный. "
-"Короче, пока так лазишь, браузер падает, съев всю оперативку на телефоне, "
-"данные там не маленькие на странице (не будем уточнять, в каком году "
-"характеристики моего телефона были топовыми)."
-
-#: exchange/templates/index.html:29
-msgid ""
-"Rates are updated each 15 minute: not too rare for you, not too often for me "
-"and select.by"
-msgstr ""
-"В общем, здесь вы по адресу выбираете свои ближайшие отделения банка, "
-"вводите какое-нибудь имя пользователя, можно кирилическое, и просматриваете "
-"сокращённую версию последних данных с select.by. Обновление с select.by - "
-"каждые 15 минут: и вам должно хватить, и меня не должны забанить."
-
-#: exchange/templates/index.html:30
-msgid "Your choice will be stored in cookies and can be restored by username"
-msgstr ""
-"После того как однажды создали набор обменников можно открыть свой набор на "
-"другом устройстве, другом браузере, введя имя пользователя в верхнем правом "
-"углу на этой странице. А как же пароль?  А он вам нужен? Пока что полагаюсь "
-"на вашу сознательность, но скоро для полноты картины допишу бан за подбор "
-"имён пользователей."
-
-#: exchange/templates/index.html:31
-msgid "Have a nice rate!"
-msgstr "Приятного использования!"
-
-#: exchange/templates/index.html:41
-msgid "Name"
-msgstr "Имя"
-
-#: exchange/templates/index.html:42
+#: exchange/templates/config.html:34
 msgid "Save"
 msgstr "Сохранить"
 
-#: exchange/templates/index.html:44
-msgid "Without changes"
-msgstr "Не изменять"
+#: exchange/templates/config.html:42
+msgid "Return to rates"
+msgstr "Назад к курсам"
 
-#: exchange/templates/index.html:50
-msgid "Oooh! How much offices there is here! Filter them!"
-msgstr "Ничоси, сколько обменников. Отфильтруй-ка их!"
+#: exchange/templates/config.html:54 exchange/templates/rates.html:54
+msgid "Logout"
+msgstr "Выйти"
+
+#: exchange/templates/config.html:66 exchange/templates/rates.html:20
+msgid "Attach:"
+msgstr "Авторизоваться:"
+
+#: exchange/templates/config.html:68 exchange/templates/rates.html:22
+msgid "Login:"
+msgstr "Войти:"
 
 #: exchange/templates/rates.html:13
 msgid ""
@@ -168,120 +134,33 @@ msgstr ""
 "Это страница существует благодаря данным с сайта <a href=\"http://select.by/"
 "\" target=\"_blank\">select.by</a>!"
 
-#: exchange/templates/rates.html:16
-msgid "settings"
-msgstr "настройки"
+#: exchange/templates/rates.html:59
+msgid "Settings"
+msgstr "Настройки"
 
-#: exchange/templates/rates.html:24
+#: exchange/templates/rates.html:68
 msgid "Exchange office"
 msgstr "Обменный пункт"
 
-#: exchange/templates/rates.html:51
+#: exchange/templates/rates.html:95
 msgid "Last NBRB rates"
 msgstr "Последние курсы НБРБ"
 
-#: exchange/templates/rates.html:75
-msgid "Current RUB rate"
-msgstr "Текущий курс российского рубля"
-
-#: exchange/templates/rates.html:83
-msgid ""
-"<span> I expect </span><input id=\"next-nbrb\" value=\"\" /><span> for "
-"dollar on the end of the trades</span>"
-msgstr ""
-"<span> Ожидаю </span><input id=\"next-nbrb\" value=\"\" /><span> за доллар "
-"на закрытии торгов </span>"
-
-#: exchange/templates/rates.html:90
-msgid "Condition for in-day buy-sell operation"
-msgstr "Критические значения"
-
-#: exchange/templates/rates.html:93
-msgid "You can sell at"
-msgstr "Однозначно продавай при"
-
-#: exchange/templates/rates.html:97
-msgid "You can buy at"
-msgstr "Однозначно покупай при"
-
-#: exchange/templates/rates.html:104
-msgid "Plan your deposit in"
-msgstr "Запланируйте свой депозит в"
-
-#: exchange/templates/rates.html:109
-msgid "for"
-msgstr "на"
-
-#: exchange/templates/rates.html:111
-msgctxt "plan-deposit"
-msgid "months"
-msgstr "месяцев"
-
-#: exchange/templates/rates.html:115
-msgid ""
-"When exchange rate is stable deposits with lower percents are not effective "
-"and can even lead to money loss nominated in national currency. Here you can "
-"type your most optimistic and pessimistic rate expectations, specify period "
-"in months and this tool will advice you what share of savings can prevent "
-"money loss. Remember that middle-term and long-term savings need different "
-"management."
-msgstr ""
-"Когда обменный курс стабилен, депозиты с более низкими ставками "
-"номинированные в иностранной валюте становятся не эффективны и могут даже "
-"привести к потерям номинированным в национальной валюте. Здесь вы можете "
-"ввести свои оптимистичные и пессимистичные ожидания изменения курса на конец "
-"интересующего вас периода и увидеть, какое распределение вкладов "
-"предотвратит потери в том или ином случае. Помните, что долгосрочные и "
-"среднесрочные сбережения требуют разного управления."
-
-#: exchange/templates/rates.html:120 exchange/templates/rates.html.py:155
-msgid "National currency"
-msgstr "Рубли"
-
-#: exchange/templates/rates.html:123
-msgid "Double capitalization"
-msgstr "Двойная капитализация"
+#: exchange/templates/rates.html:119
+msgctxt "current-rub-rate"
+msgid "Current"
+msgstr "Текущий"
 
 #: exchange/templates/rates.html:129
-msgid "Foreign currency"
-msgstr "Валюта"
-
-#: exchange/templates/rates.html:132
-msgid "Take conversation loss into account"
-msgstr "Учитывать потери на конвертацию"
-
-#: exchange/templates/rates.html:139
-msgid "Exchange rates expectations"
-msgstr "Ожидания валютного курса"
-
-#: exchange/templates/rates.html:141
-msgid "Maximal"
-msgstr "Максимальный"
-
-#: exchange/templates/rates.html:145
-msgid "Minimal"
-msgstr "Минимальный"
-
-#: exchange/templates/rates.html:151
-msgid "Currencies proportion"
-msgstr "Распределение по валютам"
-
-#: exchange/templates/rates.html:153
-msgid "Loss of"
-msgstr "Потеря"
-
-#: exchange/templates/rates.html:153
-msgid "can't be prevented with such rates expectations."
-msgstr "не может быть предотвращена при введённых параметрах."
-
-#: exchange/templates/rates.html:156
-msgid "Foreign"
-msgstr "Валюта"
-
-#: exchange/templates/rates.html:164
-msgid "Fix coefficients"
-msgstr "Поправочные коэфициенты"
-
-#: exchange/templates/rates.html:166
-msgid "Exchange office margin"
-msgstr "Маржа обменников"
+msgid ""
+"\n"
+"                        <span> I expect </span>\n"
+"                        <span class=\"js-next-nbrb h4\"></span>\n"
+"                        <span> for dollar on the end of the trades</span>\n"
+"                        "
+msgstr ""
+"\n"
+"                        <span> Ожидаю </span>\n"
+"                        <span class=\"js-next-nbrb h4\"></span>\n"
+"                        <span> за доллар на закрытии торгов</span>\n"
+"                        "

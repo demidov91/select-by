@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n staticfiles compress l10n %}
+{% load i18n staticfiles compress l10n socialaccount %}
 
 {% block style %}
     {{ block.super }}
@@ -8,12 +8,56 @@
 
 
 {% block content %}
-<div id="rates-header">
-    <div class="toLeft">
+<div class="rates--header row">
+    <div class="col-sm-6">
         {% blocktrans %}This page exists thanks to <a href="http://select.by/" target="_blank">select.by</a> data!{% endblocktrans %}
     </div>
-    <div class="toRight">
-        <a href="{% url 'config' %}?name={{ name }}" class="btn btn-default">{% trans 'settings' %}</a>
+    <div class="col-sm-6 rates--actions">
+
+            {% if not has_social_account %}
+                <h4 class="rates-login--text">
+                {% if is_authenticated %}
+                    {% trans 'Attach:' %}
+                {% else %}
+                    {% trans 'Login:' %}
+                {% endif %}
+                </h4>
+
+                {% url "rates" as this_page %}
+                {% with auth_process=is_authenticated|yesno:"connect,login" %}
+
+                <!--<a data="{{ action }}"
+                    href="{% provider_login_url "twitter" process=auth_process next=this_page %}"
+                >
+                    <img width="32" src="https://twitter.com/favicon.ico" alt="twitter"/>
+                </a>-->
+                <a
+                    href="{% provider_login_url "facebook" process=auth_process next=this_page %}"
+                >
+                    <img width="32" src="{% static 'img/facebook.svg' %}" alt="facebook"/>
+                </a>
+                <a
+                    href="{% provider_login_url "vk" process=auth_process next=this_page %}"
+                >
+                    <img width="32" src="{% static 'img/vk.svg' %}" alt="vk"/>
+                </a>
+                {% endwith %}
+            {% endif %}
+
+            {% if is_authenticated %}
+            <form
+                    action="{% url 'account_logout' %}"
+                    class="rates--logout"
+                    method="POST"
+            >
+                {% csrf_token %}
+                <input class="btn btn-default" type="submit" value="{% trans 'Logout' %}" />
+            </form>
+            {% endif %}
+
+
+            <a href="{% url 'config' %}" class="btn btn-default">{% trans 'Settings' %}</a>
+
     </div>
     <div class="clear"></div>
 </div>
@@ -45,128 +89,54 @@
 <hr>
 
 <div>
-    <div class="toLeft" id="counter-data">
-        <div id="nbrb-block">        
+    <div class="rates-counter--left">
+        <div id="nbrb-block" class="row">
             <div>
                 <span class="h3">{% trans 'Last NBRB rates' %}</span>
                 (<span id="nbrb-time">{{ dynamic_settings|get_item:"nbrb rates date"}}</span>)
             </div>
             <div>
-                <h4 class="toLeft rate-caption">{% trans 'usd' %}</h4>
-                <h4 class="rate-value toLeft" id="prev-usd">{{ dynamic_settings|get_item:"nbrb usd"}}</h4>
-                <div class="clear"></div>
+                <h4 class="rate-caption col-xs-6">{% trans 'usd' %}</h4>
+                <h4 class="rate-value col-xs-6" id="prev-usd">{{ dynamic_settings|get_item:"nbrb usd"}}</h4>
             </div>
             <div>
-                <h4 class="toLeft rate-caption">{% trans 'eur' %}</h4>
-                <h4 class="rate-value toLeft" id="prev-eur">{{ dynamic_settings|get_item:"nbrb eur"}}</h4>
-                <div class="clear"></div>
+                <h4 class="rate-caption col-xs-6">{% trans 'eur' %}</h4>
+                <h4 class="rate-value col-xs-6" id="prev-eur">{{ dynamic_settings|get_item:"nbrb eur"}}</h4>
             </div>
             <div>
-                <h4 class="toLeft rate-caption">{% trans 'rub' %}</h4>
-                <div class="toLeft">
-                    <h4 class="rate-value" id="prev-rub">{{ dynamic_settings|get_item:"nbrb rub"}}</h4>
-                    (<h8 id="prev-usd-rub"></h8> <img src="{% static 'img/rub.png' %}" alt="&#8381;" id="rub-to-usd-symbol">/$)
+                <h4 class="rate-caption col-xs-6">{% trans 'rub' %}</h4>
+                <h4 class="rate-value col-xs-6" id="prev-rub">{{ dynamic_settings|get_item:"nbrb rub"}}</h4>
+            </div>
+            <div>
+                <div class="col-xs-offset-6 col-xs-6">
+                    (<h8 id="prev-usd-rub"></h8> <img src="{% static 'img/rub.png' %}" alt="&#8381;" class="rates-rub-to-usd-symbol">/$)
                 </div>
-                <div class="clear"></div>
             </div>
         </div>
-        <div id="predict-block"> 
-            <div>
-                <span class="h3">{% trans 'Current RUB rate' %}</span>
+        <div id="predict-block" class="row">
+            <div class="row">
+                <h3 class="col-xs-6">
+                    {% trans 'Current' context 'current-rub-rate' %}
+                    <img src="{% static 'img/rub.png' %}" alt="&#8381;" class="rates-rub-to-usd-symbol">/$
+                </h3>
+                <div class="col-xs-6">
+                    <input class="js-current-rub  rates-predict--current-rub"/>
+                </div>
             </div>
-            <div>
-                <input id="current-rub"/>
-                <span id="current-rub-time-wrapper">(<span id="current-rub-time"></span>)</span>
-            </div>
-            <div>
-                <p id="predict-line">
-                    {% blocktrans %}<span> I expect </span><input id="next-nbrb" value="" /><span> for dollar on the end of the trades</span>{% endblocktrans  %}
-                </p>
+            <div class="row">
+                <div class="col-xs-12">
+                    <p id="predict-line">
+                        {% blocktrans %}
+                        <span> I expect </span>
+                        <span class="js-next-nbrb h4"></span>
+                        <span> for dollar on the end of the trades</span>
+                        {% endblocktrans  %}
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="toLeft" id="counter-results">
-        <div>
-            <h3>{% trans 'Condition for in-day buy-sell operation' %}:</h3>
-            <table>
-                <tr>
-                    <td>{% trans 'You can sell at' %}: </td>
-                    <td id="sell-at"></td>
-                </tr>
-                <tr>
-                    <td>{% trans 'You can buy at' %}: </td>
-                    <td id="buy-at"></td>
-                </tr>
-            </table>
-        </div>
-        <div id="depo-planner">
-            <div>
-                <span class="h3">{% trans 'Plan your deposit in' %}</span>
-                <select id="plan-foreign-currency">
-                    <option value="usd">USD</option>
-                    <option value="eur">EUR</option>
-                </select>
-                <span class="h3">{% trans 'for' %}</span>
-                <input id="months" value="3">
-                <span class="h3"> {% trans 'months' context 'plan-deposit' %}</span>
-                <span id="deposit-planner-question"
-                      class="glyphicon glyphicon-question-sign"
-                      data-toggle="tooltip" data-placement="top"
-                      title="{% trans 'When exchange rate is stable deposits with lower percents are not effective and can even lead to money loss nominated in national currency. Here you can type your most optimistic and pessimistic rate expectations, specify period in months and this tool will advice you what share of savings can prevent money loss. Remember that middle-term and long-term savings need different management.' %}">
-                </span>
-            </div>
-
-            <div class="planner-block">
-                <h4>{% trans 'National currency' %}:</h4>
-                <div class="toLeft"><input id="byn-percent" value="{{ dynamic_settings|get_item:"byn percent"}}">%</div>
-                <div class="toLeft hidden">
-                    <span>{% trans 'Double capitalization' %}: </span><input id="byn-double" type="checkbox">
-                </div>
-                <div class="clear"></div>
-            </div>
-
-            <div class="planner-block">
-                <h4>{% trans 'Foreign currency' %}</h4>
-                <div class="toLeft"><input id="foreign-percent" value="{{ dynamic_settings|get_item:"foreign percent"}}">%</div>
-                <div class="toLeft">
-                    <span>{% trans 'Take conversation loss into account' %}</span>
-                    <input id="conversation-loss" type="checkbox" checked="checked">
-                </div>
-                <div class="clear"></div>
-            </div>
-
-            <div class="planner-block" id="expectations">
-                <h4>{% trans 'Exchange rates expectations' %}:</h4>
-                <div class="toLeft">
-                    {% trans 'Maximal' %}:
-                    <input id="expect-max" value="{{ dynamic_settings|get_item:"nbrb usd"}}">
-                </div>
-                <div class="toLeft">
-                    {% trans 'Minimal' %}: <input id="expect-min" value="{{ dynamic_settings|get_item:"nbrb usd"}}">
-                </div>
-                <div class="clear"></div>
-            </div>
-
-            <div class="planner-block hidden" id="advice">
-                <h4>{% trans 'Currencies proportion' %}:</h4>
-                <div id="cant-prevent-loss" class="hidden">
-                    {% trans "Loss of" %} <span id="loss"></span>% {% trans "can't be prevented with such rates expectations." %}
-                </div>
-                <div class="toLeft">{% trans 'National currency' %}: <span id="byn-advice"></span>%</div>
-                <div class="toLeft">{% trans 'Foreign' %}: <span id="foreign-advice"></span>%</div>
-                <div class="clear"></div>
-            </div>
-        </div>
-    </div>
-    <div class="clear"></div>
-</div>
-<div class="hidden">
-    <h3>{% trans 'Fix coefficients' %}:</h3>
-    <div>
-        <span>{% trans 'Exchange office margin' %}</span><input id="exchange-margin" value="0.5" /><span>%</span>
     </div>
 </div>
-
 
 
 {% endblock %}

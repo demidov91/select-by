@@ -37,9 +37,24 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'compressor',
+    # The app itself.
     'exchange',
+    # allauth required
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # allauth providers
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.vk',
+    # I'm not sure if I need any more.
+    'compressor',
+
 ]
+
+# allauth-required.
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -49,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'exchange.middleware.cookie_to_session_auth_middleware',
 ]
 
 ROOT_URLCONF = 'exchange.urls'
@@ -117,7 +133,6 @@ USE_TZ = True
 
 LANGUAGES = (
     ('ru', 'Russian'),
-    ('be', 'Belarusian'),
 )
 
 LOCALE_PATHS = (
@@ -139,6 +154,14 @@ COMPRESS_JS_FILTERS = []
 
 
 RATES_SOURCE = 'https://select.by/kurs/'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+ACCOUNT_EMAIL_VERIFICATION = None
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 365 * 2     # 2 years.
+SOCIALACCOUNT_ADAPTER = 'exchange.utils.allauth.AccountAdapter'
 
 LOGS_DIR = os.path.join(BASE_DIR, 'logs')
 
