@@ -1,12 +1,15 @@
 ymaps.ready(initMap);
 
+var map = null;
 var allPoints = null;
 var clusterSelected = null;
 var clusterNotSelected = null;
 var needClusterUpdate = false;
 
+var _clusterCounter = 0;
+
 function initMap() {
-    var map = new ymaps.Map("map", {
+    map = new ymaps.Map("map", {
         center: [53.902257, 27.561831],
         zoom: 12
     }, {
@@ -40,6 +43,8 @@ function configMapRelatedBehaviour(map){
 
     $('body').on('click', '.js-editor-balloon--item', onClusterItemClick);
     $('body').on('click', '.js-editor-balloon--all-action', onChangeAllBalloonPoints);  
+    $('body').on('click', '.js-editor-balloon--zoom', onBalloonZoomClick);  
+
 }
 
 
@@ -48,8 +53,11 @@ function enableClusterization(map, placemarks){
     var selected = selNotSel[0];
     var notSelected = selNotSel[1];
 
-    var CUSTOM_BALOON = ymaps.templateLayoutFactory.createClass([
-        '<div class="editor-balloon--header editor-balloon--button h5">', 
+    var CUSTOM_BALLOON = ymaps.templateLayoutFactory.createClass([
+        '<div ', 
+            'class="editor-balloon--header editor-balloon--button js-editor-balloon--zoom h5"', 
+            'data-custom-id="{{ properties.customId }}"',
+        '>', 
             '🔍 Приблизить', 
         '</div>',
         '<div class="editor-balloon--items js-editor-balloon--items">',
@@ -80,8 +88,9 @@ function enableClusterization(map, placemarks){
 
     var clusterOptions = {
         gridSize: 256, 
-        clusterBalloonContentLayout: CUSTOM_BALOON,
-        clusterIconLayout: 'default#pieChart'
+        clusterBalloonContentLayout: CUSTOM_BALLOON,
+        clusterIconLayout: 'default#pieChart',
+        minClusterSize: 3
     };
 
     clusterSelected = new ymaps.Clusterer(clusterOptions);
@@ -118,6 +127,7 @@ function overridenCreateCluster(center, geoObjects){
         geoObjects
     );
     newCluster.options.set('disableClickZoom', geoObjects.length < 10);
+    newCluster.properties.set('customId', getClusterCounter());
     return newCluster;
 };
 
@@ -150,6 +160,11 @@ function onChangeAllBalloonPoints(event){
         changeBalloonItem(
             $(this), switchTo
     )});
+}
+
+function onBalloonZoomClick(event){
+    var cluster = getClusterPlacemarkByCounter($(this).data('custom-id'));
+    map.setCenter(cluster.geometry.getCoordinates(), map.getZoom() + 1);
 }
 
 function changeBalloonItem($item, switchTo){
@@ -258,4 +273,20 @@ function getSelectedNotSelected(placemarks){
         }
     }
     return [selected, notSelected];
+}
+
+
+function getClusterCounter(){
+    _clusterCounter += 1;
+    return _clusterCounter;
+}
+
+function getClusterPlacemarkByCounter(counter){
+    for (var cluster of clusterNotSelected.getClusters().concat(
+        clusterSelected.getClusters())
+    ){
+        if (cluster.properties.get('customId') == counter){
+            return cluster;
+        }
+    }
 }
