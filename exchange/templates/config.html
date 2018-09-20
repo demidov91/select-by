@@ -5,7 +5,7 @@
 {% block content %}
 
     <h1>{% trans "Click on the map!" %}</h1>
-
+    <h5>{% trans "Choose exchange offices you want to track further." %}</h5>
 
     <div class="row editor--all">
         <div id="map" class="col-md-8"></div>
@@ -16,6 +16,7 @@
                 value="{{ office.id }}" 
                 name="online"  
                 {% if office.is_selected %}checked=checked{% endif %}
+                class="js-editor-online--checkbox"
             /> {{ office.name }}
             {% endfor %}
 

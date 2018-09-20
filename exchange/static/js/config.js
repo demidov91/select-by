@@ -36,7 +36,8 @@ function configMapRelatedBehaviour(map){
     allPoints.addEvents('click', onPointClick);
     
     $(".js-clear").click(function(event){
-        allPoints.each(turnPointOff);        
+        allPoints.each(turnPointOff);   
+        $('.js-editor-online--checkbox:checked').prop('checked', false);     
     });    
 
     $('.js-save').click(onSave);
