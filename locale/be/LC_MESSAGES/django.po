@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-20 22:23+0300\n"
+"POT-Creation-Date: 2018-09-20 22:38+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -98,6 +98,13 @@ msgstr "IP рэгістрацыі"
 msgid "last changed"
 msgstr "апошняе рэдагаванне"
 
+#: exchange/templates/base.html:7
+#, fuzzy
+#| msgid "Exchange office"
+msgctxt "title"
+msgid "Exchange offices"
+msgstr "Абменнікі"
+
 #: exchange/templates/config.html:7
 msgid "Click on the map!"
 msgstr ""
@@ -106,27 +113,27 @@ msgstr ""
 msgid "Choose exchange offices you want to track further."
 msgstr ""
 
-#: exchange/templates/config.html:28
+#: exchange/templates/config.html:29
 msgid "Clear"
 msgstr ""
 
-#: exchange/templates/config.html:34
+#: exchange/templates/config.html:35
 msgid "Save"
 msgstr "Захаваць"
 
-#: exchange/templates/config.html:42
+#: exchange/templates/config.html:43
 msgid "Return to rates"
 msgstr ""
 
-#: exchange/templates/config.html:54 exchange/templates/rates.html:54
+#: exchange/templates/config.html:55 exchange/templates/rates.html:54
 msgid "Logout"
 msgstr ""
 
-#: exchange/templates/config.html:66 exchange/templates/rates.html:20
+#: exchange/templates/config.html:67 exchange/templates/rates.html:20
 msgid "Attach:"
 msgstr ""
 
-#: exchange/templates/config.html:68 exchange/templates/rates.html:22
+#: exchange/templates/config.html:69 exchange/templates/rates.html:22
 msgid "Login:"
 msgstr ""
 
