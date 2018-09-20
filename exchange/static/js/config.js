@@ -38,7 +38,8 @@ function configMapRelatedBehaviour(map){
 
     $('.js-save').click(onSave);
 
-    $('body').on('click', '.js-editor-baloon--item', onClusterItemClick);  
+    $('body').on('click', '.js-editor-balloon--item', onClusterItemClick);
+    $('body').on('click', '.js-editor-balloon--all-action', onChangeAllBalloonPoints);  
 }
 
 
@@ -48,20 +49,32 @@ function enableClusterization(map, placemarks){
     var notSelected = selNotSel[1];
 
     var CUSTOM_BALOON = ymaps.templateLayoutFactory.createClass([
-        '<div class="editor-baloon--header h5">🔍 Приблизить</div>',
-        '<div class="editor-baloon--items">',
+        '<div class="editor-balloon--header editor-balloon--button h5">', 
+            '🔍 Приблизить', 
+        '</div>',
+        '<div class="editor-balloon--items js-editor-balloon--items">',
         '{% for point in properties.geoObjects %}',
             '<div data-id="{{ point.properties.id }}" ',
-                'class="js-editor-baloon--item editor-baloon--item h5',
-                    ' {% if point.properties.isSelected %}editor-baloon--item-selected{% else %}editor-baloon--item-not-selected{% endif %}"',
+                'class="', 
+                    'js-editor-balloon--item ', 
+                    'editor-balloon--item ', 
+                    'editor-balloon--button ',
+                    'h5 ',                     
+                    '{% if point.properties.isSelected %}editor-balloon--item-selected{% else %}editor-balloon--item-not-selected{% endif %}"',
             '>',
                 '{{ point.properties.bank }}: {{ point.properties.address }}',
             '</div>',
         '{% endfor %}',
         '</div>',
-        '<div>',
-            '<div class="col-xs-6 js-editor-baloon--select-all h5"><nobr>✅ Выбрать все</nobr></div>',     
-            '<div class="col-xs-6 js-editor-baloon--unselect-all h5"><nobr>Отменить все ❌</nobr></div>',     
+        '<div class="js-editor-balloon--mass-action-row">',
+            '<div ', 
+                'class="col-xs-6 editor-balloon--button js-editor-balloon--all-action h5 "', 
+                'data-action="on"',
+            '><nobr>✅ Выбрать все</nobr></div>',     
+            '<div ', 
+                'class="col-xs-6 editor-balloon--button js-editor-balloon--all-action h5"', 
+                'data-action="off"',
+            '><nobr>Отменить все ❌</nobr></div>',     
         '</div>',
     ].join(''));
 
@@ -119,24 +132,44 @@ function onPointClick(event){
 
 function onClusterItemClick(event){
     var $this = $(this);
-    var switchTo = !$this.hasClass('editor-baloon--item-selected');
-    var point = allPoints.search(
-        'properties.id=' + $this.data('id')
-    )._objects[0];
+    var switchTo = !$this.hasClass('editor-balloon--item-selected');    
+    changeBalloonItem($this, switchTo);
+}
+
+function onChangeAllBalloonPoints(event){
+    var $button = $(event.target).parents('.js-editor-balloon--all-action');
+    var switchTo = $button.data('action') == 'on';   
     
+    $items = $button.parents(
+        '.js-editor-balloon--mass-action-row'
+    ).siblings(
+        '.js-editor-balloon--items'
+    ).find(
+        '.js-editor-balloon--item'
+    ).each(function(x){
+        changeBalloonItem(
+            $(this), switchTo
+    )});
+}
+
+function changeBalloonItem($item, switchTo){
+    var point = allPoints.search(
+        'properties.id=' + $item.data('id')
+    )._objects[0];
+
     if (switchTo){
         turnPointOn(point, modifyClusters=false);
-        $this.removeClass(
-            'editor-baloon--item-not-selected'
+        $item.removeClass(
+            'editor-balloon--item-not-selected'
         ).addClass(
-            'editor-baloon--item-selected'
+            'editor-balloon--item-selected'
         );
     } else {
         turnPointOff(point, modifyClusters=false);
-        $this.removeClass(
-            'editor-baloon--item-selected'
+        $item.removeClass(
+            'editor-balloon--item-selected'
         ).addClass(
-            'editor-baloon--item-not-selected'
+            'editor-balloon--item-not-selected'
         );
     };
     needClusterUpdate = true;

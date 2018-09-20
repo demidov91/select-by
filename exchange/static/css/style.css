@@ -63,15 +63,12 @@ table.tablesorter td.is-best{
 #map{height: 500px;}
 .map-action{width: 100%;}
 .editor-right--block>.row{margin: 10px 0px;}
-.editor-baloon--header{text-align: center;}
-.editor-baloon--items{margin: 10px 0;}
-.editor-baloon--item{
-    margin: 10px 0;
-    cursor: pointer;
-}
-.editor-baloon--item-selected::before{
+.editor-balloon--header{text-align: center;}
+.editor-balloon--button{cursor: pointer;}
+.editor-balloon--item{margin: 10px 0;}
+.editor-balloon--item-selected::before{
     content: "✅ ";
 }
-.editor-baloon--item-not-selected::before{
+.editor-balloon--item-not-selected::before{
     content: "❌ ";
 }
