@@ -61,14 +61,14 @@
                     {% url "config" as this_page %}
 
                     <div class="row col-sm-12">
-                        <div class="col-sm-4">
+                        <div class="col-sm-5">
                             {% if is_authenticated %}
-                            <h3>{% trans 'Attach:' %}</h3>
+                            <h4>{% trans 'Attach:' %}</h4>
                             {% else %}
                             <h3>{% trans 'Login:' %}</h3>
                             {% endif %}
                         </div>
-                        <div class="col-sm-8 map-action--login-cell">
+                        <div class="col-sm-7 map-action--login-cell">
                             <!-- <a class="btn btn-default" href="{% provider_login_url "twitter" process=auth_process next=this_page %}">
                                 <img width="32" src="https://twitter.com/favicon.ico" alt="twitter"/>
                             </a> -->
