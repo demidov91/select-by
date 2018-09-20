@@ -79,6 +79,8 @@ def my_points(request):
             'id': x.id,
             'isSelected': x.id in points_id,
             'content': BANK_NAME_TO_SHORT_NAME.get(x.bank.name),
+            'bank': x.bank.name,
+            'address': x.address,
         } for x in ExchangeOffice.objects.filter(
             Q(is_removed=False),
             ~Q(identifier__in=ONLINE_EXCHANGE_OFFICES_IDENTIFIERS),
