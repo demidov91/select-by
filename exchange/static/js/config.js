@@ -55,7 +55,7 @@ function enableClusterization(map, placemarks){
 
     var CUSTOM_BALLOON = ymaps.templateLayoutFactory.createClass([
         '<div ', 
-            'class="editor-balloon--header editor-balloon--button js-editor-balloon--zoom h5"', 
+            'class="editor-balloon--header editor-balloon--button js-editor-balloon--zoom h4"', 
             'data-custom-id="{{ properties.customId }}"',
         '>', 
             '🔍 Приблизить', 
@@ -67,7 +67,7 @@ function enableClusterization(map, placemarks){
                     'js-editor-balloon--item ', 
                     'editor-balloon--item ', 
                     'editor-balloon--button ',
-                    'h5 ',                     
+                    'h4 ',                     
                     '{% if point.properties.isSelected %}editor-balloon--item-selected{% else %}editor-balloon--item-not-selected{% endif %}"',
             '>',
                 '{{ point.properties.bank }}: {{ point.properties.address }}',
@@ -76,11 +76,11 @@ function enableClusterization(map, placemarks){
         '</div>',
         '<div class="js-editor-balloon--mass-action-row">',
             '<div ', 
-                'class="col-xs-6 editor-balloon--button js-editor-balloon--all-action h5 "', 
+                'class="col-xs-6 editor-balloon--button js-editor-balloon--all-action h4 "', 
                 'data-action="on"',
             '><nobr>✅ Выбрать все</nobr></div>',     
             '<div ', 
-                'class="col-xs-6 editor-balloon--button js-editor-balloon--all-action h5"', 
+                'class="col-xs-6 editor-balloon--button js-editor-balloon--all-action h4"', 
                 'data-action="off"',
             '><nobr>Отменить все ❌</nobr></div>',     
         '</div>',
@@ -160,6 +160,9 @@ function onChangeAllBalloonPoints(event){
         changeBalloonItem(
             $(this), switchTo
     )});
+
+    clusterNotSelected.balloon.close();
+    clusterSelected.balloon.close();
 }
 
 function onBalloonZoomClick(event){
