@@ -63,3 +63,12 @@ table.tablesorter td.is-best{
 #map{height: 500px;}
 .map-action{width: 100%;}
 .editor-right--block>.row{margin: 10px 0px;}
+.editor-balloon--header{text-align: center;}
+.editor-balloon--button{cursor: pointer;}
+.editor-balloon--item{margin: 10px 0;}
+.editor-balloon--item-selected::before{
+    content: "✅ ";
+}
+.editor-balloon--item-not-selected::before{
+    content: "❌ ";
+}

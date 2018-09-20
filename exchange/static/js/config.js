@@ -1,9 +1,15 @@
 ymaps.ready(initMap);
 
+var map = null;
 var allPoints = null;
+var clusterSelected = null;
+var clusterNotSelected = null;
+var needClusterUpdate = false;
+
+var _clusterCounter = 0;
 
 function initMap() {
-    var map = new ymaps.Map("map", {
+    map = new ymaps.Map("map", {
         center: [53.902257, 27.561831],
         zoom: 12
     }, {
@@ -15,24 +21,115 @@ function initMap() {
         method: "GET",
         dataType: "json"
     }).done(function(data){
-        allPoints = new ymaps.geoQuery(data.exchange.map(externalDataToPoint));
+        var barePlacemarks = data.exchange.map(externalDataToPoint);
+        
+        allPoints = new ymaps.geoQuery(barePlacemarks);
         allPoints.addToMap(map);
+
+        enableClusterization(map, barePlacemarks);
+
         configMapRelatedBehaviour(map);        
     });
-
-    
 }
 
 function configMapRelatedBehaviour(map){
     allPoints.addEvents('click', onPointClick);
-    map.events.add('click', onMapClick);
-
+    
     $(".js-clear").click(function(event){
         allPoints.each(turnPointOff);        
     });    
 
     $('.js-save').click(onSave);
+
+    $('body').on('click', '.js-editor-balloon--item', onClusterItemClick);
+    $('body').on('click', '.js-editor-balloon--all-action', onChangeAllBalloonPoints);  
+    $('body').on('click', '.js-editor-balloon--zoom', onBalloonZoomClick);  
+
 }
+
+
+function enableClusterization(map, placemarks){
+    var selNotSel = getSelectedNotSelected(placemarks);
+    var selected = selNotSel[0];
+    var notSelected = selNotSel[1];
+
+    var CUSTOM_BALLOON = ymaps.templateLayoutFactory.createClass([
+        '<div ', 
+            'class="editor-balloon--header editor-balloon--button js-editor-balloon--zoom h4"', 
+            'data-custom-id="{{ properties.customId }}"',
+        '>', 
+            '🔍 Приблизить', 
+        '</div>',
+        '<div class="editor-balloon--items js-editor-balloon--items">',
+        '{% for point in properties.geoObjects %}',
+            '<div data-id="{{ point.properties.id }}" ',
+                'class="', 
+                    'js-editor-balloon--item ', 
+                    'editor-balloon--item ', 
+                    'editor-balloon--button ',
+                    'h4 ',                     
+                    '{% if point.properties.isSelected %}editor-balloon--item-selected{% else %}editor-balloon--item-not-selected{% endif %}"',
+            '>',
+                '{{ point.properties.bank }}: {{ point.properties.address }}',
+            '</div>',
+        '{% endfor %}',
+        '</div>',
+        '<div class="js-editor-balloon--mass-action-row">',
+            '<div ', 
+                'class="col-xs-6 editor-balloon--button js-editor-balloon--all-action h4 "', 
+                'data-action="on"',
+            '><nobr>✅ Выбрать все</nobr></div>',     
+            '<div ', 
+                'class="col-xs-6 editor-balloon--button js-editor-balloon--all-action h4"', 
+                'data-action="off"',
+            '><nobr>Отменить все ❌</nobr></div>',     
+        '</div>',
+    ].join(''));
+
+    var clusterOptions = {
+        gridSize: 256, 
+        clusterBalloonContentLayout: CUSTOM_BALLOON,
+        clusterIconLayout: 'default#pieChart',
+        minClusterSize: 3
+    };
+
+    clusterSelected = new ymaps.Clusterer(clusterOptions);
+    clusterNotSelected = new ymaps.Clusterer(clusterOptions);
+
+    clusterSelected.options.set('isSelected', true);
+    clusterNotSelected.options.set('isSelected', false);
+
+    clusterNotSelected.add(notSelected);
+    clusterSelected.add(selected);
+
+    clusterNotSelected.createCluster = overridenCreateCluster;
+    clusterSelected.createCluster = overridenCreateCluster;
+
+    map.geoObjects.add(clusterSelected);
+    map.geoObjects.add(clusterNotSelected);
+
+    map.events.add('boundschange', function(event){
+        if (event.get('oldZoom') == event.get('newZoom')){
+            return;
+        }
+        if (!needClusterUpdate){
+            return;
+        }
+        updateClusters();
+        needClusterUpdate = false;
+    });
+}
+
+function overridenCreateCluster(center, geoObjects){
+    var newCluster = ymaps.Clusterer.prototype.createCluster.call(
+        this, 
+        center, 
+        geoObjects
+    );
+    newCluster.options.set('disableClickZoom', geoObjects.length < 10);
+    newCluster.properties.set('customId', getClusterCounter());
+    return newCluster;
+};
 
 function onPointClick(event){
     var point = event.get('target');
@@ -43,15 +140,67 @@ function onPointClick(event){
     }
 }
 
-function onMapClick(event){
-    var map  = event.get('target');
-    var coordinates = event.get('coords');
+function onClusterItemClick(event){
+    var $this = $(this);
+    var switchTo = !$this.hasClass('editor-balloon--item-selected');    
+    changeBalloonItem($this, switchTo);
+}
+
+function onChangeAllBalloonPoints(event){
+    var $button = $(event.target).parents('.js-editor-balloon--all-action');
+    var switchTo = $button.data('action') == 'on';   
     
-    var circle = new ymaps.Circle([coordinates, 1000]);
-    map.geoObjects.add(circle);
-    var pointsToAdd = allPoints.searchInside(circle);
-    pointsToAdd.each(turnPointOn); 
-    map.geoObjects.remove(circle);   
+    $items = $button.parents(
+        '.js-editor-balloon--mass-action-row'
+    ).siblings(
+        '.js-editor-balloon--items'
+    ).find(
+        '.js-editor-balloon--item'
+    ).each(function(x){
+        changeBalloonItem(
+            $(this), switchTo
+    )});
+
+    clusterNotSelected.balloon.close();
+    clusterSelected.balloon.close();
+}
+
+function onBalloonZoomClick(event){
+    var cluster = getClusterPlacemarkByCounter($(this).data('custom-id'));
+    map.setCenter(cluster.geometry.getCoordinates(), map.getZoom() + 1);
+}
+
+function changeBalloonItem($item, switchTo){
+    var point = allPoints.search(
+        'properties.id=' + $item.data('id')
+    )._objects[0];
+
+    if (switchTo){
+        turnPointOn(point, modifyClusters=false);
+        $item.removeClass(
+            'editor-balloon--item-not-selected'
+        ).addClass(
+            'editor-balloon--item-selected'
+        );
+    } else {
+        turnPointOff(point, modifyClusters=false);
+        $item.removeClass(
+            'editor-balloon--item-selected'
+        ).addClass(
+            'editor-balloon--item-not-selected'
+        );
+    };
+    needClusterUpdate = true;
+}
+
+function updateClusters(){
+    clusterNotSelected.removeAll();
+    clusterSelected.removeAll();
+
+    var selNotSel = getSelectedNotSelected(allPoints._objects);
+
+    clusterSelected.add(selNotSel[0]);
+    clusterNotSelected.add(selNotSel[1]);
 }
 
 function onSave(event){
@@ -72,42 +221,75 @@ function onSave(event){
     });
 }
 
-function turnPointOff(point){
+function turnPointOff(point, modifyClusters=true){
     point.properties.set('isSelected', false);
-    point.options.set('preset', 'islands#grayDotIcon');
+    point.options.set('preset', 'islands#greyStretchyIcon');
+    if (modifyClusters){
+        clusterSelected.remove(point);
+        clusterNotSelected.add(point);
+    }
     return point;
 }
 
-function turnPointOn(point){
+function turnPointOn(point, modifyClusters=true){
     point.properties.set('isSelected', true);
     point.options.set('preset', 'islands#darkGreenStretchyIcon');
+    if (modifyClusters){
+        clusterSelected.add(point);
+        clusterNotSelected.remove(point);
+    }
     return point;
 }
 
-function externalDataToPoint(externalPoint){    
-    if (externalPoint.isSelected){
-        return new ymaps.Placemark(
-            externalPoint.coordinates,
-            {
-                id: externalPoint.id,
-                isSelected: true,
-                iconContent: externalPoint.content
-            },
-            {
-                preset: 'islands#darkGreenStretchyIcon'
-            }      
-        );
-    }
-
-    return new ymaps.Placemark(
+function externalDataToPoint(externalPoint){   
+    var point = new ymaps.Placemark(
         externalPoint.coordinates,
         {
             id: externalPoint.id,
-            isSelected: false,
-            iconContent: externalPoint.content
-        },
-        {
-            preset: 'islands#grayDotIcon'
-        }      
-    );    
+            isSelected: externalPoint.isSelected,
+            iconContent: externalPoint.content,
+            address: externalPoint.address,
+            bank: externalPoint.bank,
+        }   
+    );
+    
+    if (externalPoint.isSelected){
+        point.options.set('preset', 'islands#darkGreenStretchyIcon'); 
+    } else {
+        point.options.set('preset', 'islands#greyStretchyIcon'); 
+    }
+
+    return point;
+}
+
+// Returns a list with 2 items: 
+//     list of selected points and list of not selected placemarks.
+function getSelectedNotSelected(placemarks){
+    var selected = [];
+    var notSelected = [];
+
+    for (var x of placemarks){
+        if (x.properties.get('isSelected')){
+            selected.push(x);
+        } else {
+            notSelected.push(x);
+        }
+    }
+    return [selected, notSelected];
+}
+
+
+function getClusterCounter(){
+    _clusterCounter += 1;
+    return _clusterCounter;
+}
+
+function getClusterPlacemarkByCounter(counter){
+    for (var cluster of clusterNotSelected.getClusters().concat(
+        clusterSelected.getClusters())
+    ){
+        if (cluster.properties.get('customId') == counter){
+            return cluster;
+        }
+    }
 }
