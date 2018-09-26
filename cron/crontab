@@ -1,0 +1,2 @@
+*/10 7-20 * * * root cd /app && . /home/cron-env.sh && /usr/local/bin/python /app/manage.py load_rates  > /proc/1/fd/1 2>/proc/1/fd/2
+* 12-16 * * 1-5 root cd /app && . /home/cron-env.sh && /usr/local/bin/python /app/manage.py load_nbrb   > /proc/1/fd/1 2>/proc/1/fd/2

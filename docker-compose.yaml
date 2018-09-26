@@ -12,6 +12,7 @@ services:
 
   django:
     build: .
+    image: dzmitry/rate
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - DEBUG=${DEBUG}
@@ -19,11 +20,30 @@ services:
     volumes:
       - .:/app:ro
       - ./logs:/app/logs:rw
-      - ./static:/app/static:rw
     depends_on:
       - postgres
+
+  cron:
+    build: ./cron
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - DEBUG=${DEBUG}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - TZ=Europe/Minsk
+    volumes:
+      - .:/app:ro
+      - ./logs:/app/logs:rw
+
+    depends_on:
+      - django
+
 
   postgres:
     image: "postgres:9.6"
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - rate.dzmitry.psql:/var/lib/postgresql/data
+
+volumes:
+  rate.dzmitry.psql:
