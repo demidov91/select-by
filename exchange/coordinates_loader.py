@@ -4,7 +4,7 @@ import logging
 from decimal import Decimal
 from typing import Iterable, Tuple
 
-from aiohttp.client import ClientSession, TCPConnector
+from aiohttp.client import ClientSession, TCPConnector, ClientTimeout
 from django.db.models import Q
 
 from exchange.defines import SELECTBY_EXCHANGE_OFFICE_PAGE_PATTERN
@@ -25,12 +25,20 @@ def update_all_coordinates():
         )
     )
 
+
 def multi_update_coordinates(offices: Iterable[ExchangeOffice]):
-    asyncio.new_event_loop().run_until_complete(_multi_update_coordinates(offices))
+    asyncio.run(_multi_update_coordinates(offices))
 
 
 async def _multi_update_coordinates(offices: Iterable[ExchangeOffice]):
-    async with ClientSession(connector=TCPConnector(limit=3)) as client:
+    async with ClientSession(
+            connector=TCPConnector(limit=3),
+            timeout=ClientTimeout(
+                total=30*60,        # connections are queued, so 30 minutes is ok.
+                sock_connect=30,    # 30 seconds to really connect.
+                sock_read=60,       # 1 minute to GET.
+            )
+    ) as client:
         await asyncio.gather(
             *(load_and_save_coordinates(x, client) for x in offices),
             return_exceptions=True

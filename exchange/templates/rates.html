@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n staticfiles compress l10n socialaccount %}
+{% load i18n staticfiles l10n socialaccount %}
 
 {% block style %}
     {{ block.super }}
@@ -144,9 +144,7 @@
 
 {% block script %}
     {{ block.super}}
-    {% compress js %}
     <script type="text/javascript" src="{% static 'js/lib/tablesorter/jquery.tablesorter.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/lib/tablesorter/jquery.tablesorter.widgets.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/rates.js' %}"></script>
-    {% endcompress %}
 {% endblock %}

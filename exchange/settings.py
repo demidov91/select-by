@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'nkd@41cy@=0q)i%+4@i^$ovwui=-ee)t#2pxu6=a%0$q99t&ly'
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*.dzmitry.by').split(',')
 
 
 # Application definition
@@ -48,9 +48,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.twitter',
     'allauth.socialaccount.providers.vk',
-    # I'm not sure if I need any more.
-    'compressor',
-
 ]
 
 # allauth-required.
@@ -93,8 +90,12 @@ WSGI_APPLICATION = 'exchange.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'PASSWORD': os.environ['POSTGRES_PASSWORD'],
+        'USER': 'postgres',
+        'HOST': 'postgres',
+        'PORT': os.environ.get('DB_PORT', 5432),
     }
 }
 
@@ -148,7 +149,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "compressor.finders.CompressorFinder",
 ]
 COMPRESS_JS_FILTERS = []
 
@@ -214,8 +214,3 @@ LOGGING = {
         },
     },
 }
-
-try:
-    from .local_settings import *
-except ImportError:
-    pass
