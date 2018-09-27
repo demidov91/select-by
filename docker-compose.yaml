@@ -17,8 +17,10 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - DEBUG=${DEBUG}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
     volumes:
       - .:/app:ro
+      - ./static:/app/static:rw
       - ./logs:/app/logs:rw
     depends_on:
       - postgres
