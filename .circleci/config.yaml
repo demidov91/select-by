@@ -1,0 +1,22 @@
+version: 2
+jobs:
+  update_ec2:
+   steps:
+    - branch:
+      only: master
+    - add_ssh_keys:
+        fingerprints:
+          - "45:a3:78:84:ed:6d:78:c8:85:ce:90:2f:90:60:8f:e1"
+    - run:
+        name: pull
+        command: ssh $EC2_USER@$EC2_HOST "
+                 cd $EC2_PATH
+                 git pull
+                 "
+    - run:
+      name: Restart
+      command: ssh $EC2_USER@$EC2_HOST "
+               cd $EC2_PATH
+               docker-compose stop
+               docker-compose up -d
+               "
