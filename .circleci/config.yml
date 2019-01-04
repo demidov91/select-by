@@ -55,8 +55,7 @@ jobs:
         command: |
           ssh $EC2_USER@$EC2_HOST "
             cd $EC2_PATH
-            docker-compose stop
-            docker-compose up -d
+            docker-compose up -d --build
           "
 
 

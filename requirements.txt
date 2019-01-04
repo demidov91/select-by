@@ -8,6 +8,7 @@ aiohttp==3.4.4
 async-timeout==3.0.0      # via aiohttp
 atomicwrites==1.2.1       # via pytest
 attrs==18.2.0             # via aiohttp, pytest
+certifi==2018.11.29       # via sentry-sdk
 chardet==3.0.4
 cssselect==1.0.3
 defusedxml==0.5.0         # via python3-openid
@@ -31,6 +32,8 @@ python3-openid==3.1.0     # via django-allauth
 pytz==2018.5              # via django
 requests-oauthlib==1.0.0  # via django-allauth
 requests==2.11.1
+sentry-sdk==0.6.6
 six==1.10.0               # via faker, more-itertools, pytest, python-dateutil
 text-unidecode==1.1       # via faker
+urllib3==1.24.1           # via sentry-sdk
 yarl==1.2.6               # via aiohttp

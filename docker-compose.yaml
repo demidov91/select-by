@@ -18,6 +18,8 @@ services:
       - DEBUG=${DEBUG}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
       - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - SENTRY_DSN=${SENTRY_DSN}
+      - SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT}
     volumes:
       - .:/app:ro
       - ./static:/app/static:rw
@@ -27,6 +29,7 @@ services:
 
   cron:
     build: ./cron
+    image: dzmitry/rate-cron
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - DEBUG=${DEBUG}
@@ -36,6 +39,8 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
       - DUMP_BUCKET=${DUMP_BUCKET}
+      - SENTRY_DSN=${SENTRY_DSN}
+      - SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT}
     volumes:
       - .:/app:ro
       - ./logs:/app/logs:rw

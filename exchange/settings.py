@@ -215,3 +215,22 @@ LOGGING = {
         },
     },
 }
+
+
+import logging
+
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.logging import LoggingIntegration
+
+sentry_sdk.init(
+    dsn=os.environ['SENTRY_DSN'],
+    environment=os.environ['SENTRY_ENVIRONMENT'],
+    integrations=[
+        DjangoIntegration(),
+        LoggingIntegration(
+            level=logging.DEBUG,
+            event_level=logging.WARNING,
+        ),
+    ],
+)
