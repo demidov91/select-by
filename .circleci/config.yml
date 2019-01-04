@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  update_ec2:
+  build:
    docker:
     - image: circleci/python:3.7
    steps:
