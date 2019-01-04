@@ -3,23 +3,27 @@ jobs:
   build:
    docker:
     - image: circleci/python:3.7
+   branches:
+    only:
+      - master
    steps:
-    - branch:
-      only: master
-
     - add_ssh_keys:
         fingerprints:
           - "45:a3:78:84:ed:6d:78:c8:85:ce:90:2f:90:60:8f:e1"
     - run:
         name: pull
-        command: ssh $EC2_USER@$EC2_HOST "
-                 cd $EC2_PATH
-                 git pull
-                 "
+        command: |
+          mkdir -p ~/.ssh/
+          echo '|1|X8RdkooHIKF0zlqOUc7R+hyXAT0=|G7IQk3BedSMbUE3IIz4vGwQCBhs= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFx56CIPJLfDFVY2TVyWOOMQdNk7lr5HnryrS+4zkVFrVzsZCQ06vgU3gW4Pp8YjSvd08E1fVpUxvhWm3iY1bC8=' >> ~/.ssh/known_hosts
+          ssh -v $EC2_USER@$EC2_HOST "
+            cd $EC2_PATH
+            git pull
+          "
     - run:
-      name: Restart
-      command: ssh $EC2_USER@$EC2_HOST "
-               cd $EC2_PATH
-               docker-compose stop
-               docker-compose up -d
-               "
+        name: restart
+        command: |
+          ssh $EC2_USER@$EC2_HOST "
+            cd $EC2_PATH
+            docker-compose stop
+            docker-compose up -d
+          "
