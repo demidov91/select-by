@@ -1,9 +1,12 @@
 version: 2
 jobs:
   update_ec2:
+   docker:
+    - image: circleci/python:3.7
    steps:
     - branch:
       only: master
+
     - add_ssh_keys:
         fingerprints:
           - "45:a3:78:84:ed:6d:78:c8:85:ce:90:2f:90:60:8f:e1"
