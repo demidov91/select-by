@@ -3,10 +3,41 @@ jobs:
   build:
    docker:
     - image: circleci/python:3.7
+      environment:
+        POSTGRES_PASSWORD: anytemppass
+        DJANGO_SECRET_KEY: anytempsecretkey
+        DB_HOST: localhost
+    - image: circleci/postgres:9.6
+      environment:
+        POSTGRES_PASSWORD: anytemppass
    branches:
     only:
       - master
    steps:
+    - checkout
+    - restore_cache:
+         name: Restore venv.
+         key: python3.7-v1-{{ checksum "requirements.txt" }}
+
+    - run:
+        name: prepare env
+        command: |
+          python -m venv env
+          . env/bin/activate
+          pip install pip-tools
+          pip-sync
+
+    - save_cache:
+         name: Save venv.
+         key: python3.7-v1-{{ checksum "requirements.txt" }}
+         paths:
+          - env
+
+    - run: |
+        mkdir logs
+        . env/bin/activate
+        pytest
+
     - add_ssh_keys:
         fingerprints:
           - "45:a3:78:84:ed:6d:78:c8:85:ce:90:2f:90:60:8f:e1"
@@ -27,3 +58,5 @@ jobs:
             docker-compose stop
             docker-compose up -d
           "
+
+

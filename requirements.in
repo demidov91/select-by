@@ -1,0 +1,14 @@
+aiohttp
+chardet
+cssselect
+Django
+django-allauth
+factory-boy
+gunicorn
+lxml
+oauthlib
+psycopg2
+pytest
+pytest-django
+python-dateutil
+requests
