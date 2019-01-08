@@ -12,7 +12,7 @@ class BankAdmin(admin.ModelAdmin):
 class ExchangeOfficeAdmin(admin.ModelAdmin):
     list_display = 'bank', 'address', 'coordinates', 'identifier', 'is_removed'
     list_filter = 'is_removed', 'no_coordinates', 'bank'
-    search_fields = 'bank', 'address', 'identifier'
+    search_fields = 'bank__name', 'address', 'identifier'
     actions = 'update_coordinates',
 
     def update_coordinates(self, request, queryset):

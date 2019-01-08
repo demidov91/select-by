@@ -15,7 +15,7 @@ class Bank(models.Model):
 
 class ExchangeOffice(models.Model):
     identifier = models.CharField(null=False, max_length=63, unique=True, verbose_name=_('identifier'))
-    users = models.ManyToManyField(User, related_name='exchange_offices')
+    users = models.ManyToManyField(User, blank=True, related_name='exchange_offices')
 
     address = models.CharField(null=False, max_length=127, verbose_name=_('address'))
     bank = models.ForeignKey(Bank, null=False, on_delete=models.CASCADE)
@@ -36,6 +36,10 @@ class ExchangeOffice(models.Model):
     no_coordinates = models.BooleanField(default=False, verbose_name=_('no coordinates'))
 
     is_removed = models.BooleanField(default=False, verbose_name=_('is removed'))
+
+    @property
+    def has_valid_coordinates(self):
+        return bool(self.latitude and self.longitude)
 
     def __str__(self):
         return '{}: {}'.format(self.bank.name, self.address)

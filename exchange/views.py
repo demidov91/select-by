@@ -54,8 +54,8 @@ def get_rates(request):
 
     best_rates = []
     for currency in (x[0] for x in Rate.CURRENCIES):
-        best_rates.extend(get_best_rates(currency, offices, True))
-        best_rates.extend(get_best_rates(currency, offices, False))
+        best_rates.extend(get_best_rates(currency, offices.filter(is_removed=False), True))
+        best_rates.extend(get_best_rates(currency, offices.filter(is_removed=False), False))
 
     for office in offices:
         for best_rate in filter(lambda x: x in best_rates, office.rates):

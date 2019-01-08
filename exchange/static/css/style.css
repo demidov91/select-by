@@ -38,6 +38,9 @@ table.tablesorter td.is-best{
 .office--clickable-row .office--address{
     color: #337ab7;
 }
+.tablesorter .office--is-removed td{
+    background-color: silver;
+}
 
 
 .rates-counter--left{width: 280px;}
