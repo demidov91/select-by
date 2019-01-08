@@ -58,4 +58,13 @@ jobs:
             docker-compose up -d --build
           "
 
+    - run:
+        name: update static and db
+        command: |
+          ssh -tt $EC2_USER@$EC2_HOST "
+            cd $EC2_PATH
+            docker-compose exec django python manage.py collectstatic --noinput
+            docker-compose exec django python manage.py migrate
+          "
+
 
