@@ -76,8 +76,15 @@
     </thead>
     <tbody>
     {% for office in offices %}
+        {% if office.latitude and office.longitude %}
+        <tr
+                class="js-office office--clickable-row"
+                data-href="https://yandex.by/maps?mode=whatshere&whatshere[point]={{ office.longitude|safe }}%2C{{ office.latitude|safe }}&whatshere[zoom]=16"
+        >
+        {% else %}
         <tr>
-            <td>{{ office.bank.name }}. {{ office.address }}</td>
+        {% endif %}
+            <td class="office--address">{{ office.bank.name }}. {{ office.address }}</td>
             {% for rate in office.rates %}
             <td class="{% if rate.is_best %}is-best{% endif %}">{{ rate.rate|unlocalize }}</td>
             {% endfor %}

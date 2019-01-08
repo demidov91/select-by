@@ -32,6 +32,13 @@ table.tablesorter td.is-best{
     background-color: #AFFFAF;
 }
 
+.office--clickable-row{
+    cursor: pointer;
+}
+.office--clickable-row .office--address{
+    color: #337ab7;
+}
+
 
 .rates-counter--left{width: 280px;}
 .rates-counter--left>.row {
