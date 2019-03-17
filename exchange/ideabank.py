@@ -1,4 +1,6 @@
 import datetime
+from json.decoder import JSONDecodeError
+from typing import Optional, Dict
 
 from exchange.constants import IDEABANK_ONLINE_OFFICE
 from exchange.utils.common import BaseLoader
@@ -18,9 +20,7 @@ class IdeaBankLoader(BaseLoader):
     def get_expected_exchange_offices(self):
         return ExchangeOffice.objects.filter(identifier=IDEABANK_ONLINE_OFFICE)
 
-    def _load(self):
-        today = datetime.date.today()
-
+    def _extract(self, today: datetime.date) -> Optional[Dict]:
         response = self.client.post(IDEABANK_URL, data={
             'date': today.strftime(IDEA_REMOTE_DATE_FORMAT),
             'id': 70,
@@ -28,13 +28,27 @@ class IdeaBankLoader(BaseLoader):
             'X-Requested-With': 'XMLHttpRequest',
         })
 
-        raw_rates = response.json()['data']
+        try:
+            raw_rates = response.json()['data']
+        except (JSONDecodeError, KeyError) as e:
+            logger.info(
+                'Unexpected rates response caused %s: %s',
+                type(e).__name__,
+                response.content
+            )
+            return None
 
-        if 'rates' not in raw_rates:
+        return raw_rates.get('rates')
+
+    def _load(self) -> bool:
+        today = datetime.date.today()
+
+        raw_rates = self._extract(today)
+        if not raw_rates:
             logger.info('No rates for today.')
             return False
 
-        last_rates = max(raw_rates['rates'].items(), key=lambda x: x[0])
+        last_rates = max(raw_rates.items(), key=lambda x: x[0])
 
         office_name = '{} {}'.format(today.strftime(DEFAULT_DATE_FORMAT), last_rates[0])
         raw_rates = last_rates[1]
@@ -43,7 +57,7 @@ class IdeaBankLoader(BaseLoader):
             bank = Bank.objects.get(identifier=IDEABANK_IDENTIFIER)
         except Bank.DoesNotExist:
             logger.error('IdeaBank identifier does not exist in DB')
-            return
+            return False
 
         office = ExchangeOffice.objects.filter(identifier=IDEABANK_ONLINE_OFFICE, bank=bank).first()
 
