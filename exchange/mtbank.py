@@ -1,9 +1,15 @@
 import json
 from decimal import Decimal
 
-from .defines import MTBANK_68_BODY, MTBANK_COMMON_BODY, MTBANK_68_OFFICE, MTBANK_COMMON_OFFICE, MTBANK_IDENTIFIER,\
-    MTBANK_RATES_START_LINE
-
+from exchange.defines import (
+    MTBANK_68_BODY,
+    MTBANK_COMMON_BODY,
+    MTBANK_68_OFFICE,
+    MTBANK_COMMON_OFFICE,
+    MTBANK_IDENTIFIER,
+    MTBANK_RATES_START_LINE,
+)
+from exchange.constants import DEFAULT_TIMEOUT
 from .models import ExchangeOffice, Bank, Rate
 from exchange.utils.common import BaseLoader
 
@@ -27,7 +33,9 @@ class MtbankLoader(BaseLoader):
             headers={
                 'Accept': 'text/html; charset=UTF-8',
                 'Content-Type': 'text/plain; charset=UTF-8',
-            })
+            },
+            timeout=DEFAULT_TIMEOUT
+        )
         response_line = response.text
         start_position = response_line.find(MTBANK_RATES_START_LINE)
         if start_position < 0:

@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db.models.functions import Length
 from lxml import html
 
+from exchange.constants import DEFAULT_TIMEOUT
 from exchange.coordinates_loader import update_all_coordinates
 from exchange.models import DynamicSettings, Rate, Bank, ExchangeOffice
 from exchange.services import set_dynamic_setting
@@ -44,7 +45,9 @@ class SelectbyLoader(BaseLoader):
         update_all_coordinates()
 
     def load_page_source(self):
-        return html.fromstring(self.client.get(settings.RATES_SOURCE).content)
+        return html.fromstring(
+            self.client.get(settings.RATES_SOURCE, timeout=DEFAULT_TIMEOUT).content
+        )
 
     def get_last_page_update(self, doc) -> str:
         return doc.cssselect('.kurs_h3')[0].text.strip()

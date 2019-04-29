@@ -2,7 +2,7 @@ import datetime
 from json.decoder import JSONDecodeError
 from typing import Optional, Dict
 
-from exchange.constants import IDEABANK_ONLINE_OFFICE
+from exchange.constants import IDEABANK_ONLINE_OFFICE, DEFAULT_TIMEOUT
 from exchange.utils.common import BaseLoader
 from .defines import (
     IDEABANK_URL,
@@ -26,7 +26,7 @@ class IdeaBankLoader(BaseLoader):
             'id': 70,
         }, headers={
             'X-Requested-With': 'XMLHttpRequest',
-        })
+        }, timeout=DEFAULT_TIMEOUT)
 
         try:
             raw_rates = response.json()['data']

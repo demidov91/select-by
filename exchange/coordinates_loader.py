@@ -7,6 +7,7 @@ from typing import Iterable, Tuple
 from aiohttp.client import ClientSession, TCPConnector, ClientTimeout
 from django.db.models import Q
 
+from exchange.constants import DEFAULT_TIMEOUT
 from exchange.defines import SELECTBY_EXCHANGE_OFFICE_PAGE_PATTERN
 from exchange.models import ExchangeOffice
 
@@ -34,9 +35,9 @@ async def _multi_update_coordinates(offices: Iterable[ExchangeOffice]):
     async with ClientSession(
             connector=TCPConnector(limit=3),
             timeout=ClientTimeout(
-                total=30*60,        # connections are queued, so 30 minutes is ok.
-                sock_connect=30,    # 30 seconds to really connect.
-                sock_read=60,       # 1 minute to GET.
+                total=DEFAULT_TIMEOUT * 60,     # connections are queued, so 30 minutes is ok.
+                sock_connect=DEFAULT_TIMEOUT,   # 30 seconds to really connect.
+                sock_read=DEFAULT_TIMEOUT * 2,  # 1 minute to GET.
             )
     ) as client:
         await asyncio.gather(
