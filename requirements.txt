@@ -8,7 +8,7 @@ aiohttp==3.4.4
 async-timeout==3.0.0      # via aiohttp
 atomicwrites==1.2.1       # via pytest
 attrs==18.2.0             # via aiohttp, pytest
-certifi==2018.11.29       # via sentry-sdk
+certifi==2018.11.29       # via requests, sentry-sdk
 chardet==3.0.4
 cssselect==1.0.3
 defusedxml==0.5.0         # via python3-openid
@@ -17,7 +17,7 @@ django==2.1.1
 factory-boy==2.8.1
 faker==0.8.6              # via factory-boy
 gunicorn==19.9.0
-idna==2.7                 # via yarl
+idna==2.7                 # via requests, yarl
 lxml==4.2.5
 more-itertools==4.3.0     # via pytest
 multidict==4.4.0          # via aiohttp, yarl
@@ -31,9 +31,9 @@ python-dateutil==2.6.1
 python3-openid==3.1.0     # via django-allauth
 pytz==2018.5              # via django
 requests-oauthlib==1.0.0  # via django-allauth
-requests==2.11.1
+requests==2.20.0
 sentry-sdk==0.6.6
 six==1.10.0               # via faker, more-itertools, pytest, python-dateutil
 text-unidecode==1.1       # via faker
-urllib3==1.24.1           # via sentry-sdk
+urllib3==1.24.1           # via requests, sentry-sdk
 yarl==1.2.6               # via aiohttp
