@@ -3,9 +3,9 @@ from unittest.mock import patch
 
 import pytest
 
-from ..factories import ExchangeOfficeFactory, RateFactory
-from ..models import Rate
-from ..selectby import SelectbyLoader
+from exchange.factories import ExchangeOfficeFactory, RateFactory
+from exchange.models import Rate
+from exchange.selectby import SelectbyLoader
 from lxml import html
 import os
 
@@ -13,16 +13,20 @@ import os
 original_fromstring = html.fromstring
 
 
-def patched(*args, **kwargs):
+def patched_standard_page(*args, **kwargs):
     with open(os.path.join(os.path.dirname(__file__), 'data', 'selectby.html'), mode='rb') as f:
+        return original_fromstring(f.read())
+
+
+def patched_20191125_page(*args, **kwargs):
+    with open(os.path.join(os.path.dirname(__file__), 'data', 'selectby-20191125.html'), mode='rb') as f:
         return original_fromstring(f.read())
 
 
 
 class TestSelectbyLoader:
-
     @pytest.mark.django_db
-    @patch('lxml.html.fromstring', patched)
+    @patch('lxml.html.fromstring', patched_standard_page)
     @patch('exchange.selectby.update_all_coordinates')
     def test_load(self, patched_update_all_coordinates):
         fake_office = ExchangeOfficeFactory(identifier='5')
@@ -48,3 +52,11 @@ class TestSelectbyLoader:
             Decimal('1.875')
         )
         assert real_office.rate_set.count() != 1
+
+    @pytest.mark.django_db
+    @patch('lxml.html.fromstring', patched_20191125_page)
+    @patch('exchange.selectby.update_all_coordinates')
+    def test_load__20191125(self, patched_update_all_coordinates):
+        SelectbyLoader().load()
+
+        assert patched_update_all_coordinates.called

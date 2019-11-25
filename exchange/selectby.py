@@ -58,6 +58,9 @@ class SelectbyLoader(BaseLoader):
             classes = row.get('class')
             cells = row.getchildren()
             if not classes or 'tablesorter-childRow' not in classes:
+                if len(cells) < 2 or not cells[1].getchildren():
+                    continue
+
                 bank = self.get_bank(next(cells[1].iterchildren()))
                 logger.debug('Processing bank {}'.format(bank.name))
                 continue
