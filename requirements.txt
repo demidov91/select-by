@@ -35,5 +35,5 @@ requests==2.11.1
 sentry-sdk==0.6.6
 six==1.10.0               # via faker, more-itertools, pytest, python-dateutil
 text-unidecode==1.1       # via faker
-urllib3==1.24.1           # via sentry-sdk
+urllib3==1.24.2           # via sentry-sdk
 yarl==1.2.6               # via aiohttp
