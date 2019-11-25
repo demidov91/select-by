@@ -4,7 +4,7 @@ from unittest.mock import patch
 import pytest
 
 from exchange.factories import ExchangeOfficeFactory, RateFactory
-from exchange.models import Rate
+from exchange.models import Rate, Bank
 from exchange.selectby import SelectbyLoader
 from lxml import html
 import os
@@ -59,4 +59,5 @@ class TestSelectbyLoader:
     def test_load__20191125(self, patched_update_all_coordinates):
         SelectbyLoader().load()
 
+        assert Bank.objects.all().count() == 21
         assert patched_update_all_coordinates.called

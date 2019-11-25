@@ -58,15 +58,25 @@ class SelectbyLoader(BaseLoader):
             classes = row.get('class')
             cells = row.getchildren()
             if not classes or 'tablesorter-childRow' not in classes:
-                if len(cells) < 2 or not cells[1].getchildren():
+                bank_cells = cells[1].getchildren()
+                if bank_cells:
+                    identifier = bank_cells[0].get('href')
+                    name = bank_cells[0].text.strip()
+                else:
+                    bank = None
                     continue
 
-                bank = self.get_bank(next(cells[1].iterchildren()))
+                bank = self.get_bank(identifier, name)
                 logger.debug('Processing bank {}'.format(bank.name))
                 continue
+
+            if len(cells[0].cssselect('a')) == 0:
+                continue
+
             if bank is None:
                 logger.error('Unknown bank!')
                 continue
+
             exchange_office = self.get_exchange_office(bank, cells[0].cssselect('a')[0])
             self.add_office(exchange_office.id)
             self.add_rate(
@@ -87,13 +97,13 @@ class SelectbyLoader(BaseLoader):
     def build_rate(self, rate: Decimal, **keys) -> Rate:
         return Rate(rate=rate, **keys)
 
-    def get_bank(self, link) -> Bank:
+    def get_bank(self, identifier: str, name: str) -> Bank:
         try:
-            return Bank.objects.get(identifier=link.get('href'))
+            return Bank.objects.get(identifier=identifier)
         except Bank.DoesNotExist:
             logger.info('Bank with identifier {} and name {} will be created.'.format(
-                link.get('href'), link.text.strip()))
-            return Bank.objects.create(identifier=link.get('href'), name=link.text.strip())
+                identifier, name))
+            return Bank.objects.create(identifier=identifier, name=name)
 
     def get_exchange_office(self, bank: Bank, link) -> ExchangeOffice:
         match = self.exchange_office_identifier_matcher.match(link.get('href'))
