@@ -5,35 +5,89 @@
 #    pip-compile --output-file requirements.txt requirements.in
 #
 aiohttp==3.4.4
-async-timeout==3.0.0      # via aiohttp
-atomicwrites==1.2.1       # via pytest
-attrs==18.2.0             # via aiohttp, pytest
-certifi==2018.11.29       # via sentry-sdk
+    # via -r requirements.in
+async-timeout==3.0.0
+    # via aiohttp
+atomicwrites==1.2.1
+    # via pytest
+attrs==18.2.0
+    # via
+    #   aiohttp
+    #   pytest
+certifi==2018.11.29
+    # via sentry-sdk
 chardet==3.0.4
+    # via
+    #   -r requirements.in
+    #   aiohttp
 cssselect==1.0.3
-defusedxml==0.5.0         # via python3-openid
+    # via -r requirements.in
+defusedxml==0.5.0
+    # via python3-openid
 django-allauth==0.37.1
+    # via -r requirements.in
 django==2.1.1
+    # via
+    #   -r requirements.in
+    #   django-allauth
 factory-boy==2.8.1
-faker==0.8.6              # via factory-boy
+    # via -r requirements.in
+faker==0.8.6
+    # via factory-boy
 gunicorn==19.9.0
-idna==2.7                 # via yarl
+    # via -r requirements.in
+idna==2.7
+    # via yarl
 lxml==4.2.5
-more-itertools==4.3.0     # via pytest
-multidict==4.4.0          # via aiohttp, yarl
+    # via -r requirements.in
+more-itertools==4.3.0
+    # via pytest
+multidict==4.4.0
+    # via
+    #   aiohttp
+    #   yarl
 oauthlib==2.1.0
-pluggy==0.7.1             # via pytest
+    # via
+    #   -r requirements.in
+    #   requests-oauthlib
+pluggy==0.7.1
+    # via pytest
 psycopg2==2.7.5
-py==1.6.0                 # via pytest
+    # via -r requirements.in
+py==1.6.0
+    # via pytest
 pytest-django==3.4.2
+    # via -r requirements.in
 pytest==3.8.0
+    # via
+    #   -r requirements.in
+    #   pytest-django
 python-dateutil==2.6.1
-python3-openid==3.1.0     # via django-allauth
-pytz==2018.5              # via django
-requests-oauthlib==1.0.0  # via django-allauth
+    # via
+    #   -r requirements.in
+    #   faker
+python3-openid==3.1.0
+    # via django-allauth
+pytz==2018.5
+    # via django
+requests-oauthlib==1.0.0
+    # via django-allauth
 requests==2.11.1
+    # via
+    #   -r requirements.in
+    #   django-allauth
+    #   requests-oauthlib
 sentry-sdk==0.6.6
-six==1.10.0               # via faker, more-itertools, pytest, python-dateutil
-text-unidecode==1.1       # via faker
-urllib3==1.24.1           # via sentry-sdk
-yarl==1.2.6               # via aiohttp
+    # via -r requirements.in
+six==1.10.0
+    # via
+    #   faker
+    #   more-itertools
+    #   pytest
+    #   python-dateutil
+text-unidecode==1.1
+    # via faker
+urllib3==1.26.5
+    # via sentry-sdk
+yarl==1.2.6
+    # via aiohttp
